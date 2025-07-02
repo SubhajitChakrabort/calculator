@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCLD Testing Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        .neo-morphism {
+            box-shadow: 10px 10px 30px #1a1a1a, -10px -10px 30px #262626;
+        }
+        .screen-glare {
+            background: linear-gradient(145deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+            height: 30%;
+        }
+        .button-press {
+            transform: scale(0.95);
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5);
+        }
+        .gradient-border {
+            position: relative;
+            border-radius: 2rem;
+            background: linear-gradient(to right bottom, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+        }
+        .button-gradient {
+            background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
+        }
+        .operator-gradient {
+            background: linear-gradient(145deg, #3b82f6, #2563eb);
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator h-screen w-screen bg-black p-4 md:p-8 flex flex-col neo-morphism">
+        <!-- Premium Top Bar -->
+        <div class="w-16 md:w-24 h-1 md:h-1.5 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full mx-auto mb-4 md:mb-6"></div>
+
+        <!-- Enhanced Display Screen -->
+        <div class="flex-grow flex flex-col justify-end mb-6 md:mb-8 gradient-border p-1">
+            <div class="bg-black rounded-2xl p-4 md:p-6 relative overflow-hidden">
+                <!-- Glass Effect -->
+                <div class="absolute inset-0 screen-glare"></div>
+                
+                <!-- History Display -->
+                <div class="h-6 md:h-8 mb-1 md:mb-2 text-gray-500 text-right text-base md:text-lg font-mono overflow-hidden" id="history"></div>
+                
+                <!-- Input Display -->
+                <input type="text" id="input" 
+                    class="w-full h-10 md:h-14 bg-transparent text-white text-right text-2xl md:text-4xl font-mono tracking-wider focus:outline-none"
+                    readonly>
+                
+                <!-- Result Display -->
+                <div id="result" 
+                    class="w-full bg-transparent text-cyan-400 text-right text-4xl md:text-6xl font-bold font-mono tracking-wider">0</div>
+            </div>
+        </div>
+
+        <!-- Premium Button Grid -->
+        <div class="grid grid-cols-4 gap-4 md:gap-5">
+            <!-- Function Buttons -->
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">C</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">+/-</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">%</button>
+            <button class="btn h-16 md:h-20 operator-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">/</button>
+
+            <!-- Number Buttons -->
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">7</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">8</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">9</button>
+            <button class="btn h-16 md:h-20 operator-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">×</button>
+
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">4</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">5</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">6</button>
+            <button class="btn h-16 md:h-20 operator-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">-</button>
+
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">1</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">2</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">3</button>
+            <button class="btn h-16 md:h-20 operator-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">+</button>
+
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">.</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">0</button>
+            <button class="btn h-16 md:h-20 button-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">⌫</button>
+            <button class="btn h-16 md:h-20 operator-gradient text-white rounded-2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">=</button>
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('input');
+        const result = document.getElementById('result');
+        const history = document.getElementById('history');
+        const buttons = document.querySelectorAll('.btn');
+        let currentInput = '';
+        let currentResult = '0';
+        let lastOperation = '';
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const value = button.textContent;
+                
+                switch(value) {
+                    case 'C':
+                        currentInput = '';
+                        currentResult = '0';
+                        history.textContent = '';
+                        break;
+                    case '⌫':
+                        currentInput = currentInput.slice(0, -1);
+                        break;
+                    case '=':
+                        try {
+                            history.textContent = currentInput + ' =';
+                            currentResult = eval(currentInput.replace('×', '*'));
+                            currentInput = currentResult.toString();
+                        } catch {
+                            currentResult = 'Error';
+                            currentInput = '';
+                        }
+                        break;
+                    case '+/-':
+                        if (currentInput) {
+                            currentInput = (parseFloat(currentInput) * -1).toString();
+                        }
+                        break;
+                    case '%':
+                        if (currentInput) {
+                            currentInput = (parseFloat(currentInput) / 100).toString();
+                        }
+                        break;
+                    default:
+                        if (['+', '-', '×', '/'].includes(value)) {
+                            lastOperation = value;
+                            history.textContent = currentInput + ' ' + value;
+                        }
+                        currentInput += value === '×' ? '*' : value;
+                }
+
+                input.value = currentInput;
+                result.textContent = currentResult;
+            });
+        });
+    </script>
+</body>
+</html>
