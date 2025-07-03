@@ -219,6 +219,19 @@
             }
         }
 
+        function isOperator(value) {
+            return ['+', '-', '×', '/', '*'].includes(value);
+        }
+
+        function replaceLastOperator(input, newOperator) {
+            if (!input) return input;
+            const lastChar = input.slice(-1);
+            if (isOperator(lastChar)) {
+                return input.slice(0, -1) + (newOperator === '×' ? '*' : newOperator);
+            }
+            return input;
+        }
+
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const value = button.textContent;
@@ -232,10 +245,12 @@
                         calculations = [];
                         updateCalculationHistory();
                         break;
+
                     case '⌫':
                         currentInput = currentInput.slice(0, -1);
                         updateLiveCalculation();
                         break;
+
                     case '=':
                         try {
                             if (currentInput) {
@@ -254,6 +269,7 @@
                             result.textContent = 'Error';
                         }
                         break;
+
                     case '+/-':
                         if (currentInput && !isNaN(currentInput)) {
                             let num = parseFloat(currentInput);
@@ -261,15 +277,46 @@
                             updateLiveCalculation();
                         }
                         break;
+
                     case '%':
-                        if (currentInput && !isNaN(currentInput)) {
-                            currentInput = (parseFloat(currentInput) / 100).toString();
+                        if (currentInput) {
+                            const operators = /[+\-*/×]/;
+                            const parts = currentInput.split(operators);
+                            const lastNumber = parts[parts.length - 1];
+
+                            if (parts.length > 1) {
+                                const previousNumber = parts[parts.length - 2];
+                                const operator = currentInput.match(operators)[0];
+                                let percentValue;
+
+                                switch (operator) {
+                                    case '+':
+                                        percentValue = (parseFloat(lastNumber) * parseFloat(previousNumber)) / 100;
+                                        break;
+                                    case '-':
+                                        percentValue = (parseFloat(lastNumber) * parseFloat(previousNumber)) / 100;
+                                        break;
+                                    case '*':
+                                    case '×':
+                                        percentValue = parseFloat(lastNumber) / 100;
+                                        break;
+                                    case '/':
+                                        percentValue = parseFloat(lastNumber) / 100;
+                                        break;
+                                }
+
+                                currentInput = currentInput.slice(0, currentInput.length - lastNumber.length) + percentValue;
+                            } else {
+                                const percentValue = parseFloat(lastNumber) / 100;
+                                currentInput = currentInput.slice(0, currentInput.length - lastNumber.length) + percentValue;
+                            }
                             updateLiveCalculation();
                         }
                         break;
+
                     default:
                         if (currentResult !== '0' && !lastOperation) {
-                            if (['+', '-', '×', '/'].includes(value)) {
+                            if (isOperator(value)) {
                                 lastOperation = value;
                             } else {
                                 currentInput = '';
@@ -278,10 +325,14 @@
                             }
                         }
 
-                        if (['+', '-', '×', '/'].includes(value)) {
-                            if (currentInput && isValidInput(currentInput, value)) {
+                        if (isOperator(value)) {
+                            if (currentInput) {
+                                if (isOperator(currentInput.slice(-1))) {
+                                    currentInput = replaceLastOperator(currentInput, value);
+                                } else {
+                                    currentInput += value === '×' ? '*' : value;
+                                }
                                 lastOperation = value;
-                                currentInput += value === '×' ? '*' : value;
                                 updateLiveCalculation();
                             }
                         } else {
@@ -290,11 +341,15 @@
                                 updateLiveCalculation();
                             }
                         }
+                        break;
                 }
 
                 input.value = currentInput;
             });
         });
+
+
+
     </script>
 </body>
 
