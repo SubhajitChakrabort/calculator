@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RCLD Staging Calculator</title>
+    <title>Premium Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -86,12 +86,12 @@
 
                     <!-- Input Display -->
                     <input type="text" id="input"
-                        class="w-full h-10 md:h-14 bg-transparent text-white text-right text-2xl md:text-4xl font-mono tracking-wider focus:outline-none"
+                        class="w-full h-10 md:h-14 bg-transparent text-white text-right text-3xl md:text-5xl font-mono tracking-wider focus:outline-none"
                         readonly>
 
                     <!-- Result Display -->
                     <div id="result"
-                        class="w-full bg-transparent text-cyan-400 text-right text-3xl md:text-5xl font-bold font-mono tracking-wider">
+                        class="w-full bg-transparent text-cyan-400 text-right text-4xl md:text-6xl font-bold font-mono tracking-wider">
                         0</div>
                 </div>
             </div>
@@ -100,67 +100,67 @@
         <!-- Bracket Buttons Row -->
         <div class="grid grid-cols-6 gap-4 md:gap-5 mb-4">
             <button
-                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full 2xl text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">(</button>
+                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">(</button>
             <button
-                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full 2xl text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">)</button>
+                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">)</button>
             <button
-                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full 2xl text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">[</button>
+                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">[</button>
             <button
-                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full 2xl text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">]</button>
+                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">]</button>
             <button
-                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full 2xl text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">{</button>
+                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">{</button>
             <button
-                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full 2xl text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">}</button>
+                class="btn h-12 md:h-16 bracket-gradient text-white rounded-full text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">}</button>
         </div>
 
         <!-- Premium Button Grid -->
         <div class="grid grid-cols-4 gap-4 md:gap-5">
             <!-- Function Buttons -->
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">C</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">C</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">+/-</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">+/-</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">%</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">%</button>
             <button
-                class="btn h-16 md:h-20 operator-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">/</button>
+                class="btn h-16 md:h-20 operator-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">/</button>
 
             <!-- Number Buttons -->
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">7</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">7</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">8</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">8</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">9</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">9</button>
             <button
-                class="btn h-16 md:h-20 operator-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">×</button>
+                class="btn h-16 md:h-20 operator-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">×</button>
 
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">4</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">4</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">5</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">5</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">6</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">6</button>
             <button
-                class="btn h-16 md:h-20 operator-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">-</button>
+                class="btn h-16 md:h-20 operator-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">-</button>
 
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">1</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">1</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">2</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">2</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">3</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">3</button>
             <button
-                class="btn h-16 md:h-20 operator-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">+</button>
+                class="btn h-16 md:h-20 operator-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">+</button>
 
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">.</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">.</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">0</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">0</button>
             <button
-                class="btn h-16 md:h-20 button-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">⌫</button>
+                class="btn h-16 md:h-20 button-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">⌫</button>
             <button
-                class="btn h-16 md:h-20 operator-gradient text-white rounded-full 2xl text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">=</button>
+                class="btn h-16 md:h-20 operator-gradient text-white rounded-full text-2xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:button-press shadow-lg">=</button>
         </div>
     </div>
 
@@ -183,22 +183,18 @@
         }
 
         function isValidInput(current, newValue) {
-            // For decimal point validation
             if (newValue === '.') {
                 const numbers = current.split(/[+\-×/*]/);
                 const currentNumber = numbers[numbers.length - 1];
                 if (currentNumber.includes('.')) return false;
             }
 
-            // For operator validation
             if (['+', '-', '×', '/'].includes(newValue)) {
                 const lastChar = current.slice(-1);
                 if (['+', '-', '×', '/', '*'].includes(lastChar)) return false;
             }
 
-            // For +/- validation
             if (newValue === '+/-' && current === '') return false;
-
             return true;
         }
 
@@ -210,6 +206,19 @@
             return eval(expr);
         }
 
+        function updateLiveCalculation() {
+            try {
+                if (currentInput) {
+                    const tempResult = evaluateExpression(currentInput.replace('×', '*'));
+                    history.textContent = `${currentInput} = ${tempResult}`;
+                } else {
+                    history.textContent = '';
+                }
+            } catch {
+                history.textContent = currentInput;
+            }
+        }
+
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const value = button.textContent;
@@ -219,17 +228,19 @@
                         currentInput = '';
                         currentResult = '0';
                         history.textContent = '';
+                        result.textContent = '0';
                         calculations = [];
                         updateCalculationHistory();
                         break;
                     case '⌫':
                         currentInput = currentInput.slice(0, -1);
+                        updateLiveCalculation();
                         break;
                     case '=':
                         try {
                             if (currentInput) {
-                                history.textContent = currentInput + ' =';
                                 currentResult = evaluateExpression(currentInput.replace('×', '*'));
+                                result.textContent = currentResult;
                                 calculations.push({
                                     input: currentInput,
                                     result: currentResult
@@ -240,38 +251,48 @@
                         } catch {
                             currentResult = 'Error';
                             currentInput = '';
+                            result.textContent = 'Error';
                         }
                         break;
                     case '+/-':
                         if (currentInput && !isNaN(currentInput)) {
                             let num = parseFloat(currentInput);
                             currentInput = (-num).toString();
-                            if (['+', '-', '×', '/'].includes(lastOperation)) {
-                                history.textContent = currentInput + ' ' + lastOperation;
-                            }
+                            updateLiveCalculation();
                         }
                         break;
                     case '%':
                         if (currentInput && !isNaN(currentInput)) {
                             currentInput = (parseFloat(currentInput) / 100).toString();
+                            updateLiveCalculation();
                         }
                         break;
                     default:
+                        if (currentResult !== '0' && !lastOperation) {
+                            if (['+', '-', '×', '/'].includes(value)) {
+                                lastOperation = value;
+                            } else {
+                                currentInput = '';
+                                currentResult = '0';
+                                result.textContent = '0';
+                            }
+                        }
+
                         if (['+', '-', '×', '/'].includes(value)) {
                             if (currentInput && isValidInput(currentInput, value)) {
                                 lastOperation = value;
-                                history.textContent = currentInput + ' ' + value;
                                 currentInput += value === '×' ? '*' : value;
+                                updateLiveCalculation();
                             }
                         } else {
                             if (isValidInput(currentInput, value)) {
                                 currentInput += value === '×' ? '*' : value;
+                                updateLiveCalculation();
                             }
                         }
                 }
 
                 input.value = currentInput;
-                result.textContent = currentResult;
             });
         });
     </script>
