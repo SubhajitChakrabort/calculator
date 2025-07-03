@@ -27,301 +27,307 @@
     </script>
 </head>
 
-<body class="bg-black m-0 p-0 h-screen w-screen overflow-hidden">
-    <div class="h-screen w-screen bg-black p-2 sm:p-4 md:p-8 flex flex-col shadow-neo">
-        <!-- Top Bar -->
-        <div
-            class="w-16 md:w-24 h-1 md:h-1.5 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full mx-auto mb-2 md:mb-6">
-        </div>
+<body class="bg-black m-0 p-0 min-h-screen w-screen overflow-x-hidden"></body>
+<div class="min-h-screen w-full bg-black p-2 sm:p-4 md:p-8 flex flex-col shadow-neo max-h-[100vh]">
+    <!-- Top Bar -->
+    <div
+        class="w-16 md:w-24 h-1 md:h-1.5 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full mx-auto mb-2">
+    </div>
 
-        <!-- Display Screen -->
-        <div
-            class="flex-grow flex flex-col justify-end mb-4 md:mb-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-1">
-            <div class="bg-black rounded-2xl p-2 sm:p-4 md:p-6 relative">
-                <!-- History Section -->
-                <div class="mb-2 md:mb-4 h-24 md:h-32 overflow-y-auto">
-                    <div class="font-mono text-base md:text-lg text-white/50" id="calculationHistory"></div>
-                </div>
-
-                <!-- Display Section -->
-                <div class="relative">
-                    <div class="h-6 md:h-10 mb-1 md:mb-2 text-gray-500 text-right text-base md:text-xl font-mono overflow-hidden"
-                        id="history"></div>
-                    <input type="text" id="input"
-                        class="w-full h-8 md:h-14 bg-transparent text-white text-right text-2xl md:text-5xl font-mono tracking-wider focus:outline-none"
-                        readonly>
-                    <div id="result"
-                        class="w-full bg-transparent text-cyan-400 text-right text-3xl md:text-6xl font-bold font-mono tracking-wider">
-                        0</div>
-                </div>
+    <!-- Display Screen -->
+    <div
+        class="flex-grow flex flex-col justify-end mb-2 sm:mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-1 max-h-[35vh]">
+        <div class="bg-black rounded-2xl p-2 sm:p-4 relative">
+            <!-- History Section -->
+            <div class="mb-2 h-16 sm:h-24 overflow-y-auto">
+                <div class="font-mono text-sm sm:text-base text-white/50" id="calculationHistory"></div>
             </div>
-        </div>
 
-        <!-- Clear and Backspace Row -->
-        <div class="grid grid-cols-2 gap-2 md:gap-5 mb-2 md:mb-4">
-            <button
-                class="btn h-10 sm:h-12 md:h-16 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:shadow-button">C</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-16 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all duration-200 hover:scale-105 active:shadow-button">⌫</button>
-        </div>
-
-        <!-- Bracket Buttons -->
-        <div class="grid grid-cols-6 gap-1 sm:gap-2 md:gap-5 mb-2 md:mb-4">
-            <button
-                class="btn h-8 sm:h-10 md:h-16 bg-bracket-grad text-white rounded-full text-sm sm:text-lg md:text-2xl transform transition-all duration-200 hover:scale-105 active:shadow-button">(</button>
-            <button
-                class="btn h-8 sm:h-10 md:h-16 bg-bracket-grad text-white rounded-full text-sm sm:text-lg md:text-2xl transform transition-all duration-200 hover:scale-105 active:shadow-button">)</button>
-            <button
-                class="btn h-8 sm:h-10 md:h-16 bg-bracket-grad text-white rounded-full text-sm sm:text-lg md:text-2xl transform transition-all duration-200 hover:scale-105 active:shadow-button">[</button>
-            <button
-                class="btn h-8 sm:h-10 md:h-16 bg-bracket-grad text-white rounded-full text-sm sm:text-lg md:text-2xl transform transition-all duration-200 hover:scale-105 active:shadow-button">]</button>
-            <button
-                class="btn h-8 sm:h-10 md:h-16 bg-bracket-grad text-white rounded-full text-sm sm:text-lg md:text-2xl transform transition-all duration-200 hover:scale-105 active:shadow-button">{</button>
-            <button
-                class="btn h-8 sm:h-10 md:h-16 bg-bracket-grad text-white rounded-full text-sm sm:text-lg md:text-2xl transform transition-all duration-200 hover:scale-105 active:shadow-button">}</button>
-        </div>
-
-        <!-- Main Button Grid -->
-        <div class="grid grid-cols-4 gap-1 sm:gap-2 md:gap-5">
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-special-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">π</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-special-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">e</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">%</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">/</button>
-
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">7</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">8</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">9</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">×</button>
-
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">4</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">5</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">6</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">-</button>
-
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">1</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">2</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">3</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">+</button>
-
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">+/-</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">0</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">.</button>
-            <button
-                class="btn h-12 sm:h-14 md:h-20 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-3xl transform transition-all duration-200 hover:scale-105 active:shadow-button">=</button>
+            <!-- Display Section -->
+            <div class="relative">
+                <div class="h-6 mb-1 text-gray-500 text-right text-sm sm:text-base font-mono overflow-hidden"
+                    id="history"></div>
+                <input type="text" id="input"
+                    class="w-full h-8 bg-transparent text-white text-right text-xl sm:text-2xl font-mono tracking-wider focus:outline-none"
+                    readonly>
+                <div id="result"
+                    class="w-full bg-transparent text-cyan-400 text-right text-2xl sm:text-3xl font-bold font-mono tracking-wider">
+                    0</div>
+            </div>
         </div>
     </div>
 
-    <script>
-        const input = document.getElementById('input');
-        const result = document.getElementById('result');
-        const history = document.getElementById('history');
-        const calculationHistory = document.getElementById('calculationHistory');
-        const buttons = document.querySelectorAll('.btn');
-        let currentInput = '';
-        let currentResult = '0';
-        let lastOperation = '';
-        let calculations = [];
+    <!-- Calculator Buttons Container -->
+    <div class="flex-shrink-0 pb-4 sm:pb-6">
+        <!-- Clear and Backspace Row -->
+        <div class="grid grid-cols-2 gap-2 mb-2">
+            <button
+                class="btn h-10 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">C</button>
+            <button
+                class="btn h-10 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">⌫</button>
+        </div>
 
-        function updateCalculationHistory() {
-            calculations = calculations.slice(-3);
-            calculationHistory.innerHTML = calculations.map(calc =>
-                `<div class="mb-6 text-right p-2 border-b border-white/10">${calc.input} = ${calc.result}</div>`
-            ).join('');
+        <!-- Bracket Buttons -->
+        <div class="grid grid-cols-6 gap-1 mb-2">
+            <button
+                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">(</button>
+            <button
+                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">)</button>
+            <button
+                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">[</button>
+            <button
+                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">]</button>
+            <button
+                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">{</button>
+            <button
+                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">}</button>
+        </div>
+
+        <!-- Main Button Grid -->
+        <div class="grid grid-cols-4 gap-2">
+            <!-- Special Functions Row -->
+            <button
+                class="btn h-12 bg-special-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">π</button>
+            <button
+                class="btn h-12 bg-special-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">e</button>
+            <button
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">%</button>
+            <button
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">/</button>
+
+            <!-- Number Rows -->
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">7</button>
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">8</button>
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">9</button>
+            <button
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">×</button>
+
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">4</button>
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">5</button>
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">6</button>
+            <button
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">-</button>
+
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">1</button>
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">2</button>
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">3</button>
+            <button
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">+</button>
+
+            <!-- Bottom Row -->
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">+/-</button>
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">0</button>
+            <button
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">.</button>
+            <button
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">=</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('input');
+    const result = document.getElementById('result');
+    const history = document.getElementById('history');
+    const calculationHistory = document.getElementById('calculationHistory');
+    const buttons = document.querySelectorAll('.btn');
+    let currentInput = '';
+    let currentResult = '0';
+    let lastOperation = '';
+    let calculations = [];
+
+    function updateCalculationHistory() {
+        calculations = calculations.slice(-3);
+        calculationHistory.innerHTML = calculations.map(calc =>
+            `<div class="mb-6 text-right p-2 border-b border-white/10">${calc.input} = ${calc.result}</div>`
+        ).join('');
+    }
+
+    function isValidInput(current, newValue) {
+        if (newValue === '.') {
+            const numbers = current.split(/[+\-×/*]/);
+            const currentNumber = numbers[numbers.length - 1];
+            if (currentNumber.includes('.')) return false;
         }
 
-        function isValidInput(current, newValue) {
-            if (newValue === '.') {
-                const numbers = current.split(/[+\-×/*]/);
-                const currentNumber = numbers[numbers.length - 1];
-                if (currentNumber.includes('.')) return false;
+        if (['+', '-', '×', '/'].includes(newValue)) {
+            const lastChar = current.slice(-1);
+            if (['+', '-', '×', '/', '*'].includes(lastChar)) return false;
+        }
+
+        if (newValue === '+/-' && current === '') return false;
+        return true;
+    }
+
+    function evaluateExpression(expr) {
+        expr = expr.replace(/[{]/g, '(')
+            .replace(/[}]/g, ')')
+            .replace(/[\[]/g, '(')
+            .replace(/[\]]/g, ')')
+            .replace(/×/g, '*')
+            .replace(/π/g, Math.PI)
+            .replace(/e/g, Math.E);
+        return eval(expr);
+    }
+
+    function updateLiveCalculation() {
+        try {
+            if (currentInput) {
+                const tempResult = evaluateExpression(currentInput);
+                history.textContent = `${currentInput} = ${tempResult}`;
+            } else {
+                history.textContent = '';
             }
-
-            if (['+', '-', '×', '/'].includes(newValue)) {
-                const lastChar = current.slice(-1);
-                if (['+', '-', '×', '/', '*'].includes(lastChar)) return false;
-            }
-
-            if (newValue === '+/-' && current === '') return false;
-            return true;
+        } catch {
+            history.textContent = currentInput;
         }
+    }
 
-        function evaluateExpression(expr) {
-            expr = expr.replace(/[{]/g, '(')
-                .replace(/[}]/g, ')')
-                .replace(/[\[]/g, '(')
-                .replace(/[\]]/g, ')')
-                .replace(/×/g, '*')
-                .replace(/π/g, Math.PI)
-                .replace(/e/g, Math.E);
-            return eval(expr);
+    function isOperator(value) {
+        return ['+', '-', '×', '/', '*'].includes(value);
+    }
+
+    function replaceLastOperator(input, newOperator) {
+        if (!input) return input;
+        const lastChar = input.slice(-1);
+        if (isOperator(lastChar)) {
+            return input.slice(0, -1) + (newOperator === '×' ? '*' : newOperator);
         }
+        return input;
+    }
 
-        function updateLiveCalculation() {
-            try {
-                if (currentInput) {
-                    const tempResult = evaluateExpression(currentInput);
-                    history.textContent = `${currentInput} = ${tempResult}`;
-                } else {
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            const value = button.textContent;
+
+            switch (value) {
+                case 'C':
+                    currentInput = '';
+                    currentResult = '0';
                     history.textContent = '';
-                }
-            } catch {
-                history.textContent = currentInput;
-            }
-        }
+                    result.textContent = '0';
+                    calculations = [];
+                    updateCalculationHistory();
+                    break;
 
-        function isOperator(value) {
-            return ['+', '-', '×', '/', '*'].includes(value);
-        }
+                case '⌫':
+                    currentInput = currentInput.slice(0, -1);
+                    updateLiveCalculation();
+                    break;
 
-        function replaceLastOperator(input, newOperator) {
-            if (!input) return input;
-            const lastChar = input.slice(-1);
-            if (isOperator(lastChar)) {
-                return input.slice(0, -1) + (newOperator === '×' ? '*' : newOperator);
-            }
-            return input;
-        }
-
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                const value = button.textContent;
-
-                switch (value) {
-                    case 'C':
-                        currentInput = '';
-                        currentResult = '0';
-                        history.textContent = '';
-                        result.textContent = '0';
-                        calculations = [];
-                        updateCalculationHistory();
-                        break;
-
-                    case '⌫':
-                        currentInput = currentInput.slice(0, -1);
-                        updateLiveCalculation();
-                        break;
-
-                    case '=':
-                        try {
-                            if (currentInput) {
-                                currentResult = evaluateExpression(currentInput);
-                                result.textContent = currentResult;
-                                calculations.push({
-                                    input: currentInput,
-                                    result: currentResult
-                                });
-                                updateCalculationHistory();
-                                currentInput = currentResult.toString();
-                            }
-                        } catch {
-                            currentResult = 'Error';
-                            currentInput = '';
-                            result.textContent = 'Error';
-                        }
-                        break;
-                    case '+/-':
-                        if (currentInput && !isNaN(currentInput)) {
-                            let num = parseFloat(currentInput);
-                            currentInput = (-num).toString();
-                            updateLiveCalculation();
-                        }
-                        break;
-
-                    case 'π':
-                        currentInput += 'π';
-                        updateLiveCalculation();
-                        break;
-
-                    case 'e':
-                        currentInput += 'e';
-                        updateLiveCalculation();
-                        break;
-
-                    case '%':
+                case '=':
+                    try {
                         if (currentInput) {
-                            const operators = /[+\-*/×]/;
-                            const parts = currentInput.split(operators);
-                            const lastNumber = parts[parts.length - 1];
+                            currentResult = evaluateExpression(currentInput);
+                            result.textContent = currentResult;
+                            calculations.push({
+                                input: currentInput,
+                                result: currentResult
+                            });
+                            updateCalculationHistory();
+                            currentInput = currentResult.toString();
+                        }
+                    } catch {
+                        currentResult = 'Error';
+                        currentInput = '';
+                        result.textContent = 'Error';
+                    }
+                    break;
+                case '+/-':
+                    if (currentInput && !isNaN(currentInput)) {
+                        let num = parseFloat(currentInput);
+                        currentInput = (-num).toString();
+                        updateLiveCalculation();
+                    }
+                    break;
 
-                            if (parts.length > 1) {
-                                const previousNumber = parts[parts.length - 2];
-                                const operator = currentInput.match(operators)[0];
-                                let percentValue;
+                case 'π':
+                    currentInput += 'π';
+                    updateLiveCalculation();
+                    break;
 
-                                switch (operator) {
-                                    case '+':
-                                    case '-':
-                                        percentValue = (parseFloat(lastNumber) * parseFloat(previousNumber)) / 100;
-                                        break;
-                                    case '*':
-                                    case '×':
-                                    case '/':
-                                        percentValue = parseFloat(lastNumber) / 100;
-                                        break;
-                                }
+                case 'e':
+                    currentInput += 'e';
+                    updateLiveCalculation();
+                    break;
 
-                                currentInput = currentInput.slice(0, currentInput.length - lastNumber.length) + percentValue;
-                            } else {
-                                const percentValue = parseFloat(lastNumber) / 100;
-                                currentInput = currentInput.slice(0, currentInput.length - lastNumber.length) + percentValue;
+                case '%':
+                    if (currentInput) {
+                        const operators = /[+\-*/×]/;
+                        const parts = currentInput.split(operators);
+                        const lastNumber = parts[parts.length - 1];
+
+                        if (parts.length > 1) {
+                            const previousNumber = parts[parts.length - 2];
+                            const operator = currentInput.match(operators)[0];
+                            let percentValue;
+
+                            switch (operator) {
+                                case '+':
+                                case '-':
+                                    percentValue = (parseFloat(lastNumber) * parseFloat(previousNumber)) / 100;
+                                    break;
+                                case '*':
+                                case '×':
+                                case '/':
+                                    percentValue = parseFloat(lastNumber) / 100;
+                                    break;
                             }
+
+                            currentInput = currentInput.slice(0, currentInput.length - lastNumber.length) + percentValue;
+                        } else {
+                            const percentValue = parseFloat(lastNumber) / 100;
+                            currentInput = currentInput.slice(0, currentInput.length - lastNumber.length) + percentValue;
+                        }
+                        updateLiveCalculation();
+                    }
+                    break;
+
+                default:
+                    if (currentResult !== '0' && !lastOperation) {
+                        if (isOperator(value)) {
+                            lastOperation = value;
+                        } else {
+                            currentInput = '';
+                            currentResult = '0';
+                            result.textContent = '0';
+                        }
+                    }
+
+                    if (isOperator(value)) {
+                        if (currentInput) {
+                            if (isOperator(currentInput.slice(-1))) {
+                                currentInput = replaceLastOperator(currentInput, value);
+                            } else {
+                                currentInput += value === '×' ? '*' : value;
+                            }
+                            lastOperation = value;
                             updateLiveCalculation();
                         }
-                        break;
-
-                    default:
-                        if (currentResult !== '0' && !lastOperation) {
-                            if (isOperator(value)) {
-                                lastOperation = value;
-                            } else {
-                                currentInput = '';
-                                currentResult = '0';
-                                result.textContent = '0';
-                            }
+                    } else {
+                        if (isValidInput(currentInput, value)) {
+                            currentInput += value === '×' ? '*' : value;
+                            updateLiveCalculation();
                         }
+                    }
+                    break;
+            }
 
-                        if (isOperator(value)) {
-                            if (currentInput) {
-                                if (isOperator(currentInput.slice(-1))) {
-                                    currentInput = replaceLastOperator(currentInput, value);
-                                } else {
-                                    currentInput += value === '×' ? '*' : value;
-                                }
-                                lastOperation = value;
-                                updateLiveCalculation();
-                            }
-                        } else {
-                            if (isValidInput(currentInput, value)) {
-                                currentInput += value === '×' ? '*' : value;
-                                updateLiveCalculation();
-                            }
-                        }
-                        break;
-                }
-
-                input.value = currentInput;
-            });
+            input.value = currentInput;
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>
