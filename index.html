@@ -28,270 +28,272 @@
 </head>
 
 <body class="bg-black m-0 p-0 min-h-screen w-screen overflow-x-hidden">
-<div class="min-h-screen w-full bg-black p-2 sm:p-4 md:p-8 flex flex-col shadow-neo max-h-[100vh]">
-    <!-- Made at RCLD Text -->
-    <div class="text-center mb-2 sm:mb-3">
-        <h1 class="text-white/70 text-sm sm:text-base md:text-lg font-mono font-bold tracking-wider">Made at RCLD</h1>
-    </div>
+    <div class="min-h-screen w-full bg-black p-2 sm:p-4 md:p-8 flex flex-col shadow-neo max-h-[100vh]">
+        <!-- Made at RCLD Text -->
+        <div class="text-center mb-2 sm:mb-3">
+            <h1 class="text-white/70 text-sm sm:text-base md:text-lg font-mono font-bold tracking-wider">Made at RCLD
+            </h1>
+        </div>
 
-    <!-- Top Bar -->
-    <div
-        class="w-16 md:w-24 h-1 md:h-1.5 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full mx-auto mb-2">
-    </div>
+        <!-- Top Bar -->
+        <div
+            class="w-16 md:w-24 h-1 md:h-1.5 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full mx-auto mb-2">
+        </div>
 
-    <!-- Display Screen -->
-    <div
-        class="flex-grow flex flex-col justify-end mb-2 sm:mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-1 max-h-[35vh]">
-        <div class="bg-black rounded-2xl p-2 sm:p-4 relative">
-            <!-- History Section -->
-            <div class="mb-2 h-12 sm:h-16 md:h-20 overflow-y-auto">
-                <div class="font-mono text-xs sm:text-sm text-white/50" id="calculationHistory"></div>
+        <!-- Display Screen -->
+        <div
+            class="flex-grow flex flex-col justify-end mb-2 sm:mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-1 max-h-[35vh]">
+            <div class="bg-black rounded-2xl p-2 sm:p-4 relative">
+                <!-- History Section -->
+                <div class="mb-2 h-12 sm:h-16 md:h-20 overflow-y-auto">
+                    <div class="font-mono text-xs sm:text-sm text-white/50" id="calculationHistory"></div>
+                </div>
+
+                <!-- Display Section -->
+                <div class="relative">
+                    <input type="text" id="input"
+                        class="w-full h-6 sm:h-8 bg-transparent text-white text-right text-lg sm:text-xl font-mono tracking-wider focus:outline-none mb-2"
+                        readonly>
+                    <div id="result"
+                        class="w-full bg-transparent text-cyan-400 text-right text-xl sm:text-2xl md:text-3xl font-bold font-mono tracking-wider">
+                        0</div>
+                </div>
             </div>
+        </div>
 
-            <!-- Display Section -->
-            <div class="relative">
-                <input type="text" id="input"
-                    class="w-full h-6 sm:h-8 bg-transparent text-white text-right text-lg sm:text-xl font-mono tracking-wider focus:outline-none mb-2"
-                    readonly>
-                <div id="result"
-                    class="w-full bg-transparent text-cyan-400 text-right text-xl sm:text-2xl md:text-3xl font-bold font-mono tracking-wider">
-                    0</div>
+        <!-- Calculator Buttons Container -->
+        <div class="flex-shrink-0 pb-2 sm:pb-4">
+            <!-- Main Button Grid -->
+            <div class="grid grid-cols-4 gap-1 sm:gap-2 max-w-sm mx-auto">
+                <!-- First Row: C and ⌫ -->
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-special-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button col-span-2">C</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-special-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button col-span-2">⌫</button>
+
+                <!-- Second Row: % / ( ) -->
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-bracket-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">(</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-bracket-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">)</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">%</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button flex items-center justify-center"
+                    data-value="/">
+                    <span class="flex flex-col items-center justify-center leading-none -space-y-3">
+                        <span class="text-sm sm:text-base md:text-lg">•</span>
+                        <span class="text-base sm:text-lg md:text-xl">—</span>
+                        <span class="text-sm sm:text-base md:text-lg">•</span>
+                    </span>
+                </button>
+
+
+                <!-- Third Row: 7 8 9 × -->
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">7</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">8</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">9</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">×</button>
+
+                <!-- Fourth Row: 4 5 6 - -->
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">4</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">5</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">6</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">-</button>
+
+                <!-- Fifth Row: 1 2 3 + -->
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">1</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">2</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">3</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">+</button>
+
+                <!-- Sixth Row: +/- 0 . = -->
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-base sm:text-lg md:text-xl transform transition-all hover:scale-105 active:shadow-button">+/-</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">0</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">.</button>
+                <button
+                    class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">=</button>
             </div>
         </div>
     </div>
 
-    <!-- Calculator Buttons Container -->
-    <div class="flex-shrink-0 pb-2 sm:pb-4">
-        <!-- Main Button Grid -->
-        <div class="grid grid-cols-4 gap-1 sm:gap-2 max-w-sm mx-auto">
-            <!-- First Row: C and ⌫ -->
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-special-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button col-span-2">C</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-special-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button col-span-2">⌫</button>
+    <script>
+        const input = document.getElementById('input');
+        const result = document.getElementById('result');
+        const calculationHistory = document.getElementById('calculationHistory');
+        const buttons = document.querySelectorAll('.btn');
+        let currentInput = '';
+        let calculations = [];
 
-            <!-- Second Row: % / ( ) -->
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">%</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button flex items-center justify-center" data-value="/">
-                <span class="flex flex-col items-center justify-center leading-none -space-y-3">
-                    <span class="text-sm sm:text-base md:text-lg">•</span>
-                    <span class="text-base sm:text-lg md:text-xl">—</span>
-                    <span class="text-sm sm:text-base md:text-lg">•</span>
-                </span>
-            </button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-bracket-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">(</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-bracket-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">)</button>
-
-            <!-- Third Row: 7 8 9 × -->
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">7</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">8</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">9</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">×</button>
-
-            <!-- Fourth Row: 4 5 6 - -->
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">4</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">5</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">6</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">-</button>
-
-            <!-- Fifth Row: 1 2 3 + -->
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">1</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">2</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">3</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">+</button>
-
-            <!-- Sixth Row: +/- 0 . = -->
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-base sm:text-lg md:text-xl transform transition-all hover:scale-105 active:shadow-button">+/-</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">0</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">.</button>
-            <button
-                class="btn h-10 sm:h-12 md:h-14 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl transform transition-all hover:scale-105 active:shadow-button">=</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    const input = document.getElementById('input');
-    const result = document.getElementById('result');
-    const calculationHistory = document.getElementById('calculationHistory');
-    const buttons = document.querySelectorAll('.btn');
-    let currentInput = '';
-    let calculations = [];
-
-    function updateCalculationHistory() {
-        calculations = calculations.slice(-3);
-        calculationHistory.innerHTML = calculations.map(calc =>
-            `<div class="mb-1 text-right p-1 border-b border-white/10 text-xs">${calc.input} = ${calc.result}</div>`
-        ).join('');
-    }
-
-    function isValidInput(current, newValue) {
-        if (newValue === '.') {
-            const numbers = current.split(/[+\-×/*]/);
-            const currentNumber = numbers[numbers.length - 1];
-            if (currentNumber.includes('.')) return false;
+        function updateCalculationHistory() {
+            calculations = calculations.slice(-3);
+            calculationHistory.innerHTML = calculations.map(calc =>
+                `<div class="mb-1 text-right p-1 border-b border-white/10 text-xs">${calc.input} = ${calc.result}</div>`
+            ).join('');
         }
 
-        if (['+', '-', '×', '/'].includes(newValue)) {
-            const lastChar = current.slice(-1);
-            if (['+', '-', '×', '/', '*'].includes(lastChar)) return false;
+        function isValidInput(current, newValue) {
+            if (newValue === '.') {
+                const numbers = current.split(/[+\-×/*]/);
+                const currentNumber = numbers[numbers.length - 1];
+                if (currentNumber.includes('.')) return false;
+            }
+
+            if (['+', '-', '×', '/'].includes(newValue)) {
+                const lastChar = current.slice(-1);
+                if (['+', '-', '×', '/', '*'].includes(lastChar)) return false;
+            }
+
+            return true;
         }
 
-        return true;
-    }
+        function evaluateExpression(expr) {
+            try {
+                // Handle implicit multiplication like 5(5+6) -> 5*(5+6)
+                expr = expr.replace(/(\d)\(/g, '$1*(');
+                expr = expr.replace(/\)(\d)/g, ')*$1');
 
-    function evaluateExpression(expr) {
-        try {
-            // Handle implicit multiplication like 5(5+6) -> 5*(5+6)
-            expr = expr.replace(/(\d)\(/g, '$1*(');
-            expr = expr.replace(/\)(\d)/g, ')*$1');
-            
-            expr = expr.replace(/×/g, '*');
-            
-            return eval(expr);
-        } catch (error) {
-            return 'Error';
+                expr = expr.replace(/×/g, '*');
+
+                return eval(expr);
+            } catch (error) {
+                return 'Error';
+            }
         }
-    }
 
-    function updateLiveCalculation() {
-        try {
-            if (currentInput && currentInput !== '') {
-                const tempResult = evaluateExpression(currentInput);
-                if (tempResult !== 'Error' && !isNaN(tempResult)) {
-                    result.textContent = tempResult;
+        function updateLiveCalculation() {
+            try {
+                if (currentInput && currentInput !== '') {
+                    const tempResult = evaluateExpression(currentInput);
+                    if (tempResult !== 'Error' && !isNaN(tempResult)) {
+                        result.textContent = tempResult;
+                    } else {
+                        result.textContent = '0';
+                    }
                 } else {
                     result.textContent = '0';
                 }
-            } else {
+            } catch {
                 result.textContent = '0';
             }
-        } catch {
-            result.textContent = '0';
         }
-    }
 
-    function isOperator(value) {
-        return ['+', '-', '×', '/', '*'].includes(value);
-    }
-
-    function replaceLastOperator(input, newOperator) {
-        if (!input) return input;
-        const lastChar = input.slice(-1);
-        if (isOperator(lastChar)) {
-            return input.slice(0, -1) + (newOperator === '×' ? '*' : newOperator);
+        function isOperator(value) {
+            return ['+', '-', '×', '/', '*'].includes(value);
         }
-        return input;
-    }
 
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Get the actual value from data-value attribute or text content
-            let actualValue = button.getAttribute('data-value') || button.textContent.trim();
+        function replaceLastOperator(input, newOperator) {
+            if (!input) return input;
+            const lastChar = input.slice(-1);
+            if (isOperator(lastChar)) {
+                return input.slice(0, -1) + (newOperator === '×' ? '*' : newOperator);
+            }
+            return input;
+        }
 
-            switch (actualValue) {
-                case 'C':
-                    currentInput = '';
-                    result.textContent = '0';
-                    break;
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Get the actual value from data-value attribute or text content
+                let actualValue = button.getAttribute('data-value') || button.textContent.trim();
 
-                case '⌫':
-                    currentInput = currentInput.slice(0, -1);
-                    updateLiveCalculation();
-                    break;
-
-                case '=':
-                    try {
-                        if (currentInput) {
-                            const finalResult = evaluateExpression(currentInput);
-                            if (finalResult !== 'Error') {
-                                calculations.push({
-                                    input: currentInput,
-                                    result: finalResult
-                                });
-                                updateCalculationHistory();
-                                currentInput = finalResult.toString();
-                                result.textContent = finalResult;
-                            } else {
-                                result.textContent = 'Error';
-                                currentInput = '';
-                            }
-                        }
-                    } catch {
-                        result.textContent = 'Error';
+                switch (actualValue) {
+                    case 'C':
                         currentInput = '';
-                    }
-                    break;
+                        result.textContent = '0';
+                        break;
 
-                case '+/-':
-                    if (currentInput && !isNaN(parseFloat(currentInput))) {
-                        const lastNumber = currentInput.match(/-?\d+\.?\d*$/);
-                        if (lastNumber) {
-                            const num = parseFloat(lastNumber[0]);
-                            const newNum = (-num).toString();
-                            currentInput = currentInput.replace(/-?\d+\.?\d*$/, newNum);
-                            updateLiveCalculation();
-                        }
-                    }
-                    break;
+                    case '⌫':
+                        currentInput = currentInput.slice(0, -1);
+                        updateLiveCalculation();
+                        break;
 
-                case '%':
-                    if (currentInput) {
+                    case '=':
                         try {
-                            const percentResult = evaluateExpression(currentInput) / 100;
-                            currentInput = percentResult.toString();
-                            updateLiveCalculation();
+                            if (currentInput) {
+                                const finalResult = evaluateExpression(currentInput);
+                                if (finalResult !== 'Error') {
+                                    calculations.push({
+                                        input: currentInput,
+                                        result: finalResult
+                                    });
+                                    updateCalculationHistory();
+                                    currentInput = finalResult.toString();
+                                    result.textContent = finalResult;
+                                } else {
+                                    result.textContent = 'Error';
+                                    currentInput = '';
+                                }
+                            }
                         } catch {
                             result.textContent = 'Error';
+                            currentInput = '';
                         }
-                    }
-                    break;
+                        break;
 
-                default:
-                    if (isOperator(actualValue)) {
-                                                if (currentInput && !isOperator(currentInput.slice(-1))) {
-                            currentInput += actualValue === '×' ? '*' : actualValue;
-                            updateLiveCalculation();
-                        } else if (currentInput && isOperator(currentInput.slice(-1))) {
-                            currentInput = replaceLastOperator(currentInput, actualValue);
-                            updateLiveCalculation();
+                    case '+/-':
+                        if (currentInput && !isNaN(parseFloat(currentInput))) {
+                            const lastNumber = currentInput.match(/-?\d+\.?\d*$/);
+                            if (lastNumber) {
+                                const num = parseFloat(lastNumber[0]);
+                                const newNum = (-num).toString();
+                                currentInput = currentInput.replace(/-?\d+\.?\d*$/, newNum);
+                                updateLiveCalculation();
+                            }
                         }
-                    } else {
-                        if (isValidInput(currentInput, actualValue)) {
-                            currentInput += actualValue;
-                            updateLiveCalculation();
-                        }
-                    }
-                    break;
-            }
+                        break;
 
-            input.value = currentInput;
+                    case '%':
+                        if (currentInput) {
+                            try {
+                                const percentResult = evaluateExpression(currentInput) / 100;
+                                currentInput = percentResult.toString();
+                                updateLiveCalculation();
+                            } catch {
+                                result.textContent = 'Error';
+                            }
+                        }
+                        break;
+
+                    default:
+                        if (isOperator(actualValue)) {
+                            if (currentInput && !isOperator(currentInput.slice(-1))) {
+                                currentInput += actualValue === '×' ? '*' : actualValue;
+                                updateLiveCalculation();
+                            } else if (currentInput && isOperator(currentInput.slice(-1))) {
+                                currentInput = replaceLastOperator(currentInput, actualValue);
+                                updateLiveCalculation();
+                            }
+                        } else {
+                            if (isValidInput(currentInput, actualValue)) {
+                                currentInput += actualValue;
+                                updateLiveCalculation();
+                            }
+                        }
+                        break;
+                }
+
+                input.value = currentInput;
+            });
         });
-    });
 
-    // Initialize
-    updateLiveCalculation();
-</script>
+        // Initialize
+        updateLiveCalculation();
+    </script>
 </body>
 
 </html>
-
