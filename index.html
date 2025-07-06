@@ -29,6 +29,11 @@
 
 <body class="bg-black m-0 p-0 min-h-screen w-screen overflow-x-hidden"></body>
 <div class="min-h-screen w-full bg-black p-2 sm:p-4 md:p-8 flex flex-col shadow-neo max-h-[100vh]">
+    <!-- Made at RCLD Text -->
+    <div class="text-center mb-2 sm:mb-3">
+        <h1 class="text-white/70 text-sm sm:text-base md:text-lg font-mono font-bold tracking-wider">Made at RCLD</h1>
+    </div>
+
     <!-- Top Bar -->
     <div
         class="w-16 md:w-24 h-1 md:h-1.5 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full mx-auto mb-2">
@@ -45,10 +50,8 @@
 
             <!-- Display Section -->
             <div class="relative">
-                <div class="h-6 mb-1 text-gray-500 text-right text-sm sm:text-base font-mono overflow-hidden"
-                    id="history"></div>
                 <input type="text" id="input"
-                    class="w-full h-8 bg-transparent text-white text-right text-xl sm:text-2xl font-mono tracking-wider focus:outline-none"
+                    class="w-full h-8 bg-transparent text-white text-right text-xl sm:text-2xl font-mono tracking-wider focus:outline-none mb-2"
                     readonly>
                 <div id="result"
                     class="w-full bg-transparent text-cyan-400 text-right text-2xl sm:text-3xl font-bold font-mono tracking-wider">
@@ -59,43 +62,25 @@
 
     <!-- Calculator Buttons Container -->
     <div class="flex-shrink-0 pb-4 sm:pb-6">
-        <!-- Clear and Backspace Row -->
-        <div class="grid grid-cols-2 gap-2 mb-2">
-            <button
-                class="btn h-10 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">C</button>
-            <button
-                class="btn h-10 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">⌫</button>
-        </div>
-
-        <!-- Bracket Buttons -->
-        <div class="grid grid-cols-6 gap-1 mb-2">
-            <button
-                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">(</button>
-            <button
-                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">)</button>
-            <button
-                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">[</button>
-            <button
-                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">]</button>
-            <button
-                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">{</button>
-            <button
-                class="btn h-8 bg-bracket-grad text-white rounded-full text-sm transform transition-all hover:scale-105 active:shadow-button">}</button>
-        </div>
-
         <!-- Main Button Grid -->
         <div class="grid grid-cols-4 gap-2">
-            <!-- Special Functions Row -->
+            <!-- First Row: C and ⌫ -->
             <button
-                class="btn h-12 bg-special-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">π</button>
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button col-span-2">C</button>
             <button
-                class="btn h-12 bg-special-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">e</button>
+                class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button col-span-2">⌫</button>
+
+            <!-- Second Row: % / × - -->
             <button
                 class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">%</button>
             <button
                 class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">/</button>
+            <button
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">×</button>
+            <button
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">-</button>
 
-            <!-- Number Rows -->
+            <!-- Third Row: 7 8 9 + -->
             <button
                 class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">7</button>
             <button
@@ -103,8 +88,9 @@
             <button
                 class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">9</button>
             <button
-                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">×</button>
+                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">+</button>
 
+            <!-- Fourth Row: 4 5 6 ( -->
             <button
                 class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">4</button>
             <button
@@ -112,8 +98,9 @@
             <button
                 class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">6</button>
             <button
-                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">-</button>
+                class="btn h-12 bg-bracket-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">(</button>
 
+            <!-- Fifth Row: 1 2 3 ) -->
             <button
                 class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">1</button>
             <button
@@ -121,9 +108,9 @@
             <button
                 class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">3</button>
             <button
-                class="btn h-12 bg-operator-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">+</button>
+                class="btn h-12 bg-bracket-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">)</button>
 
-            <!-- Bottom Row -->
+            <!-- Sixth Row: +/- 0 . = -->
             <button
                 class="btn h-12 bg-button-grad text-white rounded-full text-lg transform transition-all hover:scale-105 active:shadow-button">+/-</button>
             <button
@@ -139,18 +126,15 @@
 <script>
     const input = document.getElementById('input');
     const result = document.getElementById('result');
-    const history = document.getElementById('history');
     const calculationHistory = document.getElementById('calculationHistory');
     const buttons = document.querySelectorAll('.btn');
     let currentInput = '';
-    let currentResult = '0';
-    let lastOperation = '';
     let calculations = [];
 
     function updateCalculationHistory() {
         calculations = calculations.slice(-3);
         calculationHistory.innerHTML = calculations.map(calc =>
-            `<div class="mb-6 text-right p-2 border-b border-white/10">${calc.input} = ${calc.result}</div>`
+            `<div class="mb-2 text-right p-2 border-b border-white/10">${calc.input} = ${calc.result}</div>`
         ).join('');
     }
 
@@ -166,31 +150,37 @@
             if (['+', '-', '×', '/', '*'].includes(lastChar)) return false;
         }
 
-        if (newValue === '+/-' && current === '') return false;
         return true;
     }
 
     function evaluateExpression(expr) {
-        expr = expr.replace(/[{]/g, '(')
-            .replace(/[}]/g, ')')
-            .replace(/[\[]/g, '(')
-            .replace(/[\]]/g, ')')
-            .replace(/×/g, '*')
-            .replace(/π/g, Math.PI)
-            .replace(/e/g, Math.E);
-        return eval(expr);
+        try {
+            // Handle implicit multiplication like 5(5+6) -> 5*(5+6)
+            expr = expr.replace(/(\d)\(/g, '$1*(');
+            expr = expr.replace(/\)(\d)/g, ')*$1');
+            
+            expr = expr.replace(/×/g, '*');
+            
+            return eval(expr);
+        } catch (error) {
+            return 'Error';
+        }
     }
 
     function updateLiveCalculation() {
         try {
-            if (currentInput) {
+            if (currentInput && currentInput !== '') {
                 const tempResult = evaluateExpression(currentInput);
-                history.textContent = `${currentInput} = ${tempResult}`;
+                if (tempResult !== 'Error' && !isNaN(tempResult)) {
+                    result.textContent = tempResult;
+                } else {
+                    result.textContent = '0';
+                }
             } else {
-                history.textContent = '';
+                result.textContent = '0';
             }
         } catch {
-            history.textContent = currentInput;
+            result.textContent = '0';
         }
     }
 
@@ -214,11 +204,7 @@
             switch (value) {
                 case 'C':
                     currentInput = '';
-                    currentResult = '0';
-                    history.textContent = '';
                     result.textContent = '0';
-                    calculations = [];
-                    updateCalculationHistory();
                     break;
 
                 case '⌫':
@@ -229,95 +215,62 @@
                 case '=':
                     try {
                         if (currentInput) {
-                            currentResult = evaluateExpression(currentInput);
-                            result.textContent = currentResult;
-                            calculations.push({
-                                input: currentInput,
-                                result: currentResult
-                            });
-                            updateCalculationHistory();
-                            currentInput = currentResult.toString();
+                            const finalResult = evaluateExpression(currentInput);
+                            if (finalResult !== 'Error') {
+                                calculations.push({
+                                    input: currentInput,
+                                    result: finalResult
+                                });
+                                updateCalculationHistory();
+                                currentInput = finalResult.toString();
+                                result.textContent = finalResult;
+                            } else {
+                                result.textContent = 'Error';
+                                currentInput = '';
+                            }
                         }
                     } catch {
-                        currentResult = 'Error';
-                        currentInput = '';
                         result.textContent = 'Error';
+                        currentInput = '';
                     }
                     break;
+
                 case '+/-':
-                    if (currentInput && !isNaN(currentInput)) {
-                        let num = parseFloat(currentInput);
-                        currentInput = (-num).toString();
-                        updateLiveCalculation();
+                    if (currentInput && !isNaN(parseFloat(currentInput))) {
+                        const lastNumber = currentInput.match(/-?\d+\.?\d*$/);
+                        if (lastNumber) {
+                            const num = parseFloat(lastNumber[0]);
+                            const newNum = (-num).toString();
+                            currentInput = currentInput.replace(/-?\d+\.?\d*$/, newNum);
+                            updateLiveCalculation();
+                        }
                     }
-                    break;
-
-                case 'π':
-                    currentInput += 'π';
-                    updateLiveCalculation();
-                    break;
-
-                case 'e':
-                    currentInput += 'e';
-                    updateLiveCalculation();
                     break;
 
                 case '%':
                     if (currentInput) {
-                        const operators = /[+\-*/×]/;
-                        const parts = currentInput.split(operators);
-                        const lastNumber = parts[parts.length - 1];
-
-                        if (parts.length > 1) {
-                            const previousNumber = parts[parts.length - 2];
-                            const operator = currentInput.match(operators)[0];
-                            let percentValue;
-
-                            switch (operator) {
-                                case '+':
-                                case '-':
-                                    percentValue = (parseFloat(lastNumber) * parseFloat(previousNumber)) / 100;
-                                    break;
-                                case '*':
-                                case '×':
-                                case '/':
-                                    percentValue = parseFloat(lastNumber) / 100;
-                                    break;
-                            }
-
-                            currentInput = currentInput.slice(0, currentInput.length - lastNumber.length) + percentValue;
-                        } else {
-                            const percentValue = parseFloat(lastNumber) / 100;
-                            currentInput = currentInput.slice(0, currentInput.length - lastNumber.length) + percentValue;
+                        try {
+                            const percentResult = evaluateExpression(currentInput) / 100;
+                            currentInput = percentResult.toString();
+                            updateLiveCalculation();
+                        } catch {
+                            result.textContent = 'Error';
                         }
-                        updateLiveCalculation();
                     }
                     break;
 
                 default:
-                    if (currentResult !== '0' && !lastOperation) {
-                        if (isOperator(value)) {
-                            lastOperation = value;
-                        } else {
-                            currentInput = '';
-                            currentResult = '0';
-                            result.textContent = '0';
-                        }
-                    }
-
                     if (isOperator(value)) {
-                        if (currentInput) {
-                            if (isOperator(currentInput.slice(-1))) {
-                                currentInput = replaceLastOperator(currentInput, value);
-                            } else {
-                                currentInput += value === '×' ? '*' : value;
-                            }
-                            lastOperation = value;
+                        if (currentInput && !isOperator(currentInput.slice(-1))) {
+                            currentInput += value === '×' ? '*' : value;
+                            updateLiveCalculation();
+                        } else if (currentInput && isOperator(currentInput.slice(-1))) {
+                            currentInput = replaceLastOperator(currentInput, value);
                             updateLiveCalculation();
                         }
                     } else {
                         if (isValidInput(currentInput, value)) {
-                            currentInput += value === '×' ? '*' : value;
+                            currentInput += value;
                             updateLiveCalculation();
                         }
                     }
@@ -327,6 +280,9 @@
             input.value = currentInput;
         });
     });
+
+    // Initialize
+    updateLiveCalculation();
 </script>
 </body>
 
