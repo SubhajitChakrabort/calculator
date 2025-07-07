@@ -31,7 +31,7 @@
     <div class="min-h-screen w-full bg-black p-2 sm:p-4 flex flex-col shadow-neo">
         <!-- Made at RCLD Text -->
         <div class="text-center mb-2 sm:mb-3">
-            <h1 class="text-white/70 text-sm sm:text-base md:text-lg font-mono font-bold tracking-wider">Made at RCLD
+            <h1 class="text-white/70 text-base sm:text-lg md:text-xl font-mono font-black tracking-wider">Made at RCLD
             </h1>
         </div>
 
@@ -42,20 +42,24 @@
 
         <!-- Display Screen -->
         <div
-            class="flex-grow flex flex-col justify-end mb-3 sm:mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-1 max-h-[40vh] min-h-[120px]">
-            <div class="bg-black rounded-2xl p-3 sm:p-4 relative">
+            class="flex-grow flex flex-col justify-end mb-3 sm:mb-4 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-1 max-h-[45vh] min-h-[140px] sm:min-h-[160px]">
+            <div class="bg-black rounded-2xl p-3 sm:p-4 md:p-6 relative">
                 <!-- History Section -->
-                <div class="mb-2 h-8 sm:h-12 md:h-16 overflow-y-auto">
-                    <div class="font-mono text-xs sm:text-sm text-white/50" id="calculationHistory"></div>
+                <div class="mb-3 sm:mb-4 h-10 sm:h-14 md:h-18 overflow-y-auto">
+                    <div class="font-mono text-sm sm:text-base md:text-lg font-bold text-white/60" id="calculationHistory"></div>
                 </div>
 
-                <!-- Display Section -->
-                <div class="relative">
+                <!-- Input Display Section (White Text) -->
+                <div class="relative mb-3 sm:mb-4">
                     <input type="text" id="input"
-                        class="w-full h-6 sm:h-8 bg-transparent text-white text-right text-lg sm:text-xl font-mono tracking-wider focus:outline-none mb-2"
+                        class="w-full h-8 sm:h-10 md:h-12 bg-transparent text-white text-right text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black font-mono tracking-wider focus:outline-none"
                         readonly>
+                </div>
+
+                <!-- Result Display Section (Cyan Text) -->
+                <div class="relative">
                     <div id="result"
-                        class="w-full bg-transparent text-cyan-400 text-right text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold font-mono tracking-wider min-h-[40px] flex items-center justify-end">
+                        class="w-full bg-transparent text-cyan-400 text-right text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-10xl font-black font-mono tracking-wider min-h-[50px] sm:min-h-[60px] md:min-h-[70px] flex items-center justify-end leading-none">
                         0</div>
                 </div>
             </div>
@@ -64,74 +68,74 @@
         <!-- Calculator Buttons Container -->
         <div class="flex-shrink-0 pb-2 sm:pb-4">
             <!-- Main Button Grid -->
-            <div
-                class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-md mx-auto px-2">
+            <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-sm sm:max-w-md md:max-w-lg mx-auto px-2">
 
                 <!-- First Row: C and ⌫ -->
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-special-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button col-span-2">C</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-special-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button col-span-2">C</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-special-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button col-span-2">⌫</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-special-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button col-span-2">⌫</button>
 
                 <!-- Second Row: ( ) % ÷ -->
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-bracket-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">(</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-bracket-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">(</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-bracket-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">)</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-bracket-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">)</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-operator-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">%</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-operator-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">%</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-operator-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button flex items-center justify-center"
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-operator-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button flex items-center justify-center"
                     data-value="/">
-                    <span class="flex flex-col items-center justify-center leading-none -space-y-4">
-                        <span class="text-lg sm:text-xl md:text-2xl">•</span>
-                        <span class="text-xl sm:text-2xl md:text-3xl">—</span>
-                        <span class="text-lg sm:text-xl md:text-2xl">•</span>
+                    <span class="flex flex-col items-center justify-center leading-none -space-y-4 sm:-space-y-5">
+                        <span class="text-xl sm:text-2xl md:text-3xl">•</span>
+                        <span class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black">—</span>
+                        <span class="text-xl sm:text-2xl md:text-3xl">•</span>
                     </span>
                 </button>
 
                 <!-- Third Row: 7 8 9 × -->
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">7</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">7</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">8</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">8</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">9</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">9</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-operator-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">×</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-operator-grad text-white rounded-2xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">×</button>
 
                 <!-- Fourth Row: 4 5 6 - -->
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">4</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">4</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">5</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">5</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">6</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">6</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-operator-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">-</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-operator-grad text-white rounded-2xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black transform transition-all hover:scale-105 active:shadow-button leading-none">-</button>
 
                 <!-- Fifth Row: 1 2 3 + -->
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">1</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">1</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">2</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">2</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">3</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">3</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-operator-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">+</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-operator-grad text-white rounded-2xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">+</button>
 
                 <!-- Sixth Row: +/- 0 . = -->
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-lg sm:text-xl md:text-2xl font-semibold transform transition-all hover:scale-105 active:shadow-button">+/-</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">+/-</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">0</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">0</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-button-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">.</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-button-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">.</button>
                 <button
-                    class="btn h-14 sm:h-16 md:h-18 lg:h-20 bg-operator-grad text-white rounded-2xl text-xl sm:text-2xl md:text-3xl font-semibold transform transition-all hover:scale-105 active:shadow-button">=</button>
+                    class="btn h-16 sm:h-18 md:h-20 lg:h-22 bg-operator-grad text-white rounded-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black transform transition-all hover:scale-105 active:shadow-button">=</button>
             </div>
         </div>
     </div>
+
 
     <script>
         const input = document.getElementById('input');
