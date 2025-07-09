@@ -46,7 +46,8 @@
             <div class="bg-black rounded-2xl p-3 sm:p-4 md:p-6 relative">
                 <!-- History Section -->
                 <div class="mb-3 sm:mb-4 h-10 sm:h-14 md:h-18 overflow-y-auto">
-                    <div class="font-mono text-sm sm:text-base md:text-lg font-bold text-white/60" id="calculationHistory"></div>
+                    <div class="font-mono text-sm sm:text-base md:text-lg font-bold text-white/60"
+                        id="calculationHistory"></div>
                 </div>
 
                 <!-- Input Display Section (White Text) -->
@@ -136,7 +137,6 @@
         </div>
     </div>
 
-
     <script>
         const input = document.getElementById('input');
         const result = document.getElementById('result');
@@ -144,6 +144,9 @@
         const buttons = document.querySelectorAll('.btn');
         let currentInput = '';
         let calculations = [];
+        let shouldResetOnNextNumber = false;
+        let lastResult = null;
+        let justCalculated = false;
 
         function updateCalculationHistory() {
             calculations = calculations.slice(-3);
@@ -172,9 +175,7 @@
                 // Handle implicit multiplication like 5(5+6) -> 5*(5+6)
                 expr = expr.replace(/(\d)\(/g, '$1*(');
                 expr = expr.replace(/\)(\d)/g, ')*$1');
-
                 expr = expr.replace(/×/g, '*');
-
                 return eval(expr);
             } catch (error) {
                 return 'Error';
@@ -184,22 +185,41 @@
         function updateLiveCalculation() {
             try {
                 if (currentInput && currentInput !== '') {
-                    const tempResult = evaluateExpression(currentInput);
-                    if (tempResult !== 'Error' && !isNaN(tempResult)) {
-                        result.textContent = tempResult;
+                    // Only show live calculation if there's an operator and we're not in the middle of typing a number
+                    const hasOperator = /[+\-×/*]/.test(currentInput);
+                    const endsWithOperator = /[+\-×/*]$/.test(currentInput);
+
+                    if (hasOperator && !endsWithOperator) {
+                        const tempResult = evaluateExpression(currentInput);
+                        if (tempResult !== 'Error' && !isNaN(tempResult) && isFinite(tempResult)) {
+                            result.textContent = tempResult;
+                            lastResult = tempResult;
+                            // Only set reset flag if we're showing a live result, not while typing
+                            shouldResetOnNextNumber = false;
+                        } else {
+                            result.textContent = currentInput || '0';
+                            shouldResetOnNextNumber = false;
+                        }
                     } else {
-                        result.textContent = '0';
+                        result.textContent = currentInput || '0';
+                        shouldResetOnNextNumber = false;
                     }
                 } else {
                     result.textContent = '0';
+                    shouldResetOnNextNumber = false;
                 }
             } catch {
-                result.textContent = '0';
+                result.textContent = currentInput || '0';
+                shouldResetOnNextNumber = false;
             }
         }
 
         function isOperator(value) {
             return ['+', '-', '×', '/', '*'].includes(value);
+        }
+
+        function isNumber(value) {
+            return /^[0-9]$/.test(value);
         }
 
         function replaceLastOperator(input, newOperator) {
@@ -213,25 +233,34 @@
 
         buttons.forEach(button => {
             button.addEventListener('click', () => {
-                // Get the actual value from data-value attribute or text content
                 let actualValue = button.getAttribute('data-value') || button.textContent.trim();
 
                 switch (actualValue) {
                     case 'C':
                         currentInput = '';
                         result.textContent = '0';
+                        shouldResetOnNextNumber = false;
+                        lastResult = null;
+                        justCalculated = false;
                         break;
 
                     case '⌫':
-                        currentInput = currentInput.slice(0, -1);
+                        if (justCalculated) {
+                            // If we just calculated, backspace should clear everything
+                            currentInput = '';
+                            justCalculated = false;
+                        } else {
+                            currentInput = currentInput.slice(0, -1);
+                        }
+                        shouldResetOnNextNumber = false;
                         updateLiveCalculation();
                         break;
 
                     case '=':
                         try {
                             if (currentInput) {
-                                                                const finalResult = evaluateExpression(currentInput);
-                                if (finalResult !== 'Error') {
+                                const finalResult = evaluateExpression(currentInput);
+                                if (finalResult !== 'Error' && !isNaN(finalResult) && isFinite(finalResult)) {
                                     calculations.push({
                                         input: currentInput,
                                         result: finalResult
@@ -239,55 +268,105 @@
                                     updateCalculationHistory();
                                     currentInput = finalResult.toString();
                                     result.textContent = finalResult;
+                                    shouldResetOnNextNumber = true;
+                                    lastResult = finalResult;
+                                    justCalculated = true;
                                 } else {
                                     result.textContent = 'Error';
                                     currentInput = '';
+                                    shouldResetOnNextNumber = false;
+                                    justCalculated = false;
                                 }
                             }
                         } catch {
                             result.textContent = 'Error';
                             currentInput = '';
+                            shouldResetOnNextNumber = false;
+                            justCalculated = false;
                         }
                         break;
 
                     case '+/-':
-                        if (currentInput && !isNaN(parseFloat(currentInput))) {
-                            const lastNumber = currentInput.match(/-?\d+\.?\d*$/);
-                            if (lastNumber) {
-                                const num = parseFloat(lastNumber[0]);
-                                const newNum = (-num).toString();
-                                currentInput = currentInput.replace(/-?\d+\.?\d*$/, newNum);
-                                updateLiveCalculation();
+                        if (shouldResetOnNextNumber && lastResult !== null) {
+                            currentInput = (-lastResult).toString();
+                            shouldResetOnNextNumber = false;
+                            justCalculated = false;
+                        } else if (currentInput) {
+                            // Find the last number in the expression
+                            const lastNumberMatch = currentInput.match(/-?\d+\.?\d*$/);
+                            if (lastNumberMatch) {
+                                const lastNumber = lastNumberMatch[0];
+                                const newNumber = (-parseFloat(lastNumber)).toString();
+                                currentInput = currentInput.replace(/-?\d+\.?\d*$/, newNumber);
                             }
                         }
+                        updateLiveCalculation();
                         break;
 
                     case '%':
-                        if (currentInput) {
+                        if (shouldResetOnNextNumber && lastResult !== null) {
+                            const percentResult = lastResult / 100;
+                            currentInput = percentResult.toString();
+                            shouldResetOnNextNumber = false;
+                            justCalculated = false;
+                        } else if (currentInput) {
                             try {
                                 const percentResult = evaluateExpression(currentInput) / 100;
                                 currentInput = percentResult.toString();
-                                updateLiveCalculation();
                             } catch {
                                 result.textContent = 'Error';
+                                break;
                             }
                         }
+                        updateLiveCalculation();
                         break;
 
                     default:
                         if (isOperator(actualValue)) {
-                            if (currentInput && !isOperator(currentInput.slice(-1))) {
+                            justCalculated = false;
+                            // If we should reset but user pressed operator, continue with last result
+                            if (shouldResetOnNextNumber && lastResult !== null) {
+                                currentInput = lastResult.toString() + (actualValue === '×' ? '*' : actualValue);
+                                shouldResetOnNextNumber = false;
+                            } else if (currentInput && !isOperator(currentInput.slice(-1))) {
                                 currentInput += actualValue === '×' ? '*' : actualValue;
-                                updateLiveCalculation();
                             } else if (currentInput && isOperator(currentInput.slice(-1))) {
                                 currentInput = replaceLastOperator(currentInput, actualValue);
-                                updateLiveCalculation();
                             }
+                            updateLiveCalculation();
+                        } else if (isNumber(actualValue) || actualValue === '.') {
+                            // Handle numbers and decimal point
+                            if (shouldResetOnNextNumber && justCalculated) {
+                                // Only reset if we just calculated with equals button
+                                currentInput = actualValue;
+                                shouldResetOnNextNumber = false;
+                                justCalculated = false;
+                            } else {
+                                // Continue building the current number/expression
+                                if (isValidInput(currentInput, actualValue)) {
+                                    currentInput += actualValue;
+                                }
+                                // Reset flags when typing numbers normally
+                                shouldResetOnNextNumber = false;
+                                justCalculated = false;
+                            }
+                            updateLiveCalculation();
                         } else {
-                            if (isValidInput(currentInput, actualValue)) {
-                                currentInput += actualValue;
-                                updateLiveCalculation();
+                            // Handle brackets and other characters
+                            if (shouldResetOnNextNumber && justCalculated) {
+                                if (actualValue === '(') {
+                                    currentInput = actualValue;
+                                    shouldResetOnNextNumber = false;
+                                    justCalculated = false;
+                                }
+                            } else {
+                                if (isValidInput(currentInput, actualValue)) {
+                                    currentInput += actualValue;
+                                }
+                                shouldResetOnNextNumber = false;
+                                justCalculated = false;
                             }
+                            updateLiveCalculation();
                         }
                         break;
                 }
