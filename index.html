@@ -19,7 +19,9 @@
                         'button-grad': 'linear-gradient(145deg, #2c2c2c, #1a1a1a)',
                         'operator-grad': 'linear-gradient(145deg, #3b82f6, #2563eb)',
                         'bracket-grad': 'linear-gradient(145deg, #4a5568, #2d3748)',
-                        'special-grad': 'linear-gradient(145deg, #4c1d95, #2e1065)'
+                        'special-grad': 'linear-gradient(145deg, #4c1d95, #2e1065)',
+                        'history-grad': 'linear-gradient(145deg, #059669, #047857)',
+                        'sqrt-grad': 'linear-gradient(145deg, #dc2626, #b91c1c)'
                     }
                 }
             }
@@ -28,6 +30,33 @@
 </head>
 
 <body class="bg-black m-0 p-0 h-screen w-screen overflow-hidden">
+    <!-- History Modal -->
+    <div id="historyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gradient-to-br from-gray-900 to-black rounded-2xl shadow-neo max-w-md w-full max-h-[80vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-4 border-b border-gray-700">
+                <h2 class="text-white text-xl font-bold font-mono">Calculation History</h2>
+                <button id="closeHistoryBtn" class="text-white hover:text-red-400 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-500/20 transition-all">
+                    ×
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-4 max-h-96 overflow-y-auto">
+                <div id="fullHistoryList" class="space-y-2">
+                    <div class="text-gray-400 text-center font-mono">No calculations yet</div>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-gray-700">
+                <button id="clearHistoryBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-all">
+                    Clear All History
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="h-screen w-full bg-black p-1 sm:p-2 md:p-4 flex flex-col shadow-neo overflow-hidden">
         <!-- Made at RCLD Text -->
         <div class="text-center mb-1 sm:mb-2 flex-shrink-0">
@@ -44,12 +73,6 @@
         <div
             class="flex-1 flex flex-col justify-end mb-2 sm:mb-3 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-1 min-h-0">
             <div class="bg-black rounded-2xl p-2 sm:p-3 md:p-4 relative h-full flex flex-col">
-                <!-- History Section -->
-                <div class="mb-2 sm:mb-3 flex-shrink-0 h-6 sm:h-8 md:h-10 overflow-y-auto">
-                    <div class="font-mono text-sm sm:text-base md:text-lg font-bold text-white/60"
-                        id="calculationHistory"></div>
-                </div>
-
                 <!-- Input Display Section (White Text) -->
                 <div class="relative mb-2 sm:mb-3 flex-shrink-0">
                     <input type="text" id="input"
@@ -71,19 +94,24 @@
             <!-- Main Button Grid -->
             <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 max-w-sm sm:max-w-md md:max-w-lg mx-auto px-2 relative top-[-10px] sm:top-0">
 
-                <!-- First Row: C and ⌫ -->
+                <!-- First Row: C, ⌫, H, % -->
                 <button
-                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-special-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button col-span-2">C</button>
+                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-special-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">C</button>
                 <button
-                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-special-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button col-span-2">⌫</button>
+                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-special-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">⌫</button>
+                <button id="historyBtn"
+                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-history-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">H</button>
+                <button
+                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-operator-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">%</button>
 
-                <!-- Second Row: ( ) % ÷ -->
+                <!-- Second Row: ( ) √ ÷ -->
                 <button
                     class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-bracket-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">(</button>
                 <button
                     class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-bracket-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">)</button>
                 <button
-                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-operator-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">%</button>
+                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-sqrt-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button"
+                    data-value="√">√</button>
                 <button
                     class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-operator-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button flex items-center justify-center"
                     data-value="/">
@@ -129,8 +157,7 @@
                     class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-button-grad text-white rounded-xl text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black transform transition-all hover:scale-105 active:shadow-button">+/-</button>
                 <button
                     class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-button-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">0</button>
-                <button
-                    class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-button-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">.</button>
+                <button                     class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-button-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">.</button>
                 <button
                     class="btn h-16 sm:h-20 md:h-24 lg:h-28 bg-operator-grad text-white rounded-xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black transform transition-all hover:scale-105 active:shadow-button">=</button>
             </div>
@@ -140,19 +167,76 @@
     <script>
         const input = document.getElementById('input');
         const result = document.getElementById('result');
-        const calculationHistory = document.getElementById('calculationHistory');
         const buttons = document.querySelectorAll('.btn');
+        const historyModal = document.getElementById('historyModal');
+        const historyBtn = document.getElementById('historyBtn');
+        const closeHistoryBtn = document.getElementById('closeHistoryBtn');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const fullHistoryList = document.getElementById('fullHistoryList');
+        
         let currentInput = '';
         let calculations = [];
         let shouldResetOnNextNumber = false;
         let lastResult = null;
         let justCalculated = false;
 
-        function updateCalculationHistory() {
-            calculations = calculations.slice(-3);
-            calculationHistory.innerHTML = calculations.map(calc =>
-                `<div class="mb-1 text-right p-1 border-b border-white/10 text-xs">${calc.input} = ${calc.result}</div>`
-            ).join('');
+        // LocalStorage functions
+        function saveCalculationsToStorage() {
+            try {
+                localStorage.setItem('calculatorHistory', JSON.stringify(calculations));
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
+        }
+
+        function loadCalculationsFromStorage() {
+            try {
+                const saved = localStorage.getItem('calculatorHistory');
+                if (saved) {
+                    calculations = JSON.parse(saved);
+                }
+            } catch (error) {
+                console.error('Error loading from localStorage:', error);
+                calculations = [];
+            }
+        }
+
+        function clearCalculationsFromStorage() {
+            try {
+                localStorage.removeItem('calculatorHistory');
+            } catch (error) {
+                console.error('Error clearing localStorage:', error);
+            }
+        }
+
+        // Function to format decimal numbers to maximum 6 decimal places
+        function formatResult(num) {
+            if (typeof num !== 'number' || !isFinite(num)) {
+                return num;
+            }
+            
+            // If it's a whole number, return as is
+            if (num % 1 === 0) {
+                return num;
+            }
+            
+            // For decimal numbers, limit to 6 decimal places and remove trailing zeros
+            const formatted = parseFloat(num.toFixed(6));
+            return formatted;
+        }
+
+        function updateFullHistoryDisplay() {
+            if (calculations.length === 0) {
+                fullHistoryList.innerHTML = '<div class="text-gray-400 text-center font-mono">No calculations yet</div>';
+            } else {
+                fullHistoryList.innerHTML = calculations.map((calc, index) => 
+                    `<div class="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
+                        <div class="text-white font-mono text-sm mb-1">${calc.input}</div>
+                        <div class="text-cyan-400 font-mono text-lg font-bold">= ${calc.result}</div>
+                        <div class="text-gray-500 text-xs mt-1">Calculation ${index + 1}</div>
+                    </div>`
+                ).reverse().join('');
+            }
         }
 
         function isValidInput(current, newValue) {
@@ -172,11 +256,15 @@
 
         function evaluateExpression(expr) {
             try {
+                // Handle square root
+                expr = expr.replace(/√(\d+\.?\d*)/g, 'Math.sqrt($1)');
                 // Handle implicit multiplication like 5(5+6) -> 5*(5+6)
                 expr = expr.replace(/(\d)\(/g, '$1*(');
                 expr = expr.replace(/\)(\d)/g, ')*$1');
                 expr = expr.replace(/×/g, '*');
-                return eval(expr);
+                
+                const rawResult = eval(expr);
+                return formatResult(rawResult);
             } catch (error) {
                 return 'Error';
             }
@@ -186,7 +274,7 @@
             try {
                 if (currentInput && currentInput !== '') {
                     // Only show live calculation if there's an operator and we're not in the middle of typing a number
-                    const hasOperator = /[+\-×/*]/.test(currentInput);
+                    const hasOperator = /[+\-×/*√]/.test(currentInput);
                     const endsWithOperator = /[+\-×/*]$/.test(currentInput);
 
                     if (hasOperator && !endsWithOperator) {
@@ -194,7 +282,6 @@
                         if (tempResult !== 'Error' && !isNaN(tempResult) && isFinite(tempResult)) {
                             result.textContent = tempResult;
                             lastResult = tempResult;
-                            // Only set reset flag if we're showing a live result, not while typing
                             shouldResetOnNextNumber = false;
                         } else {
                             result.textContent = currentInput || '0';
@@ -215,7 +302,7 @@
         }
 
         function isOperator(value) {
-            return ['+', '-', '×', '/', '*'].includes(value);
+            return ['+', '-', '×', '/', '*', '√'].includes(value);
         }
 
         function isNumber(value) {
@@ -231,9 +318,44 @@
             return input;
         }
 
+        // History Modal Event Listeners
+        historyBtn.addEventListener('click', () => {
+            updateFullHistoryDisplay();
+            historyModal.classList.remove('hidden');
+        });
+
+        closeHistoryBtn.addEventListener('click', () => {
+            historyModal.classList.add('hidden');
+        });
+
+        clearHistoryBtn.addEventListener('click', () => {
+            calculations = [];
+            clearCalculationsFromStorage();
+            updateFullHistoryDisplay();
+        });
+
+        // Close modal when clicking outside
+        historyModal.addEventListener('click', (e) => {
+            if (e.target === historyModal) {
+                historyModal.classList.add('hidden');
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !historyModal.classList.contains('hidden')) {
+                historyModal.classList.add('hidden');
+            }
+        });
+
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 let actualValue = button.getAttribute('data-value') || button.textContent.trim();
+
+                // Skip if it's the history button
+                if (button.id === 'historyBtn') {
+                    return;
+                }
 
                 switch (actualValue) {
                     case 'C':
@@ -246,7 +368,6 @@
 
                     case '⌫':
                         if (justCalculated) {
-                            // If we just calculated, backspace should clear everything
                             currentInput = '';
                             justCalculated = false;
                         } else {
@@ -263,9 +384,10 @@
                                 if (finalResult !== 'Error' && !isNaN(finalResult) && isFinite(finalResult)) {
                                     calculations.push({
                                         input: currentInput,
-                                        result: finalResult
+                                        result: finalResult,
+                                        timestamp: new Date().toLocaleString()
                                     });
-                                    updateCalculationHistory();
+                                    saveCalculationsToStorage();
                                     currentInput = finalResult.toString();
                                     result.textContent = finalResult;
                                     shouldResetOnNextNumber = true;
@@ -288,16 +410,16 @@
 
                     case '+/-':
                         if (shouldResetOnNextNumber && lastResult !== null) {
-                            currentInput = (-lastResult).toString();
+                            const negatedResult = formatResult(-lastResult);
+                            currentInput = negatedResult.toString();
                             shouldResetOnNextNumber = false;
                             justCalculated = false;
                         } else if (currentInput) {
-                            // Find the last number in the expression
                             const lastNumberMatch = currentInput.match(/-?\d+\.?\d*$/);
                             if (lastNumberMatch) {
                                 const lastNumber = lastNumberMatch[0];
-                                const newNumber = (-parseFloat(lastNumber)).toString();
-                                currentInput = currentInput.replace(/-?\d+\.?\d*$/, newNumber);
+                                const newNumber = formatResult(-parseFloat(lastNumber));
+                                currentInput = currentInput.replace(/-?\d+\.?\d*$/, newNumber.toString());
                             }
                         }
                         updateLiveCalculation();
@@ -305,13 +427,13 @@
 
                     case '%':
                         if (shouldResetOnNextNumber && lastResult !== null) {
-                            const percentResult = lastResult / 100;
+                            const percentResult = formatResult(lastResult / 100);
                             currentInput = percentResult.toString();
                             shouldResetOnNextNumber = false;
                             justCalculated = false;
                         } else if (currentInput) {
                             try {
-                                const percentResult = evaluateExpression(currentInput) / 100;
+                                const percentResult = formatResult(evaluateExpression(currentInput) / 100);
                                 currentInput = percentResult.toString();
                             } catch {
                                 result.textContent = 'Error';
@@ -321,10 +443,30 @@
                         updateLiveCalculation();
                         break;
 
-                    default:
-                        if (isOperator(actualValue)) {
+                    case '√':
+                        if (shouldResetOnNextNumber && lastResult !== null) {
+                            if (lastResult >= 0) {
+                                const sqrtResult = formatResult(Math.sqrt(lastResult));
+                                currentInput = sqrtResult.toString();
+                                shouldResetOnNextNumber = false;
+                                justCalculated = false;
+                            } else {
+                                result.textContent = 'Error';
+                                currentInput = '';
+                                shouldResetOnNextNumber = false;
+                                justCalculated = false;
+                            }
+                        } else {
+                            currentInput += '√';
+                            shouldResetOnNextNumber = false;
                             justCalculated = false;
-                            // If we should reset but user pressed operator, continue with last result
+                        }
+                        updateLiveCalculation();
+                        break;
+
+                    default:
+                        if (isOperator(actualValue) && actualValue !== '√') {
+                            justCalculated = false;
                             if (shouldResetOnNextNumber && lastResult !== null) {
                                 currentInput = lastResult.toString() + (actualValue === '×' ? '*' : actualValue);
                                 shouldResetOnNextNumber = false;
@@ -335,24 +477,19 @@
                             }
                             updateLiveCalculation();
                         } else if (isNumber(actualValue) || actualValue === '.') {
-                            // Handle numbers and decimal point
                             if (shouldResetOnNextNumber && justCalculated) {
-                                // Only reset if we just calculated with equals button
                                 currentInput = actualValue;
                                 shouldResetOnNextNumber = false;
                                 justCalculated = false;
                             } else {
-                                // Continue building the current number/expression
                                 if (isValidInput(currentInput, actualValue)) {
                                     currentInput += actualValue;
                                 }
-                                // Reset flags when typing numbers normally
                                 shouldResetOnNextNumber = false;
                                 justCalculated = false;
                             }
                             updateLiveCalculation();
                         } else {
-                            // Handle brackets and other characters
                             if (shouldResetOnNextNumber && justCalculated) {
                                 if (actualValue === '(') {
                                     currentInput = actualValue;
@@ -375,7 +512,8 @@
             });
         });
 
-        // Initialize
+        // Initialize - Load saved calculations on page load
+        loadCalculationsFromStorage();
         updateLiveCalculation();
 
         // Prevent scrolling on touch devices
@@ -388,7 +526,7 @@
             e.preventDefault();
         }, { passive: false });
 
-        // Prevent scrolling with keyboard
+        // Prevent scrolling with keyboard (but allow Escape for modal)
         document.addEventListener('keydown', function(e) {
             if(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.code) > -1) {
                 e.preventDefault();
@@ -399,4 +537,4 @@
 
 </html>
 
-
+                    
