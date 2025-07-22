@@ -229,13 +229,15 @@
             if (calculations.length === 0) {
                 fullHistoryList.innerHTML = '<div class="text-gray-400 text-center font-mono">No calculations yet</div>';
             } else {
-                fullHistoryList.innerHTML = calculations.map((calc, index) => 
+                // Show only the last 3 calculations (most recent first)
+                const recentCalculations = calculations.slice(-3).reverse();
+                fullHistoryList.innerHTML = recentCalculations.map((calc, index) => 
                     `<div class="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
                         <div class="text-white font-mono text-sm mb-1">${calc.input}</div>
                         <div class="text-cyan-400 font-mono text-lg font-bold">= ${calc.result}</div>
-                        <div class="text-gray-500 text-xs mt-1">Calculation ${index + 1}</div>
+                        <div class="text-gray-500 text-xs mt-1">Recent calculation ${index + 1}</div>
                     </div>`
-                ).reverse().join('');
+                ).join('');
             }
         }
 
@@ -537,4 +539,4 @@
 
 </html>
 
-                    
+
