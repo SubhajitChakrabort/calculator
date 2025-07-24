@@ -83,7 +83,8 @@
                 <!-- Result Display Section (Cyan Text) -->
                 <div class="relative flex-1 flex items-end justify-end min-h-0">
                     <div id="result"
-                        class="w-full bg-transparent text-cyan-400 text-right text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[12rem] font-black font-mono tracking-wider flex items-end justify-end leading-none relative top-[5px] sm:top-0">
+                        class="w-full bg-transparent text-cyan-400 text-right font-black font-mono tracking-wider flex items-end justify-end leading-none relative top-[5px] sm:top-0"
+                        style="font-size: 6rem; transition: font-size 0.2s;">
                         0</div>
                 </div> 
             </div>
@@ -272,6 +273,23 @@
             }
         }
 
+        // Function to dynamically set result font size based on length
+        function setResultFontSize(value) {
+            const len = value.toString().length;
+            let fontSize = '';
+            if (len <= 7) {
+                fontSize = '6rem'; // default large
+            } else if (len <= 12) {
+                fontSize = '3.5rem'; // medium
+            } else if (len <= 18) {
+                fontSize = '2.5rem'; // small
+            } else {
+                fontSize = '1.5rem'; // extra small
+            }
+            result.style.fontSize = fontSize;
+        }
+
+        // Update updateLiveCalculation to use setResultFontSize
         function updateLiveCalculation() {
             try {
                 if (currentInput && currentInput !== '') {
@@ -283,22 +301,27 @@
                         const tempResult = evaluateExpression(currentInput);
                         if (tempResult !== 'Error' && !isNaN(tempResult) && isFinite(tempResult)) {
                             result.textContent = tempResult;
+                            setResultFontSize(tempResult);
                             lastResult = tempResult;
                             shouldResetOnNextNumber = false;
                         } else {
                             result.textContent = currentInput || '0';
+                            setResultFontSize(currentInput || '0');
                             shouldResetOnNextNumber = false;
                         }
                     } else {
                         result.textContent = currentInput || '0';
+                        setResultFontSize(currentInput || '0');
                         shouldResetOnNextNumber = false;
                     }
                 } else {
                     result.textContent = '0';
+                    setResultFontSize('0');
                     shouldResetOnNextNumber = false;
                 }
             } catch {
                 result.textContent = currentInput || '0';
+                setResultFontSize(currentInput || '0');
                 shouldResetOnNextNumber = false;
             }
         }
@@ -392,11 +415,13 @@
                                     saveCalculationsToStorage();
                                     currentInput = finalResult.toString();
                                     result.textContent = finalResult;
+                                    setResultFontSize(finalResult);
                                     shouldResetOnNextNumber = true;
                                     lastResult = finalResult;
                                     justCalculated = true;
                                 } else {
                                     result.textContent = 'Error';
+                                    setResultFontSize('Error');
                                     currentInput = '';
                                     shouldResetOnNextNumber = false;
                                     justCalculated = false;
@@ -404,6 +429,7 @@
                             }
                         } catch {
                             result.textContent = 'Error';
+                            setResultFontSize('Error');
                             currentInput = '';
                             shouldResetOnNextNumber = false;
                             justCalculated = false;
