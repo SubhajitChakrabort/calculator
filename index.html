@@ -76,7 +76,8 @@
                 <!-- Input Display Section (White Text) -->
                 <div class="relative mb-2 sm:mb-3 flex-shrink-0">
                     <input type="text" id="input"
-                        class="w-full h-8 sm:h-10 md:h-12 bg-transparent text-white text-right text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black font-mono tracking-wider focus:outline-none"
+                        class="w-full h-8 sm:h-10 md:h-12 bg-transparent text-white/80 text-right font-black font-mono tracking-wider focus:outline-none"
+                        style="font-size: 2.5rem; transition: font-size 0.2s;"
                         readonly>
                 </div>
 
@@ -287,6 +288,22 @@
                 fontSize = '1rem'; // extra small
             }
             result.style.fontSize = fontSize;
+        }
+
+        // Function to dynamically set input font size based on length
+        function setInputFontSize(value) {
+            const len = value.toString().length;
+            let fontSize = '';
+            if (len <= 7) {
+                fontSize = '2.5rem'; // default
+            } else if (len <= 12) {
+                fontSize = '1.7rem'; // medium
+            } else if (len <= 18) {
+                fontSize = '1.2rem'; // small
+            } else {
+                fontSize = '0.9rem'; // extra small
+            }
+            input.style.fontSize = fontSize;
         }
 
         // Update updateLiveCalculation to use setResultFontSize
@@ -537,12 +554,14 @@
                 }
 
                 input.value = currentInput;
+                setInputFontSize(currentInput);
             });
         });
 
         // Initialize - Load saved calculations on page load
         loadCalculationsFromStorage();
         updateLiveCalculation();
+        setInputFontSize(currentInput);
 
         // Prevent scrolling on touch devices
         document.addEventListener('touchmove', function(e) {
