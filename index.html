@@ -95,7 +95,7 @@
                 <!-- Result Display Section (Cyan Text) -->
                 <div class="relative flex-1 flex items-end justify-end min-h-0">
                     <div id="result"
-                        class="w-full bg-transparent text-cyan-400 text-right font-black font-mono tracking-wider flex items-end justify-end leading-none relative top-[5px] sm:top-0"
+                        class="w-full bg-transparent text-cyan-400 text-right font-black font-mono tracking-wider flex items-end justify-end leading-none relative top-[-20px] sm:top-[-20px]"
                         style="font-size: 4em; transition: font-size 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         </div>
                 </div> 
@@ -134,7 +134,7 @@
                 <button
                     class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button flex items-center justify-center"
                     data-value="/">
-                    <span class="flex flex-col items-center justify-center leading-none -space-y-3 sm:-space-y-4 md:-space-y-5">
+                    <span class="flex flex-col items-center justify-center leading-none -space-y-4 sm:-space-y-5 md:-space-y-6">
                         <span class="text-xs sm:text-sm md:text-base">•</span>
                         <span class="text-lg sm:text-xl md:text-2xl font-black">—</span>
                         <span class="text-xs sm:text-sm md:text-base">•</span>
@@ -219,9 +219,9 @@
                         formattedNumber += part[i];
                     }
                     formattedParts.push(formattedNumber);
-                } else {
-                    // This is an operator or special character
-                    formattedParts.push(part);
+                } else if (part) {
+                    // This is an operator or special character - make it white
+                    formattedParts.push(`<span style="color: white;">${part}</span>`);
                 }
             }
             
@@ -292,6 +292,35 @@
             return formatted;
         }
 
+        // Function to format result with line breaks every 8 digits
+        function formatResultWithLineBreaks(result) {
+            if (!result || result === '') return '';
+            
+            const resultStr = result.toString();
+            let formattedResult = '';
+            
+            for (let i = 0; i < resultStr.length; i++) {
+                if (i > 0 && i % 8 === 0) {
+                    formattedResult += '<br>';
+                }
+                formattedResult += resultStr[i];
+            }
+            
+            return formattedResult;
+        }
+
+        // Function to format result with white operators
+        function formatResultWithWhiteOperators(result) {
+            if (!result || result === '') return '';
+            
+            const resultStr = result.toString();
+            // Replace operators with white-colored spans
+            let formattedResult = resultStr
+                .replace(/([+\-×/*()√])/g, '<span style="color: white;">$1</span>');
+            
+            return formattedResult;
+        }
+
         function updateFullHistoryDisplay() {
             if (calculations.length === 0) {
                 fullHistoryList.innerHTML = '<div class="text-gray-400 text-center font-mono">No calculations yet</div>';
@@ -337,6 +366,11 @@
             } catch (error) {
                 return 'Error';
             }
+        }
+
+        // Function to update result display with line breaks
+        function updateResultDisplay(value) {
+            result.innerHTML = formatResultWithWhiteOperators(value);
         }
 
         // Function to dynamically set result font size based on length
@@ -391,27 +425,27 @@
                     if (hasOperator && !endsWithOperator) {
                         const tempResult = evaluateExpression(currentInput);
                         if (tempResult !== 'Error' && !isNaN(tempResult) && isFinite(tempResult)) {
-                            result.textContent = tempResult;
+                            updateResultDisplay(tempResult);
                             setResultFontSize(tempResult);
                             lastResult = tempResult;
                             shouldResetOnNextNumber = false;
                         } else {
-                            result.textContent = currentInput || '';
+                            result.innerHTML = formatResultWithWhiteOperators(currentInput || '');
                             setResultFontSize(currentInput || '');
                             shouldResetOnNextNumber = false;
                         }
                     } else {
-                        result.textContent = currentInput || '';
+                        result.innerHTML = formatResultWithWhiteOperators(currentInput || '');
                         setResultFontSize(currentInput || '');
                         shouldResetOnNextNumber = false;
                     }
                 } else {
-                    result.textContent = '';
+                    updateResultDisplay('');
                     setResultFontSize('');
                     shouldResetOnNextNumber = false;
                 }
             } catch {
-                result.textContent = currentInput || '';
+                result.innerHTML = formatResultWithWhiteOperators(currentInput || '');
                 setResultFontSize(currentInput || '');
                 shouldResetOnNextNumber = false;
             }
@@ -515,7 +549,7 @@
                                     saveCalculationsToStorage();
                                     clearInputDisplay(); // Clear the white input text
                                     const formattedResult = formatLargeNumber(finalResult);
-                                    result.textContent = formattedResult;
+                                    result.innerHTML = formatResultWithWhiteOperators(formattedResult);
                                     setResultFontSize(formattedResult);
                                     shouldResetOnNextNumber = true;
                                     lastResult = finalResult;
@@ -547,7 +581,7 @@
                     case '+/-':
                         if (shouldResetOnNextNumber && lastResult !== null) {
                             const negatedResult = formatResult(-lastResult);
-                            currentInput = negatedResult.toString();
+                            currentInput = `(${negatedResult})`;
                             shouldResetOnNextNumber = false;
                             justCalculated = false;
                         } else if (currentInput) {
@@ -555,7 +589,7 @@
                             if (lastNumberMatch) {
                                 const lastNumber = lastNumberMatch[0];
                                 const newNumber = formatResult(-parseFloat(lastNumber));
-                                currentInput = currentInput.replace(/-?\d+\.?\d*$/, newNumber.toString());
+                                currentInput = currentInput.replace(/-?\d+\.?\d*$/, `(${newNumber})`);
                             }
                         }
                         updateLiveCalculation();
