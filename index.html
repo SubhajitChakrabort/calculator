@@ -39,7 +39,7 @@
         
         .calc-button {
             @apply transition-all duration-150 ease-out;
-            min-height: 80px;
+            min-height: 72px; /* Reduced by 10% from 80px */
             aspect-ratio: 1;
             border-radius: 50%;
             font-weight: 400;
@@ -87,13 +87,121 @@
         
         @media (max-width: 640px) {
             .calc-button {
-                min-height: 70px;
+                min-height: 63px; /* Reduced by 10% from 70px */
             }
         }
         
         @media (max-width: 480px) {
             .calc-button {
-                min-height: 65px;
+                min-height: 58.5px; /* Reduced by 10% from 65px */
+            }
+        }
+        
+        /* Additional responsive breakpoint for 375px width */
+        @media (max-width: 375px) {
+            .calc-button {
+                min-height: 52px; /* Further reduced for very small screens */
+            }
+            
+            /* Reduce gap between buttons */
+            .grid.grid-cols-4 {
+                gap: 0.75rem; /* Reduced from 1rem (gap-4) */
+            }
+            
+            /* Reduce padding around calculator */
+            .px-4 {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+            
+            .pb-4 {
+                padding-bottom: 0.75rem;
+            }
+            
+            /* Reduce display padding */
+            .bg-calc-display {
+                padding: 1rem; /* Reduced from 1.5rem (p-6) */
+            }
+            
+            /* Reduce margin below display */
+            .mb-6 {
+                margin-bottom: 1rem; /* Reduced from 1.5rem */
+            }
+        }
+        
+        /* Additional breakpoint for screens smaller than 322px */
+        @media (max-width: 322px) {
+            .calc-button {
+                min-height: 45px; /* Further reduced for very small screens */
+                border-radius: 12px; /* Change to rounded square for better space usage */
+            }
+            
+            /* Reduce gap between buttons even more */
+            .grid.grid-cols-4 {
+                gap: 0.5rem; /* Further reduced gap */
+            }
+            
+            /* Reduce padding around calculator */
+            .px-4 {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .pb-4 {
+                padding-bottom: 0.5rem;
+            }
+            
+            /* Reduce display padding */
+            .bg-calc-display {
+                padding: 0.75rem; /* Further reduced padding */
+            }
+            
+            /* Reduce margin below display */
+            .mb-6 {
+                margin-bottom: 0.75rem; /* Further reduced margin */
+            }
+            
+            /* Reduce font sizes for buttons */
+            .calc-button {
+                font-size: 1rem !important; /* Smaller font size */
+            }
+        }
+        
+        /* Additional breakpoint for very small screens */
+        @media (max-width: 280px) {
+            .calc-button {
+                min-height: 40px; /* Even smaller for very small screens */
+                border-radius: 8px; /* Smaller rounded corners */
+            }
+            
+            /* Reduce gap between buttons even more */
+            .grid.grid-cols-4 {
+                gap: 0.375rem; /* Very small gap */
+            }
+            
+            /* Reduce padding around calculator */
+            .px-4 {
+                padding-left: 0.375rem;
+                padding-right: 0.375rem;
+            }
+            
+            .pb-4 {
+                padding-bottom: 0.375rem;
+            }
+            
+            /* Reduce display padding */
+            .bg-calc-display {
+                padding: 0.5rem; /* Very small padding */
+            }
+            
+            /* Reduce margin below display */
+            .mb-6 {
+                margin-bottom: 0.5rem; /* Very small margin */
+            }
+            
+            /* Reduce font sizes for buttons */
+            .calc-button {
+                font-size: 0.875rem !important; /* Even smaller font size */
             }
         }
     </style>
