@@ -4,23 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RCLD Staging Calculator</title>
+    <title>Professional Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'calc-bg': '#000000',
-                        'calc-display': '#1c1c1e',
-                        'calc-button': '#333333',
-                        'calc-button-light': '#a5a5a5',
-                        'calc-button-orange': '#ff9f0a',
-                        'calc-button-dark': '#1c1c1e'
+                        'calc-bg': '#f5f5f5',
+                        'calc-display': '#2d2d2d',
+                        'calc-button-white': '#ffffff',
+                        'calc-button-yellow': '#ff9500',
+                        'calc-button-gray': '#e0e0e0',
+                        'calc-text-dark': '#333333',
+                        'calc-text-white': '#ffffff',
+                        'calc-border': '#d1d5db'
                     },
                     boxShadow: {
-                        'button': '0 2px 4px rgba(0, 0, 0, 0.3)',
-                        'button-active': 'inset 0 2px 4px rgba(0, 0, 0, 0.5)',
+                        'button': '0 2px 4px rgba(0, 0, 0, 0.1)',
+                        'button-active': 'inset 0 2px 4px rgba(0, 0, 0, 0.2)',
+                        'button-hover': '0 4px 8px rgba(0, 0, 0, 0.15)'
                     }
                 }
             }
@@ -34,193 +37,155 @@
         .cursor-blink::after {
             content: '|';
             animation: blink 1s infinite;
-            color: #06b6d4;
+            color: #ff9500;
         }
         
         .calc-button {
             @apply transition-all duration-150 ease-out;
-            min-height: 17px; /* Reduced by 50% from 34px */
             aspect-ratio: 1;
-            border-radius: 50%;
-            font-weight: 400;
-            letter-spacing: -0.5px;
+            border-radius: 0;
+            font-weight: 500;
+            border: 1px solid #d1d5db;
+            position: relative;
+            overflow: hidden;
         }
         
         .calc-button:active {
-            transform: scale(0.95);
+            transform: scale(0.98);
+        }
+        
+        .calc-button:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .calc-button-white {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            color: #333333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calc-button-white:active {
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .calc-button-yellow {
+            background: linear-gradient(145deg, #ff9500, #ff8c00);
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calc-button-yellow:active {
+            background: linear-gradient(145deg, #ff8c00, #ff9500);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .calc-button-yellow.selected {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            color: #ff9500;
         }
         
         .calc-button-gray {
-            background: linear-gradient(145deg, #333333, #2a2a2a);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(145deg, #e0e0e0, #d5d5d5);
+            color: #333333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .calc-button-gray:active {
-            background: linear-gradient(145deg, #2a2a2a, #333333);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(145deg, #d5d5d5, #e0e0e0);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
-        .calc-button-light {
-            background: linear-gradient(145deg, #a5a5a5, #8a8a8a);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .calc-button-light:active {
-            background: linear-gradient(145deg, #8a8a8a, #a5a5a5);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        
-        .calc-button-orange {
-            background: linear-gradient(145deg, #ff9f0a, #e68a00);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .calc-button-orange:active {
-            background: linear-gradient(145deg, #e68a00, #ff9f0a);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        
-        .calc-button-orange.selected {
-            background: linear-gradient(145deg, #ffffff, #f0f0f0);
-            color: #ff9f0a;
-        }
-        
+        /* Mobile Responsive Design */
         @media (max-width: 640px) {
             .calc-button {
-                min-height: 15px; /* Reduced by 50% from 29px */
+                font-size: 1.25rem;
+            }
+            
+            .grid-cols-4 {
+                gap: 0.5rem;
             }
         }
         
         @media (max-width: 480px) {
             .calc-button {
-                min-height: 14px; /* Reduced by 50% from 27px */
+                font-size: 1.125rem;
+            }
+            
+            .grid-cols-4 {
+                gap: 0.375rem;
             }
         }
         
-        /* Additional responsive breakpoint for 375px width */
         @media (max-width: 375px) {
             .calc-button {
-                min-height: 11px; /* Reduced by 50% from 22px */
+                font-size: 1rem;
             }
             
-            /* Reduce gap between buttons */
-            .grid.grid-cols-4 {
-                gap: 0.0625rem; /* Reduced from 0.125rem */
-            }
-            
-            /* Reduce padding around calculator */
-            .px-4 {
-                padding-left: 0.0625rem;
-                padding-right: 0.0625rem;
-            }
-            
-            .pb-4 {
-                padding-bottom: 0.0625rem;
-            }
-            
-            /* Reduce display padding */
-            .bg-calc-display {
-                padding: 0.125rem; /* Reduced from 0.25rem */
-            }
-            
-            /* Reduce margin below display */
-            .mb-6 {
-                margin-bottom: 0.125rem; /* Reduced from 0.25rem */
-            }
-            
-            /* Move buttons up with relative positioning */
-            .flex-shrink-0.pb-4 {
-                position: relative;
-                top: -2rem;
+            .grid-cols-4 {
+                gap: 0.25rem;
             }
         }
         
-        /* Additional breakpoint for screens smaller than 322px */
-        @media (max-width: 322px) {
+        @media (max-width: 320px) {
             .calc-button {
-                min-height: 10px; /* Reduced by 50% from 19px */
-                border-radius: 2px; /* Smaller rounded corners */
+                font-size: 0.875rem;
             }
             
-            /* Reduce gap between buttons even more */
-            .grid.grid-cols-4 {
-                gap: 0.03125rem; /* Further reduced gap */
-            }
-            
-            /* Reduce padding around calculator */
-            .px-4 {
-                padding-left: 0.03125rem;
-                padding-right: 0.03125rem;
-            }
-            
-            .pb-4 {
-                padding-bottom: 0.03125rem;
-            }
-            
-            /* Reduce display padding */
-            .bg-calc-display {
-                padding: 0.0625rem; /* Further reduced padding */
-            }
-            
-            /* Reduce margin below display */
-            .mb-6 {
-                margin-bottom: 0.0625rem; /* Further reduced margin */
-            }
-            
-            /* Reduce font sizes for buttons */
-            .calc-button {
-                font-size: 0.25rem !important; /* Smaller font size */
-            }
-            
-            /* Move buttons up more with relative positioning */
-            .flex-shrink-0.pb-4 {
-                position: relative;
-                top: -2.5rem;
+            .grid-cols-4 {
+                gap: 0.125rem;
             }
         }
         
-        /* Additional breakpoint for very small screens */
-        @media (max-width: 280px) {
-            .calc-button {
-                min-height: 9px; /* Reduced by 50% from 17px */
-                border-radius: 1px; /* Smaller rounded corners */
-            }
-            
-            /* Reduce gap between buttons even more */
-            .grid.grid-cols-4 {
-                gap: 0.015625rem; /* Very small gap */
-            }
-            
-            /* Reduce padding around calculator */
-            .px-4 {
-                padding-left: 0.015625rem;
-                padding-right: 0.015625rem;
-            }
-            
-            .pb-4 {
-                padding-bottom: 0.015625rem;
-            }
-            
-            /* Reduce display padding */
-            .bg-calc-display {
-                padding: 0.03125rem; /* Very small padding */
-            }
-            
-            /* Reduce margin below display */
-            .mb-6 {
-                margin-bottom: 0.03125rem; /* Very small margin */
-            }
-            
-            /* Reduce font sizes for buttons */
-            .calc-button {
-                font-size: 0.1875rem !important; /* Even smaller font size */
-            }
-            
-            /* Move buttons up even more with relative positioning */
-            .flex-shrink-0.pb-4 {
-                position: relative;
-                top: -3rem;
-            }
+        /* Special button styles for specific buttons */
+        .btn-clear {
+            background: linear-gradient(145deg, #ff9500, #ff8c00);
+            color: #ffffff;
+        }
+        
+        .btn-backspace {
+            background: linear-gradient(145deg, #ff9500, #ff8c00);
+            color: #ffffff;
+        }
+        
+        .btn-percent {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            color: #333333;
+        }
+        
+        .btn-parentheses {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            color: #333333;
+        }
+        
+        .btn-sqrt {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            color: #333333;
+        }
+        
+        .btn-operator {
+            background: linear-gradient(145deg, #ff9500, #ff8c00);
+            color: #ffffff;
+        }
+        
+        .btn-number {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            color: #333333;
+        }
+        
+        .btn-equals {
+            background: linear-gradient(145deg, #ff9500, #ff8c00);
+            color: #ffffff;
+        }
+        
+        .btn-decimal {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            color: #333333;
+        }
+        
+        .btn-plus-minus {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            color: #333333;
         }
     </style>
 </head>
@@ -228,11 +193,11 @@
 <body class="bg-calc-bg m-0 p-0 h-screen w-screen overflow-hidden">
     <!-- History Modal -->
     <div id="historyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-calc-display rounded-3xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[80vh] overflow-hidden">
             <!-- Modal Header -->
-            <div class="flex justify-between items-center p-6 border-b border-gray-700">
-                <h2 class="text-white text-xl font-semibold">Calculation History</h2>
-                <button id="closeHistoryBtn" class="text-white hover:text-red-400 text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-500/20 transition-all">
+            <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                <h2 class="text-gray-800 text-xl font-semibold">Calculation History</h2>
+                <button id="closeHistoryBtn" class="text-gray-600 hover:text-red-500 text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-50 transition-all">
                     ×
                 </button>
             </div>
@@ -245,8 +210,8 @@
             </div>
             
             <!-- Modal Footer -->
-            <div class="p-6 border-t border-gray-700">
-                <button id="clearHistoryBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all">
+            <div class="p-6 border-t border-gray-200">
+                <button id="clearHistoryBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-all">
                     Clear All History
                 </button>
             </div>
@@ -254,14 +219,14 @@
     </div>
 
     <div class="h-screen w-full bg-calc-bg flex flex-col">
-        <!-- Made at RCLD Text -->
+        <!-- Header -->
         <div class="text-center pt-4 pb-2 flex-shrink-0">
-            <h1 class="text-white/60 text-sm font-medium tracking-wide">Made at RCLD Islampur</h1>
+            <h1 class="text-gray-600 text-sm font-medium tracking-wide">Professional Calculator</h1>
         </div>
 
         <!-- Display Screen -->
         <div class="flex-1 flex flex-col justify-end px-4 pb-4">
-            <div class="bg-calc-display rounded-3xl p-6 mb-6">
+            <div class="bg-calc-display rounded-2xl p-6 mb-6 shadow-lg">
                 <!-- Input Display Section (White Text) -->
                 <div class="relative mb-4 flex-shrink-0">
                     <div id="inputDisplay"
@@ -281,74 +246,44 @@
 
             <!-- Calculator Buttons Container -->
             <div class="flex-shrink-0 pb-4">
-                <!-- Main Button Grid -->
-                <div class="grid grid-cols-4 gap-4 w-full max-w-sm mx-auto">
+                <!-- Main Button Grid - 6 rows with 4 buttons each -->
+                <div class="grid grid-cols-4 gap-2 w-full max-w-sm mx-auto">
 
-                    <!-- First Row: ⋯, ⌫, AC, % -->
-                    <button id="historyBtn"
-                        class="calc-button calc-button-light text-black text-2xl font-medium">
-                        ⋯
-                    </button>
-                    <button
-                        class="calc-button calc-button-light text-black text-2xl font-medium">⌫</button>
-                    <button
-                        class="calc-button calc-button-light text-black text-2xl font-medium">AC</button>
-                    <button
-                        class="calc-button calc-button-orange text-white text-2xl font-medium">%</button>
+                    <!-- Row 1: % ( ) C ⌫ -->
+                    <button class="calc-button btn-percent text-xl font-medium">%</button>
+                    <button class="calc-button btn-parentheses text-xl font-medium">(</button>
+                    <button class="calc-button btn-parentheses text-xl font-medium">)</button>
+                    <button class="calc-button btn-clear text-xl font-medium">AC</button>
 
-                    <!-- Second Row: ( ) √ ÷ -->
-                    <button
-                        class="calc-button calc-button-light text-black text-2xl font-medium">(</button>
-                    <button
-                        class="calc-button calc-button-light text-black text-2xl font-medium">)</button>
-                    <button
-                        class="calc-button calc-button-light text-black text-2xl font-medium"
-                        data-value="√">√</button>
-                    <button
-                        class="calc-button calc-button-orange text-white text-3xl font-medium flex items-center justify-center"
-                        data-value="/">
-                        <span class="text-3xl">÷</span>
-                    </button>
+                    <!-- Row 2: 7 8 9 ÷ -->
+                    <button class="calc-button btn-number text-xl font-medium">7</button>
+                    <button class="calc-button btn-number text-xl font-medium">8</button>
+                    <button class="calc-button btn-number text-xl font-medium">9</button>
+                    <button class="calc-button btn-operator text-xl font-medium">÷</button>
 
-                    <!-- Third Row: 7 8 9 × -->
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">7</button>
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">8</button>
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">9</button>
-                    <button
-                        class="calc-button calc-button-orange text-white text-3xl font-medium">×</button>
+                    <!-- Row 3: 4 5 6 × -->
+                    <button class="calc-button btn-number text-xl font-medium">4</button>
+                    <button class="calc-button btn-number text-xl font-medium">5</button>
+                    <button class="calc-button btn-number text-xl font-medium">6</button>
+                    <button class="calc-button btn-operator text-xl font-medium">×</button>
 
-                    <!-- Fourth Row: 4 5 6 - -->
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">4</button>
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">5</button>
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">6</button>
-                    <button
-                        class="calc-button calc-button-orange text-white text-3xl font-medium">−</button>
+                    <!-- Row 4: 1 2 3 - -->
+                    <button class="calc-button btn-number text-xl font-medium">1</button>
+                    <button class="calc-button btn-number text-xl font-medium">2</button>
+                    <button class="calc-button btn-number text-xl font-medium">3</button>
+                    <button class="calc-button btn-operator text-xl font-medium">−</button>
 
-                    <!-- Fifth Row: 1 2 3 + -->
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">1</button>
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">2</button>
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">3</button>
-                    <button
-                        class="calc-button calc-button-orange text-white text-3xl font-medium">+</button>
+                    <!-- Row 5: 0 . = + -->
+                    <button class="calc-button btn-number text-xl font-medium">0</button>
+                    <button class="calc-button btn-decimal text-xl font-medium">.</button>
+                    <button class="calc-button btn-equals text-xl font-medium">=</button>
+                    <button class="calc-button btn-operator text-xl font-medium">+</button>
 
-                    <!-- Sixth Row: +/- 0 . = -->
-                    <button
-                        class="calc-button calc-button-gray text-white text-xl font-medium">+/-</button>
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">0</button>
-                    <button
-                        class="calc-button calc-button-gray text-white text-2xl font-medium">.</button>
-                    <button
-                        class="calc-button calc-button-orange text-white text-3xl font-medium">=</button>
+                    <!-- Row 6: +/- ⌫ √ % (additional row for more functions) -->
+                    <button class="calc-button btn-plus-minus text-lg font-medium">+/-</button>
+                    <button class="calc-button btn-backspace text-xl font-medium">⌫</button>
+                    <button class="calc-button btn-sqrt text-xl font-medium">√</button>
+                    <button id="historyBtn" class="calc-button btn-percent text-xl font-medium">⋯</button>
                 </div>
             </div>
         </div>
@@ -499,10 +434,10 @@
                 // Show only the last 3 calculations (most recent first)
                 const recentCalculations = calculations.slice(-3).reverse();
                 fullHistoryList.innerHTML = recentCalculations.map((calc, index) => 
-                    `<div class="bg-gray-800/50 rounded-2xl p-4 border border-gray-700">
-                        <div class="text-white font-light text-sm mb-2">${calc.input}</div>
-                        <div class="text-white font-semibold text-lg">= ${calc.result}</div>
-                        <div class="text-gray-500 text-xs mt-2">Recent calculation ${index + 1}</div>
+                    `<div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                        <div class="text-gray-600 font-light text-sm mb-2">${calc.input}</div>
+                        <div class="text-gray-800 font-semibold text-lg">= ${calc.result}</div>
+                        <div class="text-gray-400 text-xs mt-2">Recent calculation ${index + 1}</div>
                     </div>`
                 ).join('');
             }
@@ -549,13 +484,13 @@
             const len = value.toString().length;
             let fontSize = '';
             if (len <= 7) {
-                fontSize = '2.5rem'; // reduced from 3.5rem (about 0.7x)
+                fontSize = '2.5rem';
             } else if (len <= 12) {
-                fontSize = '1.8rem'; // reduced from 2.5rem (about 0.7x)
+                fontSize = '1.8rem';
             } else if (len <= 18) {
-                fontSize = '1.3rem'; // reduced from 1.8rem (about 0.7x)
+                fontSize = '1.3rem';
             } else {
-                fontSize = '0.9rem'; // reduced from 1.2rem (about 0.75x)
+                fontSize = '0.9rem';
             }
             result.style.fontSize = fontSize;
         }
@@ -565,13 +500,13 @@
             const len = value.toString().length;
             let fontSize = '';
             if (len <= 7) {
-                fontSize = '2.5rem'; // same as result display
+                fontSize = '2.5rem';
             } else if (len <= 12) {
-                fontSize = '1.8rem'; // same as result display
+                fontSize = '1.8rem';
             } else if (len <= 18) {
-                fontSize = '1.3rem'; // same as result display
+                fontSize = '1.3rem';
             } else {
-                fontSize = '0.9rem'; // same as result display
+                fontSize = '0.9rem';
             }
             inputDisplay.style.fontSize = fontSize;
         }
@@ -680,10 +615,10 @@
                 }
 
                 switch (actualValue) {
-                    case 'AC':
+                    case 'C':
                         currentInput = '';
                         result.textContent = '';
-                        clearInputDisplay(); // Clear the white input text
+                        clearInputDisplay();
                         shouldResetOnNextNumber = false;
                         lastResult = null;
                         justCalculated = false;
@@ -695,7 +630,7 @@
                         if (justCalculated) {
                             currentInput = '';
                             justCalculated = false;
-                            clearInputDisplay(); // Clear the white input text
+                            clearInputDisplay();
                         } else {
                             currentInput = currentInput.slice(0, -1);
                         }
@@ -703,7 +638,7 @@
                         isCalculating = false;
                         setCursorBlinking(true);
                         updateLiveCalculation();
-                        updateInputDisplay(); // Update input display
+                        updateInputDisplay();
                         break;
 
                     case '=':
@@ -719,7 +654,7 @@
                                         timestamp: new Date().toLocaleString()
                                     });
                                     saveCalculationsToStorage();
-                                    clearInputDisplay(); // Clear the white input text
+                                    clearInputDisplay();
                                     const formattedResult = formatLargeNumber(finalResult);
                                     result.innerHTML = formatResultWithWhiteOperators(formattedResult);
                                     setResultFontSize(formattedResult);
@@ -727,7 +662,7 @@
                                     lastResult = finalResult;
                                     justCalculated = true;
                                 } else {
-                                    clearInputDisplay(); // Clear the white input text
+                                    clearInputDisplay();
                                     result.textContent = 'Error';
                                     setResultFontSize('Error');
                                     currentInput = '';
@@ -738,7 +673,7 @@
                                 }
                             }
                         } catch {
-                            clearInputDisplay(); // Clear the white input text
+                            clearInputDisplay();
                             result.textContent = 'Error';
                             setResultFontSize('Error');
                             currentInput = '';
@@ -765,7 +700,7 @@
                             }
                         }
                         updateLiveCalculation();
-                        updateInputDisplay(); // Update input display
+                        updateInputDisplay();
                         break;
 
                     case '%':
@@ -784,7 +719,7 @@
                             }
                         }
                         updateLiveCalculation();
-                        updateInputDisplay(); // Update input display
+                        updateInputDisplay();
                         break;
 
                     case '√':
@@ -806,7 +741,7 @@
                             justCalculated = false;
                         }
                         updateLiveCalculation();
-                        updateInputDisplay(); // Update input display
+                        updateInputDisplay();
                         break;
 
                     default:
@@ -825,13 +760,12 @@
                             updateLiveCalculation();
                         } else if (isNumber(actualValue) || actualValue === '.') {
                             if (shouldResetOnNextNumber || justCalculated) {
-                                // Start a new calculation with the new number
                                 currentInput = actualValue;
                                 shouldResetOnNextNumber = false;
                                 justCalculated = false;
                                 isCalculating = true;
                                 setCursorBlinking(false);
-                                clearInputDisplay(); // Clear the white input text
+                                clearInputDisplay();
                             } else {
                                 if (isValidInput(currentInput, actualValue)) {
                                     currentInput += actualValue;
@@ -852,7 +786,7 @@
                                     justCalculated = false;
                                     isCalculating = true;
                                     setCursorBlinking(false);
-                                    clearInputDisplay(); // Clear the white input text
+                                    clearInputDisplay();
                                 }
                             } else {
                                 if (isValidInput(currentInput, actualValue)) {
@@ -867,7 +801,7 @@
                             }
                             updateLiveCalculation();
                         }
-                        updateInputDisplay(); // Update input display
+                        updateInputDisplay();
                         break;
                 }
 
@@ -880,7 +814,7 @@
         updateLiveCalculation();
         setInputFontSize(currentInput);
         setCursorBlinking(true);
-        clearInputDisplay(); // Clear the white input text on page load
+        clearInputDisplay();
 
         // Prevent scrolling on touch devices
         document.addEventListener('touchmove', function(e) {
