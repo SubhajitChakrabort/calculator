@@ -506,8 +506,12 @@
         }
 
         // Function to update result display with line breaks
-        function updateResultDisplay(value) {
-            result.innerHTML = formatResultWithWhiteOperators(value);
+        function updateResultDisplay(value, isLiveCalculation = false) {
+            if (isLiveCalculation && value !== '') {
+                result.innerHTML = `= ${formatResultWithWhiteOperators(value)}`;
+            } else {
+                result.innerHTML = formatResultWithWhiteOperators(value);
+            }
         }
 
         // Function to dynamically set result font size based on length
@@ -550,7 +554,7 @@
                     if (hasOperator && !endsWithOperator) {
                         const tempResult = evaluateExpression(currentInput);
                         if (tempResult !== 'Error' && !isNaN(tempResult) && isFinite(tempResult)) {
-                            updateResultDisplay(tempResult);
+                            updateResultDisplay(tempResult, true); // Live calculation with = sign
                             setResultFontSize(tempResult);
                             lastResult = tempResult;
                             shouldResetOnNextNumber = false;
@@ -693,7 +697,7 @@
                                     });
                                     saveCalculationsToStorage();
                                     const formattedResult = formatLargeNumber(finalResult);
-                                    result.innerHTML = formatResultWithWhiteOperators(formattedResult);
+                                    updateResultDisplay(formattedResult, false); // Final result without = sign
                                     setResultFontSize(formattedResult);
                                     shouldResetOnNextNumber = true;
                                     lastResult = finalResult;
