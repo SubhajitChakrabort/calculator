@@ -10,18 +10,17 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    boxShadow: {
-                        'neo': '10px 10px 30px #1a1a1a, -10px -10px 30px #262626',
-                        'button': 'inset 4px 4px 8px rgba(0, 0, 0, 0.5)',
+                    colors: {
+                        'calc-bg': '#000000',
+                        'display-bg': '#000000',
+                        'button-orange': '#FF9500',
+                        'button-gray': '#333333',
+                        'button-light-gray': '#A5A5A5',
+                        'button-dark-gray': '#1C1C1C'
                     },
-                    backgroundImage: {
-                        'screen-glare': 'linear-gradient(145deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%)',
-                        'button-grad': 'linear-gradient(145deg, #2c2c2c, #1a1a1a)',
-                        'operator-grad': 'linear-gradient(145deg, #3b82f6, #2563eb)',
-                        'bracket-grad': 'linear-gradient(145deg, #4a5568, #2d3748)',
-                        'special-grad': 'linear-gradient(145deg, #4c1d95, #2e1065)',
-                        'history-grad': 'linear-gradient(145deg, #059669, #047857)',
-                        'sqrt-grad': 'linear-gradient(145deg, #dc2626, #b91c1c)'
+                    boxShadow: {
+                        'button-press': 'inset 0 2px 4px rgba(0, 0, 0, 0.3)',
+                        'button-hover': '0 4px 8px rgba(0, 0, 0, 0.3)'
                     }
                 }
             }
@@ -35,158 +34,234 @@
         .cursor-blink::after {
             content: '|';
             animation: blink 1s infinite;
-            color: #06b6d4;
+            color: #FF9500;
+        }
+
+        /* Custom scrollbar for history modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1C1C1C;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #FF9500;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #FF8000;
+        }
+
+        /* Button press animation */
+        .btn-press {
+            transform: scale(0.95);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Smooth transitions */
+        .smooth-transition {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Display text gradient */
+        .display-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #E5E5E5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Button hover effects */
+        .calc-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .calc-button:active {
+            transform: scale(0.95);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsive font sizes */
+        @media (max-width: 480px) {
+            .display-text {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+            .button-text {
+                font-size: clamp(1.5rem, 6vw, 2rem);
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .display-text {
+                font-size: clamp(2.5rem, 6vw, 3.5rem);
+            }
+            .button-text {
+                font-size: clamp(1.8rem, 4vw, 2.2rem);
+            }
+        }
+
+        @media (min-width: 769px) {
+            .display-text {
+                font-size: clamp(3rem, 4vw, 4rem);
+            }
+            .button-text {
+                font-size: clamp(2rem, 3vw, 2.5rem);
+            }
         }
     </style>
 </head>
 
-<body class="bg-black m-0 p-0 h-screen w-screen overflow-hidden">
+<body class="bg-calc-bg m-0 p-0 h-screen w-screen overflow-hidden font-sans">
     <!-- History Modal -->
-    <div id="historyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-gradient-to-br from-gray-900 to-black rounded-2xl shadow-neo max-w-md w-full max-h-[80vh] overflow-hidden">
+    <div id="historyModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-calc-bg rounded-3xl shadow-2xl max-w-md w-full max-h-[85vh] overflow-hidden border border-gray-800">
             <!-- Modal Header -->
-            <div class="flex justify-between items-center p-4 border-b border-gray-700">
-                <h2 class="text-white text-xl font-bold font-mono">Calculation History</h2>
-                <button id="closeHistoryBtn" class="text-white hover:text-red-400 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-500/20 transition-all">
+            <div class="flex justify-between items-center p-6 border-b border-gray-800">
+                <h2 class="text-white text-xl font-semibold">History</h2>
+                <button id="closeHistoryBtn" class="text-white hover:text-red-400 text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-500/20 transition-all">
                     ×
                 </button>
             </div>
             
             <!-- Modal Body -->
-            <div class="p-4 max-h-96 overflow-y-auto">
-                <div id="fullHistoryList" class="space-y-2">
-                    <div class="text-gray-400 text-center font-mono">No calculations yet</div>
+            <div class="p-6 max-h-96 overflow-y-auto custom-scrollbar">
+                <div id="fullHistoryList" class="space-y-3">
+                    <div class="text-gray-400 text-center">No calculations yet</div>
                 </div>
             </div>
             
             <!-- Modal Footer -->
-            <div class="p-4 border-t border-gray-700">
-                <button id="clearHistoryBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-all">
-                    Clear All History
+            <div class="p-6 border-t border-gray-800">
+                <button id="clearHistoryBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-2xl transition-all">
+                    Clear History
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="h-screen w-full bg-black p-1 sm:p-2 md:p-4 flex flex-col shadow-neo overflow-hidden">
+    <div class="h-screen w-full bg-calc-bg flex flex-col">
+        <!-- Status Bar Area (for mobile) -->
+        <div class="flex-shrink-0 h-6 sm:h-8 md:h-10"></div>
+
         <!-- Made at RCLD Text -->
-        <div class="text-center mb-1 sm:mb-2 flex-shrink-0">
-            <h1 class="text-white/70 text-base sm:text-lg md:text-xl lg:text-2xl font-mono font-black tracking-wider">Made at RCLD Islampur
+        <div class="text-center mb-2 sm:mb-4 flex-shrink-0">
+            <h1 class="text-white/60 text-sm sm:text-base md:text-lg font-medium tracking-wide">
+                Made at RCLD Islampur
             </h1>
         </div>
 
-        <!-- Top Bar -->
-        <div
-            class="w-16 md:w-24 h-1 md:h-1.5 bg-gradient-to-r from-transparent via-gray-500 to-transparent rounded-full mx-auto mb-1 sm:mb-2 flex-shrink-0">
-        </div>
-
         <!-- Display Screen -->
-        <div
-            class="flex-1 flex flex-col justify-end mb-2 sm:mb-3 rounded-2xl bg-gradient-to-br from-white/5 to-white/2 p-1 min-h-0">
-            <div class="bg-black rounded-2xl p-2 sm:p-3 md:p-4 relative h-full flex flex-col">
-                <!-- Input Display Section (White Text) -->
-                <div class="relative mb-2 sm:mb-3 flex-shrink-0">
+        <div class="flex-1 flex flex-col justify-end px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 min-h-0">
+            <div class="bg-display-bg rounded-3xl p-4 sm:p-6 md:p-8 relative h-full flex flex-col">
+                <!-- Input Display Section -->
+                <div class="relative mb-2 sm:mb-4 flex-shrink-0">
                     <div id="inputDisplay"
-                        class="w-full min-h-8 sm:min-h-10 md:min-h-12 bg-transparent text-white/80 text-right font-black font-mono tracking-wider leading-tight"
-                        style="font-size: 2.5rem; transition: font-size 0.2s; margin-top: 8px;">
+                        class="w-full min-h-8 sm:min-h-12 md:min-h-16 bg-transparent text-white/70 text-right font-light display-text leading-tight"
+                        style="transition: font-size 0.2s;">
                     </div>
                 </div>
 
-                <!-- Result Display Section (Cyan Text) -->
+                <!-- Result Display Section -->
                 <div class="relative flex-1 flex items-end justify-end min-h-0">
                     <div id="result"
-                        class="w-full bg-transparent text-cyan-400 text-right font-black font-mono tracking-wider flex items-end justify-end leading-none relative top-[-50px] sm:top-[-50px]"
-                        style="font-size: 4em; transition: font-size 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        </div>
+                        class="w-full bg-transparent text-white text-right font-light display-text flex items-end justify-end leading-none"
+                        style="transition: font-size 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    </div>
                 </div> 
             </div>
         </div>
 
         <!-- Calculator Buttons Container -->
-        <div class="flex-shrink-0 pb-1 sm:pb-2">
+        <div class="flex-shrink-0 px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8">
             <!-- Main Button Grid -->
-            <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 w-full max-w-lg mx-auto px-4 sm:px-6 md:px-8 relative top-[-10px] sm:top-0">
+            <div class="grid grid-cols-4 gap-3 sm:gap-4 md:gap-5 w-full max-w-md mx-auto">
 
                 <!-- First Row: ⋯, ⌫, AC, % -->
                 <button id="historyBtn"
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-history-grad text-white rounded-full text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black transform transition-all hover:scale-105 active:shadow-button flex items-center justify-center">
-                    <span class="flex flex-col items-center justify-center leading-none -space-y-3 sm:-space-y-4 md:-space-y-5">
-                        <span class="text-sm sm:text-base md:text-lg">•</span>
-                        <span class="text-sm sm:text-base md:text-lg">•</span>
-                        <span class="text-sm sm:text-base md:text-lg">•</span>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-gray text-white rounded-full button-text font-medium smooth-transition flex items-center justify-center">
+                    <span class="flex flex-col items-center justify-center leading-none space-y-1">
+                        <span class="text-xs sm:text-sm">•</span>
+                        <span class="text-xs sm:text-sm">•</span>
+                        <span class="text-xs sm:text-sm">•</span>
                     </span>
                 </button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-special-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">⌫</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-gray text-white rounded-full button-text font-medium smooth-transition">⌫</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-special-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">AC</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-gray text-white rounded-full button-text font-medium smooth-transition">AC</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">%</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-orange text-white rounded-full button-text font-medium smooth-transition">%</button>
 
                 <!-- Second Row: ( ) √ ÷ -->
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-bracket-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">(</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-gray text-white rounded-full button-text font-medium smooth-transition">(</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-bracket-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">)</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-gray text-white rounded-full button-text font-medium smooth-transition">)</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-sqrt-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button"
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-gray text-white rounded-full button-text font-medium smooth-transition"
                     data-value="√">√</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button flex items-center justify-center"
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-orange text-white rounded-full button-text font-medium smooth-transition flex items-center justify-center"
                     data-value="/">
-                    <span class="flex flex-col items-center justify-center leading-none -space-y-4 sm:-space-y-5 md:-space-y-6">
-                        <span class="text-xs sm:text-sm md:text-base">•</span>
-                        <span class="text-lg sm:text-xl md:text-2xl font-black">—</span>
-                        <span class="text-xs sm:text-sm md:text-base">•</span>
+                    <span class="flex flex-col items-center justify-center leading-none">
+                        <span class="text-xs sm:text-sm">•</span>
+                        <span class="text-base sm:text-lg font-bold">—</span>
+                        <span class="text-xs sm:text-sm">•</span>
                     </span>
                 </button>
 
                 <!-- Third Row: 7 8 9 × -->
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">7</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">7</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">8</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">8</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">9</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">9</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">×</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-orange text-white rounded-full button-text font-medium smooth-transition">×</button>
 
                 <!-- Fourth Row: 4 5 6 - -->
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">4</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">4</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">5</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">5</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">6</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">6</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button leading-none">-</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-orange text-white rounded-full button-text font-medium smooth-transition">-</button>
 
                 <!-- Fifth Row: 1 2 3 + -->
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">1</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">1</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">2</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">2</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">3</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">3</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">+</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-orange text-white rounded-full button-text font-medium smooth-transition">+</button>
 
                 <!-- Sixth Row: +/- 0 . = -->
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-sm sm:text-base md:text-lg lg:text-xl font-black transform transition-all hover:scale-105 active:shadow-button">+/-</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full text-sm sm:text-base md:text-lg font-medium smooth-transition">+/-</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">0</button>
-                <button                     class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-button-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">.</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">0</button>
                 <button
-                    class="btn h-12 sm:h-14 md:h-16 lg:h-18 bg-operator-grad text-white rounded-full text-lg sm:text-xl md:text-2xl lg:text-3xl font-black transform transition-all hover:scale-105 active:shadow-button">=</button>
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-dark-gray text-white rounded-full button-text font-medium smooth-transition">.</button>
+                <button
+                    class="calc-button h-16 sm:h-18 md:h-20 bg-button-orange text-white rounded-full button-text font-medium smooth-transition">=</button>
             </div>
         </div>
+
+        <!-- Bottom Safe Area (for mobile) -->
+        <div class="flex-shrink-0 h-2 sm:h-4 md:h-6"></div>
     </div>
 
     <script>
         const inputDisplay = document.getElementById('inputDisplay');
         const result = document.getElementById('result');
-        const buttons = document.querySelectorAll('.btn');
+        const buttons = document.querySelectorAll('.calc-button');
         const historyModal = document.getElementById('historyModal');
         const historyBtn = document.getElementById('historyBtn');
         const closeHistoryBtn = document.getElementById('closeHistoryBtn');
@@ -323,15 +398,15 @@
 
         function updateFullHistoryDisplay() {
             if (calculations.length === 0) {
-                fullHistoryList.innerHTML = '<div class="text-gray-400 text-center font-mono">No calculations yet</div>';
+                fullHistoryList.innerHTML = '<div class="text-gray-400 text-center">No calculations yet</div>';
             } else {
                 // Show only the last 3 calculations (most recent first)
                 const recentCalculations = calculations.slice(-3).reverse();
                 fullHistoryList.innerHTML = recentCalculations.map((calc, index) => 
-                    `<div class="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
-                        <div class="text-white font-mono text-sm mb-1">${calc.input}</div>
-                        <div class="text-cyan-400 font-mono text-lg font-bold">= ${calc.result}</div>
-                        <div class="text-gray-500 text-xs mt-1">Recent calculation ${index + 1}</div>
+                    `<div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
+                        <div class="text-white font-light text-sm mb-2">${calc.input}</div>
+                        <div class="text-orange-400 font-medium text-lg">= ${calc.result}</div>
+                        <div class="text-gray-500 text-xs mt-2">Recent calculation ${index + 1}</div>
                     </div>`
                 ).join('');
             }
