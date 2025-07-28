@@ -83,6 +83,15 @@
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        /* History sidebar */
+        .history-sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .history-sidebar.open {
+            transform: translateX(0);
+        }
+
         /* Responsive font sizes */
         @media (max-width: 480px) {
             .display-text {
@@ -114,6 +123,39 @@
 </head>
 
 <body class="bg-calc-bg m-0 p-0 h-screen w-screen overflow-hidden font-sans">
+    <!-- History Sidebar -->
+    <div id="historySidebar" class="history-sidebar fixed top-0 left-0 h-full w-80 bg-calc-bg border-r border-gray-800 z-40 shadow-2xl">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex justify-between items-center p-6 border-b border-gray-800">
+                <h2 class="text-white text-xl font-semibold">History</h2>
+                <button id="closeSidebarBtn" class="text-white hover:text-red-400 text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-500/20 transition-all">
+                    ×
+                </button>
+            </div>
+            
+            <!-- Sidebar Body -->
+            <div class="flex-1 p-6 overflow-y-auto custom-scrollbar">
+                <div id="sidebarHistoryList" class="space-y-3">
+                    <div class="text-gray-400 text-center">No calculations yet</div>
+                </div>
+            </div>
+            
+            <!-- Sidebar Footer -->
+            <div class="p-6 border-t border-gray-800">
+                <button id="clearSidebarHistoryBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-2xl transition-all flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    <span>Clear History</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden"></div>
+
     <!-- History Modal -->
     <div id="historyModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-calc-bg rounded-3xl shadow-2xl max-w-md w-full max-h-[85vh] overflow-hidden border border-gray-800">
@@ -173,11 +215,9 @@
                 <!-- First Row: ⋯, AC, ⌫, % -->
                 <button id="historyBtn"
                     class="calc-button h-16 sm:h-18 md:h-20 bg-button-gray text-white rounded-full button-text font-medium smooth-transition flex items-center justify-center">
-                    <span class="flex flex-col items-center justify-center leading-none space-y-0.5">
-                        <span class="text-xs sm:text-sm">•</span>
-                        <span class="text-xs sm:text-sm">•</span>
-                        <span class="text-xs sm:text-sm">•</span>
-                    </span>
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
                 </button>
                 <button
                     class="calc-button h-16 sm:h-18 md:h-20 bg-button-gray text-white rounded-full button-text font-medium smooth-transition">AC</button>
@@ -197,11 +237,9 @@
                 <button
                     class="calc-button h-16 sm:h-18 md:h-20 bg-button-orange text-white rounded-full button-text font-medium smooth-transition flex items-center justify-center"
                     data-value="/">
-                    <span class="flex flex-col items-center justify-center leading-none space-y-0.5">
-                        <span class="text-xs sm:text-sm">•</span>
-                        <span class="text-base sm:text-lg font-bold">—</span>
-                        <span class="text-xs sm:text-sm">•</span>
-                    </span>
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
                 </button>
 
                 <!-- Third Row: 7 8 9 × -->
@@ -258,6 +296,13 @@
         const closeHistoryBtn = document.getElementById('closeHistoryBtn');
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
         const fullHistoryList = document.getElementById('fullHistoryList');
+        
+        // Sidebar elements
+        const historySidebar = document.getElementById('historySidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const clearSidebarHistoryBtn = document.getElementById('clearSidebarHistoryBtn');
+        const sidebarHistoryList = document.getElementById('sidebarHistoryList');
         
         let currentInput = '';
         let calculations = [];
@@ -393,6 +438,36 @@
             }
         }
 
+        function updateSidebarHistoryDisplay() {
+            if (calculations.length === 0) {
+                sidebarHistoryList.innerHTML = '<div class="text-gray-400 text-center">No calculations yet</div>';
+            } else {
+                // Show only the last 3 calculations (most recent first)
+                const recentCalculations = calculations.slice(-3).reverse();
+                sidebarHistoryList.innerHTML = recentCalculations.map((calc, index) => 
+                    `<div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700 relative">
+                        <div class="text-white font-light text-sm mb-2">${calc.input}</div>
+                        <div class="text-orange-400 font-medium text-lg">= ${calc.result}</div>
+                        <div class="text-gray-500 text-xs mt-2">Recent calculation ${index + 1}</div>
+                        <button class="absolute top-2 right-2 text-red-400 hover:text-red-300 transition-colors" onclick="deleteHistoryItem(${calculations.length - 1 - index})">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        function deleteHistoryItem(index) {
+            if (index >= 0 && index < calculations.length) {
+                calculations.splice(index, 1);
+                saveCalculationsToStorage();
+                updateSidebarHistoryDisplay();
+                updateFullHistoryDisplay();
+            }
+        }
+
         function isValidInput(current, newValue) {
             if (newValue === '.') {
                 const numbers = current.split(/[+\-×/*]/);
@@ -509,12 +584,31 @@
             return input;
         }
 
-        // History Modal Event Listeners
+        // Sidebar Event Listeners
         historyBtn.addEventListener('click', () => {
-            updateFullHistoryDisplay();
-            historyModal.classList.remove('hidden');
+            updateSidebarHistoryDisplay();
+            historySidebar.classList.add('open');
+            sidebarOverlay.classList.remove('hidden');
         });
 
+        closeSidebarBtn.addEventListener('click', () => {
+            historySidebar.classList.remove('open');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        clearSidebarHistoryBtn.addEventListener('click', () => {
+            calculations = [];
+            clearCalculationsFromStorage();
+            updateSidebarHistoryDisplay();
+            updateFullHistoryDisplay();
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            historySidebar.classList.remove('open');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // History Modal Event Listeners
         closeHistoryBtn.addEventListener('click', () => {
             historyModal.classList.add('hidden');
         });
@@ -534,8 +628,14 @@
 
         // Close modal with Escape key
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !historyModal.classList.contains('hidden')) {
-                historyModal.classList.add('hidden');
+            if (e.key === 'Escape') {
+                if (!historyModal.classList.contains('hidden')) {
+                    historyModal.classList.add('hidden');
+                }
+                if (historySidebar.classList.contains('open')) {
+                    historySidebar.classList.remove('open');
+                    sidebarOverlay.classList.add('hidden');
+                }
             }
         });
 
