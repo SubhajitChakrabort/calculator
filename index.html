@@ -385,7 +385,7 @@
                 return num;
             }
             
-            // If it's a whole number, return as is
+            // If it's a whole number, return as is (preserve negative sign)
             if (num % 1 === 0) {
                 return num;
             }
@@ -417,11 +417,8 @@
             if (result === null || result === undefined || result === '') return '';
             
             const resultStr = result.toString();
-            // Replace operators with white-colored spans
-            let formattedResult = resultStr
-                .replace(/([+\-×/*()√])/g, '<span style="color: white;">$1</span>');
-            
-            return formattedResult;
+            // Don't format negative numbers, just return as is
+            return resultStr;
         }
 
         function updateFullHistoryDisplay() {
@@ -501,7 +498,8 @@
                     return 0;
                 }
                 
-                return formatResult(rawResult);
+                // Return absolute value for negative results
+                return formatResult(Math.abs(rawResult));
             } catch (error) {
                 return 'Error';
             }
@@ -725,17 +723,67 @@
                         if (shouldResetOnNextNumber && lastResult !== null) {
                             const negatedResult = formatResult(-lastResult);
                             currentInput = `(${negatedResult})`;
+                            // Update display immediately to show the negative number
+                            updateResultDisplay(currentInput);
+                            setResultFontSize(currentInput);
                             shouldResetOnNextNumber = false;
                             justCalculated = false;
                         } else if (currentInput) {
-                            const lastNumberMatch = currentInput.match(/-?\d+\.?\d*$/);
-                            if (lastNumberMatch) {
-                                const lastNumber = lastNumberMatch[0];
-                                const newNumber = formatResult(-parseFloat(lastNumber));
-                                currentInput = currentInput.replace(/-?\d+\.?\d*$/, `(${newNumber})`);
+                            // Handle different cases for +/- button
+                            const lastChar = currentInput.slice(-1);
+                            
+                            // If the last character is a minus sign, remove it (make positive)
+                            if (lastChar === '-') {
+                                currentInput = currentInput.slice(0, -1);
+                                updateResultDisplay(currentInput);
+                                setResultFontSize(currentInput);
+                            }
+                            // If the last character is a plus sign, replace with minus
+                            else if (lastChar === '+') {
+                                currentInput = currentInput.slice(0, -1) + '-';
+                                updateResultDisplay(currentInput);
+                                setResultFontSize(currentInput);
+                            }
+                            // If we have a number at the end, check if it's already negative
+                            else {
+                                // First check if we have a bracketed negative number like (-6)
+                                const bracketedMatch = currentInput.match(/\(-\d+\.?\d*\)$/);
+                                if (bracketedMatch) {
+                                    // Extract the number from brackets and make it positive
+                                    const numberInBrackets = bracketedMatch[0].slice(2, -1); // Remove "(-" and ")"
+                                    const newNumber = formatResult(Math.abs(parseFloat(numberInBrackets)));
+                                    currentInput = currentInput.replace(/\(-\d+\.?\d*\)$/, newNumber);
+                                    // Update display immediately to show the positive number
+                                    updateResultDisplay(currentInput);
+                                    setResultFontSize(currentInput);
+                                } else {
+                                    // Check for regular numbers (positive or negative)
+                                    const lastNumberMatch = currentInput.match(/-?\d+\.?\d*$/);
+                                    if (lastNumberMatch) {
+                                        const lastNumber = lastNumberMatch[0];
+                                        const numValue = parseFloat(lastNumber);
+                                        
+                                        // If the number is negative, make it positive (remove brackets if present)
+                                        if (numValue < 0) {
+                                            const newNumber = formatResult(Math.abs(numValue));
+                                            // Remove brackets and minus sign, replace with positive number
+                                            currentInput = currentInput.replace(/\(-\d+\.?\d*\)$/, newNumber);
+                                            // Update display immediately to show the positive number
+                                            updateResultDisplay(currentInput);
+                                            setResultFontSize(currentInput);
+                                        }
+                                        // If the number is positive, make it negative (add brackets)
+                                        else {
+                                            const newNumber = formatResult(-numValue);
+                                            currentInput = currentInput.replace(/-?\d+\.?\d*$/, `(${newNumber})`);
+                                            // Update display immediately to show the negative number
+                                            updateResultDisplay(currentInput);
+                                            setResultFontSize(currentInput);
+                                        }
+                                    }
+                                }
                             }
                         }
-                        updateLiveCalculation();
                         break;
 
                     case '%':
@@ -786,6 +834,16 @@
                                 currentInput = lastResult.toString() + (actualValue === '×' ? '*' : actualValue);
                                 shouldResetOnNextNumber = false;
                             } else if (currentInput && !isOperator(currentInput.slice(-1))) {
+                                // Check if the last number is negative and needs brackets
+                                const lastNumberMatch = currentInput.match(/-?\d+\.?\d*$/);
+                                if (lastNumberMatch) {
+                                    const lastNumber = lastNumberMatch[0];
+                                    const numValue = parseFloat(lastNumber);
+                                    if (numValue < 0 && !lastNumber.startsWith('(')) {
+                                        // Add brackets around negative number
+                                        currentInput = currentInput.replace(/-?\d+\.?\d*$/, `(${lastNumber})`);
+                                    }
+                                }
                                 currentInput += actualValue === '×' ? '*' : actualValue;
                             } else if (currentInput && isOperator(currentInput.slice(-1))) {
                                 currentInput = replaceLastOperator(currentInput, actualValue);
