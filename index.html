@@ -509,8 +509,10 @@
         function updateResultDisplay(value, isLiveCalculation = false) {
             if (isLiveCalculation && value !== '') {
                 result.innerHTML = `= ${formatResultWithWhiteOperators(value)}`;
+                result.className = result.className.replace('text-orange-400', 'text-white');
             } else {
                 result.innerHTML = formatResultWithWhiteOperators(value);
+                result.className = result.className.replace('text-white', 'text-orange-400');
             }
         }
 
