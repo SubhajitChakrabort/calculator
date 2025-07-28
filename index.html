@@ -238,7 +238,9 @@
                     class="calc-button h-16 sm:h-18 md:h-20 bg-button-orange text-white rounded-full button-text font-medium smooth-transition flex items-center justify-center"
                     data-value="/">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        <circle cx="12" cy="8" r="1.5" fill="currentColor"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 12h14"/>
+                        <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
                     </svg>
                 </button>
 
@@ -412,7 +414,7 @@
 
         // Function to format result with white operators
         function formatResultWithWhiteOperators(result) {
-            if (!result || result === '') return '';
+            if (result === null || result === undefined || result === '') return '';
             
             const resultStr = result.toString();
             // Replace operators with white-colored spans
@@ -493,6 +495,12 @@
                 expr = expr.replace(/×/g, '*');
                 
                 const rawResult = eval(expr);
+                
+                // Handle negative results properly
+                if (rawResult === 0) {
+                    return 0;
+                }
+                
                 return formatResult(rawResult);
             } catch (error) {
                 return 'Error';
@@ -533,9 +541,13 @@
         function updateLiveCalculation() {
             try {
                 if (currentInput && currentInput !== '') {
+                    // Always show current input first
+                    updateResultDisplay(currentInput);
+                    setResultFontSize(currentInput);
+                    
                     // Only show live calculation if there's an operator and we're not in the middle of typing a number
                     const hasOperator = /[+\-×/*√]/.test(currentInput);
-                    const endsWithOperator = /[+\-×/*]$/.test(currentInput);
+                    const endsWithOperator = /[+\-×/*√]$/.test(currentInput);
 
                     if (hasOperator && !endsWithOperator) {
                         const tempResult = evaluateExpression(currentInput);
@@ -545,15 +557,11 @@
                             lastResult = tempResult;
                             shouldResetOnNextNumber = false;
                         } else {
-                            updateResultDisplay('');
-                            setResultFontSize('');
+                            // Keep showing current input if calculation fails
+                            updateResultDisplay(currentInput);
+                            setResultFontSize(currentInput);
                             shouldResetOnNextNumber = false;
                         }
-                    } else {
-                        // Show current input in display
-                        updateResultDisplay(currentInput);
-                        setResultFontSize(currentInput);
-                        shouldResetOnNextNumber = false;
                     }
                 } else {
                     updateResultDisplay('');
