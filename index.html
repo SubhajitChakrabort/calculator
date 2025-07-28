@@ -498,8 +498,8 @@
                     return 0;
                 }
                 
-                // Return absolute value for negative results
-                return formatResult(Math.abs(rawResult));
+                // Return the actual result (preserve negative signs)
+                return formatResult(rawResult);
             } catch (error) {
                 return 'Error';
             }
