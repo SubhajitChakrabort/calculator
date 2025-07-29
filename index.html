@@ -1032,8 +1032,8 @@
         inputExpression.addEventListener('touchmove', function(e) {
             if (!isScrolling) return;
             
-            // Fix scrolling direction: swipe down to see beginning content, swipe up to see end content
-            const deltaY = e.touches[0].clientY - startY;
+            // Fix scrolling direction: swipe up to see beginning content, swipe down to see end content
+            const deltaY = startY - e.touches[0].clientY;
             const newTranslateY = currentTranslateY + deltaY;
             
             const container = inputExpression.parentElement;
