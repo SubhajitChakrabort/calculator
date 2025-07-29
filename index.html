@@ -365,6 +365,23 @@
             return num;
         }
 
+        // Function to format long numbers for history display
+        function formatHistoryNumber(num) {
+            const numStr = num.toString();
+            if (numStr.length > 15) {
+                // Add line breaks every 15 digits
+                let formatted = '';
+                for (let i = 0; i < numStr.length; i++) {
+                    if (i > 0 && i % 15 === 0) {
+                        formatted += '\n';
+                    }
+                    formatted += numStr[i];
+                }
+                return formatted;
+            }
+            return numStr;
+        }
+
         // Function to format long numbers with line breaks
         function formatLongNumber(num) {
             const numStr = num.toString();
@@ -459,13 +476,15 @@
             } else {
                 // Show only the last 3 calculations (most recent first)
                 const recentCalculations = calculations.slice(-3).reverse();
-                fullHistoryList.innerHTML = recentCalculations.map((calc, index) => 
-                    `<div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
-                        <div class="text-white font-light text-sm mb-2">${calc.input}</div>
-                        <div class="text-orange-400 font-medium text-lg">= ${calc.result}</div>
+                fullHistoryList.innerHTML = recentCalculations.map((calc, index) => {
+                    const formattedExpression = formatHistoryNumber(calc.expression);
+                    const formattedResult = formatHistoryNumber(calc.result);
+                    return `<div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
+                        <div class="text-white font-light text-sm mb-2" style="word-wrap: break-word; white-space: pre-wrap;">${formattedExpression}</div>
+                        <div class="text-orange-400 font-medium text-lg" style="word-wrap: break-word; white-space: pre-wrap;">= ${formattedResult}</div>
                         <div class="text-gray-500 text-xs mt-2">Recent calculation ${index + 1}</div>
-                    </div>`
-                ).join('');
+                    </div>`;
+                }).join('');
             }
         }
 
@@ -475,18 +494,20 @@
             } else {
                 // Show only the last 3 calculations (most recent first)
                 const recentCalculations = calculations.slice(-3).reverse();
-                sidebarHistoryList.innerHTML = recentCalculations.map((calc, index) => 
-                    `<div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700 relative">
-                        <div class="text-white font-light text-sm mb-2">${calc.input}</div>
-                        <div class="text-orange-400 font-medium text-lg">= ${calc.result}</div>
+                sidebarHistoryList.innerHTML = recentCalculations.map((calc, index) => {
+                    const formattedExpression = formatHistoryNumber(calc.expression);
+                    const formattedResult = formatHistoryNumber(calc.result);
+                    return `<div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700 relative">
+                        <div class="text-white font-light text-sm mb-2" style="word-wrap: break-word; white-space: pre-wrap;">${formattedExpression}</div>
+                        <div class="text-orange-400 font-medium text-lg" style="word-wrap: break-word; white-space: pre-wrap;">= ${formattedResult}</div>
                         <div class="text-gray-500 text-xs mt-2">Recent calculation ${index + 1}</div>
                         <button class="absolute top-2 right-2 text-red-400 hover:text-red-300 transition-colors" onclick="deleteHistoryItem(${calculations.length - 1 - index})">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                             </svg>
                         </button>
-                    </div>`
-                ).join('');
+                    </div>`;
+                }).join('');
             }
         }
 
@@ -756,7 +777,7 @@
                                 const finalResult = evaluateExpression(currentInput);
                                 if (finalResult !== 'Error' && !isNaN(finalResult) && isFinite(finalResult)) {
                                     calculations.push({
-                                        input: currentInput,
+                                        expression: currentInput,
                                         result: finalResult,
                                         timestamp: new Date().toLocaleString()
                                     });
