@@ -194,22 +194,21 @@
             </h1>
         </div>
 
-        <!-- Display Screen - Dual Display Section -->
+        <!-- Display Screen - Horizontal Dual Display Section -->
         <div class="flex-1 flex flex-col justify-end px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 min-h-0">
             <div class="bg-display-bg rounded-3xl p-4 sm:p-6 md:p-8 relative h-full flex flex-col">
-                <!-- Input Expression Display Section -->
-                <div class="relative mb-2 sm:mb-4 flex-shrink-0">
+                <!-- Horizontal Display Section -->
+                <div class="relative flex-1 flex items-end justify-between min-h-0">
+                    <!-- Input Expression Display (Left Side) -->
                     <div id="inputExpression"
-                        class="w-full min-h-8 sm:min-h-12 md:min-h-16 bg-transparent text-white/70 text-right font-light display-text leading-tight"
-                        style="transition: font-size 0.2s; font-size: 1.5rem;">
+                        class="flex-1 bg-transparent text-white/70 text-left font-light leading-tight pr-2"
+                        style="transition: font-size 0.2s; font-size: 1.2rem; max-width: 60%;">
                     </div>
-                </div>
 
-                <!-- Live Calculation Result Display Section -->
-                <div class="relative flex-1 flex items-end justify-end min-h-0">
+                    <!-- Live Calculation Result Display (Right Side) -->
                     <div id="result"
-                        class="w-full bg-transparent text-white text-right font-light display-text flex items-end justify-end leading-none"
-                        style="transition: font-size 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        class="flex-1 bg-transparent text-white text-right font-light leading-none"
+                        style="transition: font-size 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.2rem; max-width: 40%;">
                     </div>
                 </div> 
             </div>
@@ -555,11 +554,11 @@
             }
         }
 
-        // Update updateLiveCalculation to use dual display
+        // Update updateLiveCalculation to use horizontal dual display
         function updateLiveCalculation() {
             try {
                 if (currentInput && currentInput !== '') {
-                    // Always show current input expression in the top display
+                    // Always show current input expression in the left display
                     updateInputExpressionDisplay(currentInput);
                     
                     // Only show live calculation if there's an operator and we're not in the middle of typing a number
