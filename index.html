@@ -331,7 +331,7 @@
         let justCalculated = false;
         let isCalculating = false;
 
-        // Function to format input with line breaks every 8 digits
+        // Function to format input with line breaks every 25 digits
         function formatInputWithLineBreaks(input) {
             if (!input) return '';
             
@@ -341,10 +341,10 @@
             
             for (let part of parts) {
                 if (part && !['+', '-', '×', '/', '*', '(', ')', '√'].includes(part)) {
-                    // This is a number, add line breaks every 8 digits
+                    // This is a number, add line breaks every 25 digits
                     let formattedNumber = '';
                     for (let i = 0; i < part.length; i++) {
-                        if (i > 0 && i % 8 === 0) {
+                        if (i > 0 && i % 25 === 0) {
                             formattedNumber += '<br>';
                         }
                         formattedNumber += part[i];
@@ -391,11 +391,11 @@
         // Function to format long numbers with line breaks
         function formatLongNumber(num) {
             const numStr = num.toString();
-            if (numStr.length > 20) {
-                // Add line breaks every 20 digits
+            if (numStr.length > 25) {
+                // Add line breaks every 25 digits
                 let formatted = '';
                 for (let i = 0; i < numStr.length; i++) {
-                    if (i > 0 && i % 20 === 0) {
+                    if (i > 0 && i % 25 === 0) {
                         formatted += '\n';
                     }
                     formatted += numStr[i];
@@ -452,7 +452,7 @@
             return formatted;
         }
 
-        // Function to format result with line breaks every 8 digits
+        // Function to format result with line breaks every 25 digits
         function formatResultWithLineBreaks(result) {
             if (!result || result === '') return '';
             
@@ -460,7 +460,7 @@
             let formattedResult = '';
             
             for (let i = 0; i < resultStr.length; i++) {
-                if (i > 0 && i % 8 === 0) {
+                if (i > 0 && i % 25 === 0) {
                     formattedResult += '<br>';
                 }
                 formattedResult += resultStr[i];
@@ -576,7 +576,7 @@
 
         // Function to update input expression display
         function updateInputExpressionDisplay(value) {
-            if (value && value.length > 20) {
+            if (value && value.length > 25) {
                 // Format long numbers with line breaks
                 const formattedValue = formatLongNumber(value);
                 inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
@@ -1032,6 +1032,7 @@
         inputExpression.addEventListener('touchmove', function(e) {
             if (!isScrolling) return;
             
+            // Fix scrolling direction: swipe up to see earlier content, swipe down to see later content
             const deltaY = startY - e.touches[0].clientY;
             const newTranslateY = currentTranslateY + deltaY;
             
