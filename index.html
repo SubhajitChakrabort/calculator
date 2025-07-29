@@ -362,11 +362,11 @@
         // Function to format long numbers with line breaks
         function formatLongNumber(num) {
             const numStr = num.toString();
-            if (numStr.length > 7) {
-                // Add line breaks every 7 digits
+            if (numStr.length > 15) {
+                // Add line breaks every 15 digits
                 let formatted = '';
                 for (let i = 0; i < numStr.length; i++) {
-                    if (i > 0 && i % 7 === 0) {
+                    if (i > 0 && i % 15 === 0) {
                         formatted += '\n';
                     }
                     formatted += numStr[i];
@@ -533,7 +533,7 @@
 
         // Function to update input expression display
         function updateInputExpressionDisplay(value) {
-            if (value && value.length > 7) {
+            if (value && value.length > 15) {
                 // Format long numbers with line breaks
                 const formattedValue = formatLongNumber(value);
                 inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
