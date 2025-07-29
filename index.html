@@ -93,6 +93,7 @@
         .history-sidebar {
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
+            will-change: transform;
         }
         .history-sidebar.open {
             transform: translateX(0);
@@ -130,7 +131,7 @@
 
 <body class="bg-calc-bg m-0 p-0 h-screen w-screen overflow-hidden font-sans">
     <!-- History Sidebar -->
-    <div id="historySidebar" class="history-sidebar fixed top-0 left-0 h-full w-80 bg-calc-bg border-r border-gray-800 z-40 shadow-2xl">
+    <div id="historySidebar" class="history-sidebar fixed top-0 left-0 h-full w-80 bg-calc-bg border-r border-gray-800 z-50 shadow-2xl">
         <div class="flex flex-col h-full">
             <!-- Sidebar Header -->
             <div class="flex justify-between items-center p-6 border-b border-gray-800">
@@ -228,7 +229,8 @@
 
                 <!-- First Row: ⋯, AC, ⌫, % -->
                 <button id="historyBtn"
-                    class="calc-button h-14 sm:h-16 md:h-18 bg-button-gray text-white rounded-full button-text font-medium smooth-transition flex items-center justify-center">
+                    class="calc-button h-14 sm:h-16 md:h-18 bg-button-gray text-white rounded-full button-text font-medium smooth-transition flex items-center justify-center"
+                    onclick="console.log('Direct onclick triggered'); updateSidebarHistoryDisplay(); document.getElementById('historySidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.remove('hidden');">
                     <svg class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
@@ -310,6 +312,7 @@
         const buttons = document.querySelectorAll('.calc-button');
         const historyModal = document.getElementById('historyModal');
         const historyBtn = document.getElementById('historyBtn');
+        console.log('History button found:', historyBtn);
         const closeHistoryBtn = document.getElementById('closeHistoryBtn');
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
         const fullHistoryList = document.getElementById('fullHistoryList');
@@ -367,6 +370,9 @@
 
         // Function to format long numbers for history display
         function formatHistoryNumber(num) {
+            if (num === null || num === undefined || num === '') {
+                return '';
+            }
             const numStr = num.toString();
             if (numStr.length > 15) {
                 // Add line breaks every 15 digits
@@ -413,6 +419,8 @@
                 const saved = localStorage.getItem('calculatorHistory');
                 if (saved) {
                     calculations = JSON.parse(saved);
+                    // Clean up old data structure if needed
+                    calculations = calculations.filter(calc => calc && (calc.expression || calc.input) && calc.result);
                 }
             } catch (error) {
                 console.error('Error loading from localStorage:', error);
@@ -477,8 +485,11 @@
                 // Show only the last 3 calculations (most recent first)
                 const recentCalculations = calculations.slice(-3).reverse();
                 fullHistoryList.innerHTML = recentCalculations.map((calc, index) => {
-                    const formattedExpression = formatHistoryNumber(calc.expression);
-                    const formattedResult = formatHistoryNumber(calc.result);
+                    // Handle both old (input) and new (expression) property names
+                    const expression = calc.expression || calc.input || '';
+                    const result = calc.result || '';
+                    const formattedExpression = formatHistoryNumber(expression);
+                    const formattedResult = formatHistoryNumber(result);
                     return `<div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
                         <div class="text-white font-light text-sm mb-2" style="word-wrap: break-word; white-space: pre-wrap;">${formattedExpression}</div>
                         <div class="text-orange-400 font-medium text-lg" style="word-wrap: break-word; white-space: pre-wrap;">= ${formattedResult}</div>
@@ -489,14 +500,19 @@
         }
 
         function updateSidebarHistoryDisplay() {
+            console.log('Calculations array:', calculations);
             if (calculations.length === 0) {
                 sidebarHistoryList.innerHTML = '<div class="text-gray-400 text-center">No calculations yet</div>';
             } else {
                 // Show only the last 3 calculations (most recent first)
                 const recentCalculations = calculations.slice(-3).reverse();
                 sidebarHistoryList.innerHTML = recentCalculations.map((calc, index) => {
-                    const formattedExpression = formatHistoryNumber(calc.expression);
-                    const formattedResult = formatHistoryNumber(calc.result);
+                    console.log('Processing calc:', calc);
+                    // Handle both old (input) and new (expression) property names
+                    const expression = calc.expression || calc.input || '';
+                    const result = calc.result || '';
+                    const formattedExpression = formatHistoryNumber(expression);
+                    const formattedResult = formatHistoryNumber(result);
                     return `<div class="bg-gray-800/50 rounded-xl p-4 border border-gray-700 relative">
                         <div class="text-white font-light text-sm mb-2" style="word-wrap: break-word; white-space: pre-wrap;">${formattedExpression}</div>
                         <div class="text-orange-400 font-medium text-lg" style="word-wrap: break-word; white-space: pre-wrap;">= ${formattedResult}</div>
@@ -680,11 +696,20 @@
         }
 
         // Sidebar Event Listeners
-        historyBtn.addEventListener('click', () => {
-            updateSidebarHistoryDisplay();
-            historySidebar.classList.add('open');
-            sidebarOverlay.classList.remove('hidden');
-        });
+        if (historyBtn) {
+            console.log('Adding event listener to history button');
+            historyBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('History button clicked');
+                updateSidebarHistoryDisplay();
+                historySidebar.classList.add('open');
+                sidebarOverlay.classList.remove('hidden');
+                console.log('Sidebar classes:', historySidebar.classList.toString());
+            });
+        } else {
+            console.error('History button not found!');
+        }
 
         closeSidebarBtn.addEventListener('click', () => {
             historySidebar.classList.remove('open');
@@ -735,13 +760,13 @@
         });
 
         buttons.forEach(button => {
+            // Skip the history button completely - it has its own handler
+            if (button.id === 'historyBtn') {
+                return;
+            }
+            
             button.addEventListener('click', () => {
                 let actualValue = button.getAttribute('data-value') || button.textContent.trim();
-
-                // Skip if it's the history button
-                if (button.id === 'historyBtn') {
-                    return;
-                }
 
                 switch (actualValue) {
                     case 'AC':
