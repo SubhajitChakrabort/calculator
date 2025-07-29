@@ -194,10 +194,18 @@
             </h1>
         </div>
 
-        <!-- Display Screen - Single Display Section -->
+        <!-- Display Screen - Dual Display Section -->
         <div class="flex-1 flex flex-col justify-end px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 min-h-0">
             <div class="bg-display-bg rounded-3xl p-4 sm:p-6 md:p-8 relative h-full flex flex-col">
-                <!-- Single Display Section -->
+                <!-- Input Expression Display Section -->
+                <div class="relative mb-2 sm:mb-4 flex-shrink-0">
+                    <div id="inputExpression"
+                        class="w-full min-h-8 sm:min-h-12 md:min-h-16 bg-transparent text-white/70 text-right font-light display-text leading-tight"
+                        style="transition: font-size 0.2s; font-size: 1.5rem;">
+                    </div>
+                </div>
+
+                <!-- Live Calculation Result Display Section -->
                 <div class="relative flex-1 flex items-end justify-end min-h-0">
                     <div id="result"
                         class="w-full bg-transparent text-white text-right font-light display-text flex items-end justify-end leading-none"
@@ -292,6 +300,7 @@
 
     <script>
         const result = document.getElementById('result');
+        const inputExpression = document.getElementById('inputExpression');
         const buttons = document.querySelectorAll('.calc-button');
         const historyModal = document.getElementById('historyModal');
         const historyBtn = document.getElementById('historyBtn');
@@ -505,6 +514,11 @@
             }
         }
 
+        // Function to update input expression display
+        function updateInputExpressionDisplay(value) {
+            inputExpression.innerHTML = formatResultWithWhiteOperators(value);
+        }
+
         // Function to update result display with line breaks
         function updateResultDisplay(value, isLiveCalculation = false) {
             if (isLiveCalculation && value !== '') {
@@ -541,13 +555,12 @@
             }
         }
 
-        // Update updateLiveCalculation to use single display
+        // Update updateLiveCalculation to use dual display
         function updateLiveCalculation() {
             try {
                 if (currentInput && currentInput !== '') {
-                    // Always show current input first
-                    updateResultDisplay(currentInput);
-                    setResultFontSize(currentInput);
+                    // Always show current input expression in the top display
+                    updateInputExpressionDisplay(currentInput);
                     
                     // Only show live calculation if there's an operator and we're not in the middle of typing a number
                     const hasOperator = /[+\-×/*√]/.test(currentInput);
@@ -561,18 +574,25 @@
                             lastResult = tempResult;
                             shouldResetOnNextNumber = false;
                         } else {
-                            // Keep showing current input if calculation fails
-                            updateResultDisplay(currentInput);
-                            setResultFontSize(currentInput);
+                            // Clear result display if calculation fails
+                            updateResultDisplay('');
+                            setResultFontSize('');
                             shouldResetOnNextNumber = false;
                         }
+                    } else {
+                        // Clear result display if no complete expression
+                        updateResultDisplay('');
+                        setResultFontSize('');
+                        shouldResetOnNextNumber = false;
                     }
                 } else {
+                    updateInputExpressionDisplay('');
                     updateResultDisplay('');
                     setResultFontSize('');
                     shouldResetOnNextNumber = false;
                 }
             } catch {
+                updateInputExpressionDisplay('');
                 updateResultDisplay('');
                 setResultFontSize('');
                 shouldResetOnNextNumber = false;
@@ -663,6 +683,7 @@
                 switch (actualValue) {
                     case 'AC':
                         currentInput = '';
+                        inputExpression.textContent = '';
                         result.textContent = '';
                         shouldResetOnNextNumber = false;
                         lastResult = null;
@@ -699,6 +720,7 @@
                                     });
                                     saveCalculationsToStorage();
                                     const formattedResult = formatLargeNumber(finalResult);
+                                    updateInputExpressionDisplay(''); // Clear input expression
                                     updateResultDisplay(formattedResult, false); // Final result without = sign
                                     setResultFontSize(formattedResult);
                                     shouldResetOnNextNumber = true;
