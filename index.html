@@ -78,7 +78,7 @@
             background-clip: text;
         }
 
-        /* Ensure digits start from right edge with 10px gap */
+        /* Ensure digits start from right edge with no gap */
         #inputExpression, #result {
             padding-right: 0 !important;
             margin-right: 0 !important;
@@ -88,6 +88,9 @@
             word-spacing: 0 !important;
             letter-spacing: 0 !important;
             box-sizing: border-box !important;
+            position: absolute !important;
+            right: 0 !important;
+            width: 100% !important;
         }
 
         /* Remove all padding from display containers */
@@ -98,12 +101,12 @@
             margin: 0 !important;
         }
 
-        /* Force text to start from right edge with 10px gap */
+        /* Force text to start from right edge with no gap */
         #inputExpression, #result {
             width: 100% !important;
             max-width: 100% !important;
             right: 0 !important;
-            position: relative !important;
+            position: absolute !important;
         }
 
         /* Button hover effects */
@@ -231,9 +234,9 @@
 
                         <!-- Display Screen - Dual Display Section -->
         <div class="flex-1 flex flex-col justify-end px-2 sm:px-4 md:px-6 pb-2 sm:pb-4 md:pb-6 min-h-0">
-            <div class="bg-display-bg rounded-3xl p-3 sm:p-4 md:p-6 relative h-full flex flex-col mx-auto" style="width: calc(100% - 20px); padding-right: 10px; padding-left: 10px;">
+            <div class="bg-display-bg rounded-3xl relative h-full flex flex-col mx-auto" style="width: calc(100% - 20px); padding: 10px;">
                 <!-- Input Expression Display Section -->
-                <div class="relative mb-2 sm:mb-3 flex-shrink-0" style="max-height: 60px; overflow: hidden; padding-right: 10px; margin-right: 0;">
+                <div class="relative mb-2 sm:mb-3 flex-shrink-0" style="max-height: 60px; overflow: hidden; padding-right: 0; margin-right: 0;">
                     <div id="inputExpression"
                         class="w-full min-h-10 sm:min-h-14 md:min-h-18 bg-transparent text-white/70 text-right font-light leading-tight"
                         style="transition: font-size 0.2s; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0); overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0; padding-left: 0; margin-left: 0;">
@@ -241,7 +244,7 @@
                 </div>
 
                 <!-- Live Calculation Result Display Section -->
-                <div class="relative flex-1 flex items-end justify-end min-h-0" style="padding-right: 10px; margin-right: 0;">
+                <div class="relative flex-1 flex items-end justify-end min-h-0" style="padding-right: 0; margin-right: 0;">
                     <div id="result"
                         class="w-full bg-transparent text-white text-right font-light leading-none"
                         style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap; overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0; padding-left: 0; margin-left: 0;">
@@ -359,7 +362,7 @@
         let justCalculated = false;
         let isCalculating = false;
 
-        // Function to format input with line breaks every 35 digits
+        // Function to format input with line breaks every 25 digits
         function formatInputWithLineBreaks(input) {
             if (!input) return '';
             
@@ -369,10 +372,10 @@
             
             for (let part of parts) {
                 if (part && !['+', '-', '×', '/', '*', '(', ')', '√'].includes(part)) {
-                    // This is a number, add line breaks every 35 digits to fit full width with 10px gap
+                    // This is a number, add line breaks every 25 digits to fit full width
                     let formattedNumber = '';
                     for (let i = 0; i < part.length; i++) {
-                        if (i > 0 && i % 35 === 0) {
+                        if (i > 0 && i % 25 === 0) {
                             formattedNumber += '<br>';
                         }
                         formattedNumber += part[i];
@@ -419,11 +422,11 @@
         // Function to format long numbers with line breaks
         function formatLongNumber(num) {
             const numStr = num.toString();
-            if (numStr.length > 35) {
-                // Add line breaks every 35 digits to fit full width with 10px gap
+            if (numStr.length > 25) {
+                // Add line breaks every 25 digits to fit full width
                 let formatted = '';
                 for (let i = 0; i < numStr.length; i++) {
-                    if (i > 0 && i % 35 === 0) {
+                    if (i > 0 && i % 25 === 0) {
                         formatted += '\n';
                     }
                     formatted += numStr[i];
@@ -480,7 +483,7 @@
             return formatted;
         }
 
-        // Function to format result with line breaks every 35 digits
+        // Function to format result with line breaks every 25 digits
         function formatResultWithLineBreaks(result) {
             if (!result || result === '') return '';
             
@@ -488,7 +491,7 @@
             let formattedResult = '';
             
             for (let i = 0; i < resultStr.length; i++) {
-                if (i > 0 && i % 35 === 0) {
+                if (i > 0 && i % 25 === 0) {
                     formattedResult += '<br>';
                 }
                 formattedResult += resultStr[i];
@@ -604,8 +607,8 @@
 
         // Function to update input expression display
         function updateInputExpressionDisplay(value) {
-            if (value && value.length > 35) {
-                // Format long numbers with line breaks every 35 digits
+            if (value && value.length > 25) {
+                // Format long numbers with line breaks every 25 digits
                 const formattedValue = formatLongNumber(value);
                 inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
                 // Ensure right alignment and no padding
