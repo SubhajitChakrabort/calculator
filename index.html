@@ -393,9 +393,19 @@
             const numStr = num.toString();
             const screenWidth = window.innerWidth;
             
-            // Large screens (720px+ width) - no line breaks, auto-shrink text
+            // Large screens (720px+ width) - line breaks after 35 digits
             if (screenWidth >= 720) {
-                return numStr; // No line breaks for large screens
+                if (numStr.length > 35) {
+                    let formatted = '';
+                    for (let i = 0; i < numStr.length; i++) {
+                        if (i > 0 && i % 35 === 0) {
+                            formatted += '\n';
+                        }
+                        formatted += numStr[i];
+                    }
+                    return formatted;
+                }
+                return numStr;
             }
             // Medium screens (480px-719px) - line breaks after 30 digits
             else if (screenWidth >= 480) {
@@ -602,13 +612,11 @@
             
             const length = value.toString().length;
             
-            // Large screens (720px+ width) - larger base font, auto-shrink
+            // Large screens (720px+ width) - larger base font, shrink after 25 digits
             if (screenWidth >= 720) {
-                if (length <= 15) return '2.2rem';      // Large text for short numbers
-                else if (length <= 25) return '1.8rem'; // Medium text
-                else if (length <= 35) return '1.4rem'; // Smaller text
-                else if (length <= 50) return '1.1rem'; // Small text
-                else return '0.9rem';                   // Very small text
+                if (length <= 25) return '2.2rem';      // Large text for first 25 digits
+                else if (length <= 35) return '1.4rem'; // Smaller text for 26-35 digits
+                else return '1.4rem';                   // Same size for multi-line
             }
             // Medium screens (480px-719px) - medium base font
             else if (screenWidth >= 480) {
@@ -635,9 +643,31 @@
             inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
             inputExpression.style.fontSize = dynamicFontSize;
             
-            // Only apply scrolling for small/medium screens with line breaks
-            if (screenWidth < 720 && value && value.length > 25) {
-                // Auto-scroll to bottom for long content
+            // Apply scrolling based on screen size and line break thresholds
+            if (screenWidth >= 720 && value && value.length > 35) {
+                // Large screens: scroll after 35 digits
+                setTimeout(() => {
+                    const container = inputExpression.parentElement;
+                    const scrollHeight = inputExpression.scrollHeight;
+                    const containerHeight = container.clientHeight;
+                    if (scrollHeight > containerHeight) {
+                        const maxScroll = scrollHeight - containerHeight;
+                        inputExpression.style.transform = `translateY(-${maxScroll}px)`;
+                    }
+                }, 10);
+            } else if (screenWidth >= 480 && screenWidth < 720 && value && value.length > 30) {
+                // Medium screens: scroll after 30 digits
+                setTimeout(() => {
+                    const container = inputExpression.parentElement;
+                    const scrollHeight = inputExpression.scrollHeight;
+                    const containerHeight = container.clientHeight;
+                    if (scrollHeight > containerHeight) {
+                        const maxScroll = scrollHeight - containerHeight;
+                        inputExpression.style.transform = `translateY(-${maxScroll}px)`;
+                    }
+                }, 10);
+            } else if (screenWidth < 480 && value && value.length > 25) {
+                // Small screens: scroll after 25 digits
                 setTimeout(() => {
                     const container = inputExpression.parentElement;
                     const scrollHeight = inputExpression.scrollHeight;
