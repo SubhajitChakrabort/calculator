@@ -388,21 +388,43 @@
             return numStr;
         }
 
-        // Function to format long numbers with line breaks
+        // Function to format long numbers with responsive behavior
         function formatLongNumber(num) {
             const numStr = num.toString();
-            if (numStr.length > 25) {
-                // Add line breaks every 25 digits
-                let formatted = '';
-                for (let i = 0; i < numStr.length; i++) {
-                    if (i > 0 && i % 25 === 0) {
-                        formatted += '\n';
-                    }
-                    formatted += numStr[i];
-                }
-                return formatted;
+            const screenWidth = window.innerWidth;
+            
+            // Large screens (720px+ width) - no line breaks, auto-shrink text
+            if (screenWidth >= 720) {
+                return numStr; // No line breaks for large screens
             }
-            return numStr;
+            // Medium screens (480px-719px) - line breaks after 30 digits
+            else if (screenWidth >= 480) {
+                if (numStr.length > 30) {
+                    let formatted = '';
+                    for (let i = 0; i < numStr.length; i++) {
+                        if (i > 0 && i % 30 === 0) {
+                            formatted += '\n';
+                        }
+                        formatted += numStr[i];
+                    }
+                    return formatted;
+                }
+                return numStr;
+            }
+            // Small screens (<480px) - line breaks after 25 digits
+            else {
+                if (numStr.length > 25) {
+                    let formatted = '';
+                    for (let i = 0; i < numStr.length; i++) {
+                        if (i > 0 && i % 25 === 0) {
+                            formatted += '\n';
+                        }
+                        formatted += numStr[i];
+                    }
+                    return formatted;
+                }
+                return numStr;
+            }
         }
 
         // LocalStorage functions
@@ -574,12 +596,47 @@
             }
         }
 
+        // Function to get dynamic font size based on screen size and content length
+        function getDynamicFontSize(value, screenWidth) {
+            if (!value) return '1.3rem';
+            
+            const length = value.toString().length;
+            
+            // Large screens (720px+ width) - larger base font, auto-shrink
+            if (screenWidth >= 720) {
+                if (length <= 15) return '2.2rem';      // Large text for short numbers
+                else if (length <= 25) return '1.8rem'; // Medium text
+                else if (length <= 35) return '1.4rem'; // Smaller text
+                else if (length <= 50) return '1.1rem'; // Small text
+                else return '0.9rem';                   // Very small text
+            }
+            // Medium screens (480px-719px) - medium base font
+            else if (screenWidth >= 480) {
+                if (length <= 15) return '1.8rem';
+                else if (length <= 25) return '1.5rem';
+                else if (length <= 35) return '1.2rem';
+                else return '1rem';
+            }
+            // Small screens (<480px) - smaller base font
+            else {
+                if (length <= 15) return '1.3rem';
+                else if (length <= 25) return '1.1rem';
+                else if (length <= 35) return '0.9rem';
+                else return '0.8rem';
+            }
+        }
+
         // Function to update input expression display
         function updateInputExpressionDisplay(value) {
-            if (value && value.length > 25) {
-                // Format long numbers with line breaks
-                const formattedValue = formatLongNumber(value);
-                inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
+            const screenWidth = window.innerWidth;
+            const formattedValue = formatLongNumber(value);
+            const dynamicFontSize = getDynamicFontSize(value, screenWidth);
+            
+            inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
+            inputExpression.style.fontSize = dynamicFontSize;
+            
+            // Only apply scrolling for small/medium screens with line breaks
+            if (screenWidth < 720 && value && value.length > 25) {
                 // Auto-scroll to bottom for long content
                 setTimeout(() => {
                     const container = inputExpression.parentElement;
@@ -591,7 +648,6 @@
                     }
                 }, 10);
             } else {
-                inputExpression.innerHTML = formatResultWithWhiteOperators(value);
                 inputExpression.style.transform = 'translateY(0)';
             }
         }
@@ -609,18 +665,49 @@
             }
         }
 
-        // Function to dynamically set result font size based on length
+        // Function to dynamically set result font size based on length and screen size
         function setResultFontSize(value) {
             const len = value.toString().length;
+            const screenWidth = window.innerWidth;
             let fontSize = '';
-            if (len <= 7) {
-                fontSize = '3.5rem'; // default large (reduced from 5rem)
-            } else if (len <= 12) {
-                fontSize = '2.5rem'; // medium (reduced from 3rem)
-            } else if (len <= 18) {
-                fontSize = '1.8rem'; // small (reduced from 2rem)
-            } else {
-                fontSize = '1.2rem'; // extra small (reduced from 1rem)
+            
+            // Large screens (720px+ width) - larger base font
+            if (screenWidth >= 720) {
+                if (len <= 7) {
+                    fontSize = '4.5rem'; // Larger for big screens
+                } else if (len <= 12) {
+                    fontSize = '3.5rem';
+                } else if (len <= 18) {
+                    fontSize = '2.8rem';
+                } else if (len <= 25) {
+                    fontSize = '2.2rem';
+                } else {
+                    fontSize = '1.8rem';
+                }
+            }
+            // Medium screens (480px-719px) - medium base font
+            else if (screenWidth >= 480) {
+                if (len <= 7) {
+                    fontSize = '3.5rem';
+                } else if (len <= 12) {
+                    fontSize = '2.8rem';
+                } else if (len <= 18) {
+                    fontSize = '2.2rem';
+                } else {
+                    fontSize = '1.6rem';
+                }
+            }
+            // Small screens (<480px) - smaller base font
+            else {
+                if (len <= 7) {
+                    fontSize = '2.8rem';
+                } else if (len <= 12) {
+                    fontSize = '2.2rem';
+                } else if (len <= 18) {
+                    fontSize = '1.8rem';
+                } else {
+                    fontSize = '1.4rem';
+                }
             }
             result.style.fontSize = fontSize;
         }
@@ -1016,6 +1103,12 @@
         loadCalculationsFromStorage();
         updateLiveCalculation();
         setCursorBlinking(true);
+
+        // Handle window resize for responsive font sizing
+        window.addEventListener('resize', function() {
+            // Update font sizes when screen size changes
+            updateLiveCalculation();
+        });
 
         // Touch scrolling for input expression
         let isScrolling = false;
