@@ -393,12 +393,12 @@
             const numStr = num.toString();
             const screenWidth = window.innerWidth;
             
-            // Large screens (720px+ width) - line breaks after 35 digits
+            // Large screens (720px+ width) - line breaks after 50 digits
             if (screenWidth >= 720) {
-                if (numStr.length > 35) {
+                if (numStr.length > 50) {
                     let formatted = '';
                     for (let i = 0; i < numStr.length; i++) {
-                        if (i > 0 && i % 35 === 0) {
+                        if (i > 0 && i % 50 === 0) {
                             formatted += '\n';
                         }
                         formatted += numStr[i];
@@ -608,29 +608,29 @@
 
         // Function to get dynamic font size based on screen size and content length
         function getDynamicFontSize(value, screenWidth) {
-            if (!value) return '1.3rem';
+            if (!value) return '1.8rem'; // Increased base font size
             
             const length = value.toString().length;
             
-            // Large screens (720px+ width) - larger base font, shrink after 25 digits
+            // Large screens (720px+ width) - larger base font, shrink after 35 digits
             if (screenWidth >= 720) {
-                if (length <= 25) return '2.2rem';      // Large text for first 25 digits
-                else if (length <= 35) return '1.4rem'; // Smaller text for 26-35 digits
-                else return '1.4rem';                   // Same size for multi-line
+                if (length <= 35) return '2.8rem';      // Large text for first 35 digits (increased)
+                else if (length <= 50) return '1.8rem'; // Smaller text for 36-50 digits
+                else return '1.8rem';                   // Same size for multi-line
             }
             // Medium screens (480px-719px) - medium base font
             else if (screenWidth >= 480) {
-                if (length <= 15) return '1.8rem';
-                else if (length <= 25) return '1.5rem';
-                else if (length <= 35) return '1.2rem';
-                else return '1rem';
+                if (length <= 15) return '2.3rem';      // Increased
+                else if (length <= 25) return '2rem';   // Increased
+                else if (length <= 35) return '1.7rem'; // Increased
+                else return '1.5rem';                   // Increased
             }
             // Small screens (<480px) - smaller base font
             else {
-                if (length <= 15) return '1.3rem';
-                else if (length <= 25) return '1.1rem';
-                else if (length <= 35) return '0.9rem';
-                else return '0.8rem';
+                if (length <= 15) return '1.8rem';      // Increased
+                else if (length <= 25) return '1.6rem'; // Increased
+                else if (length <= 35) return '1.4rem'; // Increased
+                else return '1.2rem';                   // Increased
             }
         }
 
@@ -644,8 +644,8 @@
             inputExpression.style.fontSize = dynamicFontSize;
             
             // Apply scrolling based on screen size and line break thresholds
-            if (screenWidth >= 720 && value && value.length > 35) {
-                // Large screens: scroll after 35 digits
+            if (screenWidth >= 720 && value && value.length > 50) {
+                // Large screens: scroll after 50 digits
                 setTimeout(() => {
                     const container = inputExpression.parentElement;
                     const scrollHeight = inputExpression.scrollHeight;
