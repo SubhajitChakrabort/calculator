@@ -78,6 +78,15 @@
             background-clip: text;
         }
 
+        /* Ensure digits start from right edge */
+        #inputExpression, #result {
+            padding-right: 0 !important;
+            margin-right: 0 !important;
+            text-align: right !important;
+            word-spacing: 0 !important;
+            letter-spacing: 0 !important;
+        }
+
         /* Button hover effects */
         .calc-button:hover {
             transform: scale(1.05);
@@ -203,12 +212,12 @@
 
                         <!-- Display Screen - Dual Display Section -->
         <div class="flex-1 flex flex-col justify-end px-2 sm:px-4 md:px-6 pb-2 sm:pb-4 md:pb-6 min-h-0">
-            <div class="bg-display-bg rounded-3xl p-3 sm:p-4 md:p-6 relative h-full flex flex-col w-4/5 mx-auto">
+            <div class="bg-display-bg rounded-3xl p-3 sm:p-4 md:p-6 relative h-full flex flex-col w-4/5 mx-auto" style="padding-right: 0;">
                 <!-- Input Expression Display Section -->
                 <div class="relative mb-2 sm:mb-3 flex-shrink-0" style="max-height: 60px; overflow: hidden;">
                     <div id="inputExpression"
                         class="w-full min-h-10 sm:min-h-14 md:min-h-18 bg-transparent text-white/70 text-right font-light leading-tight"
-                        style="transition: font-size 0.2s; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0); overflow-wrap: break-word; hyphens: none;">
+                        style="transition: font-size 0.2s; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0); overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0;">
                     </div>
                 </div>
 
@@ -216,7 +225,7 @@
                 <div class="relative flex-1 flex items-end justify-end min-h-0">
                     <div id="result"
                         class="w-full bg-transparent text-white text-right font-light leading-none"
-                        style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap; overflow-wrap: break-word; hyphens: none;">
+                        style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap; overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0;">
                     </div>
                 </div> 
             </div>
@@ -580,6 +589,8 @@
                 // Format long numbers with line breaks every 25 digits
                 const formattedValue = formatLongNumber(value);
                 inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
+                // Ensure right alignment
+                inputExpression.style.textAlign = 'right';
                 // Auto-scroll to bottom for long content
                 setTimeout(() => {
                     const container = inputExpression.parentElement;
@@ -592,6 +603,7 @@
                 }, 10);
             } else {
                 inputExpression.innerHTML = formatResultWithWhiteOperators(value);
+                inputExpression.style.textAlign = 'right';
                 inputExpression.style.transform = 'translateY(0)';
             }
         }
@@ -602,10 +614,12 @@
                 const formattedValue = formatLargeNumber(value);
                 result.innerHTML = `= ${formatResultWithWhiteOperators(formattedValue)}`;
                 result.className = result.className.replace('text-orange-400', 'text-white');
+                result.style.textAlign = 'right';
             } else {
                 const formattedValue = formatLargeNumber(value);
                 result.innerHTML = formatResultWithWhiteOperators(formattedValue);
                 result.className = result.className.replace('text-white', 'text-orange-400');
+                result.style.textAlign = 'right';
             }
         }
 
