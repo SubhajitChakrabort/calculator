@@ -82,9 +82,28 @@
         #inputExpression, #result {
             padding-right: 0 !important;
             margin-right: 0 !important;
+            padding-left: 0 !important;
+            margin-left: 0 !important;
             text-align: right !important;
             word-spacing: 0 !important;
             letter-spacing: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Remove all padding from display containers */
+        #inputExpression, #result, 
+        #inputExpression::before, #result::before,
+        #inputExpression::after, #result::after {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        /* Force text to start from right edge */
+        #inputExpression, #result {
+            width: 100% !important;
+            max-width: 100% !important;
+            right: 0 !important;
+            position: relative !important;
         }
 
         /* Button hover effects */
@@ -212,20 +231,20 @@
 
                         <!-- Display Screen - Dual Display Section -->
         <div class="flex-1 flex flex-col justify-end px-2 sm:px-4 md:px-6 pb-2 sm:pb-4 md:pb-6 min-h-0">
-            <div class="bg-display-bg rounded-3xl p-3 sm:p-4 md:p-6 relative h-full flex flex-col w-4/5 mx-auto" style="padding-right: 0;">
+            <div class="bg-display-bg rounded-3xl p-3 sm:p-4 md:p-6 relative h-full flex flex-col w-4/5 mx-auto" style="padding-right: 0; padding-left: 0;">
                 <!-- Input Expression Display Section -->
-                <div class="relative mb-2 sm:mb-3 flex-shrink-0" style="max-height: 60px; overflow: hidden;">
+                <div class="relative mb-2 sm:mb-3 flex-shrink-0" style="max-height: 60px; overflow: hidden; padding-right: 0; margin-right: 0;">
                     <div id="inputExpression"
                         class="w-full min-h-10 sm:min-h-14 md:min-h-18 bg-transparent text-white/70 text-right font-light leading-tight"
-                        style="transition: font-size 0.2s; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0); overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0;">
+                        style="transition: font-size 0.2s; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0); overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0; padding-left: 0; margin-left: 0;">
                     </div>
                 </div>
 
                 <!-- Live Calculation Result Display Section -->
-                <div class="relative flex-1 flex items-end justify-end min-h-0">
+                <div class="relative flex-1 flex items-end justify-end min-h-0" style="padding-right: 0; margin-right: 0;">
                     <div id="result"
                         class="w-full bg-transparent text-white text-right font-light leading-none"
-                        style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap; overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0;">
+                        style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap; overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0; padding-left: 0; margin-left: 0;">
                     </div>
                 </div> 
             </div>
@@ -589,8 +608,10 @@
                 // Format long numbers with line breaks every 25 digits
                 const formattedValue = formatLongNumber(value);
                 inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
-                // Ensure right alignment
+                // Ensure right alignment and no padding
                 inputExpression.style.textAlign = 'right';
+                inputExpression.style.paddingRight = '0';
+                inputExpression.style.marginRight = '0';
                 // Auto-scroll to bottom for long content
                 setTimeout(() => {
                     const container = inputExpression.parentElement;
@@ -604,6 +625,8 @@
             } else {
                 inputExpression.innerHTML = formatResultWithWhiteOperators(value);
                 inputExpression.style.textAlign = 'right';
+                inputExpression.style.paddingRight = '0';
+                inputExpression.style.marginRight = '0';
                 inputExpression.style.transform = 'translateY(0)';
             }
         }
@@ -615,11 +638,15 @@
                 result.innerHTML = `= ${formatResultWithWhiteOperators(formattedValue)}`;
                 result.className = result.className.replace('text-orange-400', 'text-white');
                 result.style.textAlign = 'right';
+                result.style.paddingRight = '0';
+                result.style.marginRight = '0';
             } else {
                 const formattedValue = formatLargeNumber(value);
                 result.innerHTML = formatResultWithWhiteOperators(formattedValue);
                 result.className = result.className.replace('text-white', 'text-orange-400');
                 result.style.textAlign = 'right';
+                result.style.paddingRight = '0';
+                result.style.marginRight = '0';
             }
         }
 
