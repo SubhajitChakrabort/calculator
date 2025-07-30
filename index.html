@@ -78,40 +78,6 @@
             background-clip: text;
         }
 
-        /* Ensure digits start from right edge with no gap */
-        #inputExpression, #result {
-            padding-right: 0 !important;
-            margin-right: 0 !important;
-            padding-left: 0 !important;
-            margin-left: 0 !important;
-            text-align: right !important;
-            word-spacing: 0 !important;
-            letter-spacing: 0 !important;
-            box-sizing: border-box !important;
-            position: relative !important;
-            right: 0 !important;
-            width: 100% !important;
-            color: white !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-
-        /* Remove all padding from display containers */
-        #inputExpression, #result, 
-        #inputExpression::before, #result::before,
-        #inputExpression::after, #result::after {
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-
-        /* Force text to start from right edge with no gap */
-        #inputExpression, #result {
-            width: 100% !important;
-            max-width: 100% !important;
-            right: 0 !important;
-            position: relative !important;
-        }
-
         /* Button hover effects */
         .calc-button:hover {
             transform: scale(1.05);
@@ -136,28 +102,28 @@
         /* Responsive font sizes */
         @media (max-width: 480px) {
             .display-text {
-                font-size: clamp(1.8rem, 6vw, 2.5rem);
+                font-size: clamp(2rem, 8vw, 3rem);
             }
             .button-text {
-                font-size: clamp(1.3rem, 5vw, 1.8rem);
+                font-size: clamp(1.5rem, 6vw, 2rem);
             }
         }
 
         @media (min-width: 481px) and (max-width: 768px) {
             .display-text {
-                font-size: clamp(2rem, 5vw, 3rem);
+                font-size: clamp(2.5rem, 6vw, 3.5rem);
             }
             .button-text {
-                font-size: clamp(1.5rem, 4vw, 2rem);
+                font-size: clamp(1.8rem, 4vw, 2.2rem);
             }
         }
 
         @media (min-width: 769px) {
             .display-text {
-                font-size: clamp(2.5rem, 4vw, 3.5rem);
+                font-size: clamp(3rem, 4vw, 4rem);
             }
             .button-text {
-                font-size: clamp(1.8rem, 3vw, 2.2rem);
+                font-size: clamp(2rem, 3vw, 2.5rem);
             }
         }
     </style>
@@ -237,20 +203,20 @@
 
                         <!-- Display Screen - Dual Display Section -->
         <div class="flex-1 flex flex-col justify-end px-2 sm:px-4 md:px-6 pb-2 sm:pb-4 md:pb-6 min-h-0">
-            <div class="bg-display-bg rounded-3xl relative h-full flex flex-col mx-auto" style="width: calc(100% - 20px); padding: 10px;">
+            <div class="bg-display-bg rounded-3xl p-3 sm:p-4 md:p-6 relative h-full flex flex-col">
                 <!-- Input Expression Display Section -->
-                <div class="relative mb-2 sm:mb-3 flex-shrink-0" style="max-height: 60px; overflow: hidden; padding-right: 0; margin-right: 0;">
+                <div class="relative mb-2 sm:mb-3 flex-shrink-0" style="max-height: 60px; overflow: hidden;">
                     <div id="inputExpression"
-                        class="w-full min-h-10 sm:min-h-14 md:min-h-18 bg-transparent text-white text-right font-light leading-tight"
-                        style="transition: font-size 0.2s; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0); overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0; padding-left: 0; margin-left: 0; color: white !important;">
+                        class="w-full min-h-10 sm:min-h-14 md:min-h-18 bg-transparent text-white/70 text-right font-light leading-tight"
+                        style="transition: font-size 0.2s; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0);">
                     </div>
                 </div>
 
                 <!-- Live Calculation Result Display Section -->
-                <div class="relative flex-1 flex items-end justify-end min-h-0" style="padding-right: 0; margin-right: 0;">
+                <div class="relative flex-1 flex items-end justify-end min-h-0">
                     <div id="result"
                         class="w-full bg-transparent text-white text-right font-light leading-none"
-                        style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap; overflow-wrap: break-word; hyphens: none; padding-right: 0; margin-right: 0; padding-left: 0; margin-left: 0;">
+                        style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap;">
                     </div>
                 </div> 
             </div>
@@ -365,7 +331,7 @@
         let justCalculated = false;
         let isCalculating = false;
 
-        // Function to format input with line breaks every 25 digits
+        // Function to format input with line breaks every 8 digits
         function formatInputWithLineBreaks(input) {
             if (!input) return '';
             
@@ -375,10 +341,10 @@
             
             for (let part of parts) {
                 if (part && !['+', '-', '×', '/', '*', '(', ')', '√'].includes(part)) {
-                    // This is a number, add line breaks every 25 digits to fit full width
+                    // This is a number, add line breaks every 8 digits
                     let formattedNumber = '';
                     for (let i = 0; i < part.length; i++) {
-                        if (i > 0 && i % 25 === 0) {
+                        if (i > 0 && i % 8 === 0) {
                             formattedNumber += '<br>';
                         }
                         formattedNumber += part[i];
@@ -408,11 +374,11 @@
                 return '';
             }
             const numStr = num.toString();
-            if (numStr.length > 20) {
-                // Add line breaks every 20 digits for history
+            if (numStr.length > 15) {
+                // Add line breaks every 15 digits
                 let formatted = '';
                 for (let i = 0; i < numStr.length; i++) {
-                    if (i > 0 && i % 20 === 0) {
+                    if (i > 0 && i % 15 === 0) {
                         formatted += '\n';
                     }
                     formatted += numStr[i];
@@ -425,11 +391,11 @@
         // Function to format long numbers with line breaks
         function formatLongNumber(num) {
             const numStr = num.toString();
-            if (numStr.length > 25) {
-                // Add line breaks every 25 digits to fit full width
+            if (numStr.length > 20) {
+                // Add line breaks every 20 digits
                 let formatted = '';
                 for (let i = 0; i < numStr.length; i++) {
-                    if (i > 0 && i % 25 === 0) {
+                    if (i > 0 && i % 20 === 0) {
                         formatted += '\n';
                     }
                     formatted += numStr[i];
@@ -486,7 +452,7 @@
             return formatted;
         }
 
-        // Function to format result with line breaks every 25 digits
+        // Function to format result with line breaks every 8 digits
         function formatResultWithLineBreaks(result) {
             if (!result || result === '') return '';
             
@@ -494,7 +460,7 @@
             let formattedResult = '';
             
             for (let i = 0; i < resultStr.length; i++) {
-                if (i > 0 && i % 25 === 0) {
+                if (i > 0 && i % 8 === 0) {
                     formattedResult += '<br>';
                 }
                 formattedResult += resultStr[i];
@@ -610,17 +576,10 @@
 
         // Function to update input expression display
         function updateInputExpressionDisplay(value) {
-            if (value && value.length > 25) {
-                // Format long numbers with line breaks every 25 digits
+            if (value && value.length > 20) {
+                // Format long numbers with line breaks
                 const formattedValue = formatLongNumber(value);
                 inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
-                // Ensure right alignment and no padding
-                inputExpression.style.textAlign = 'right';
-                inputExpression.style.paddingRight = '0';
-                inputExpression.style.marginRight = '0';
-                inputExpression.style.color = 'white';
-                inputExpression.style.opacity = '1';
-                inputExpression.style.visibility = 'visible';
                 // Auto-scroll to bottom for long content
                 setTimeout(() => {
                     const container = inputExpression.parentElement;
@@ -633,12 +592,6 @@
                 }, 10);
             } else {
                 inputExpression.innerHTML = formatResultWithWhiteOperators(value);
-                inputExpression.style.textAlign = 'right';
-                inputExpression.style.paddingRight = '0';
-                inputExpression.style.marginRight = '0';
-                inputExpression.style.color = 'white';
-                inputExpression.style.opacity = '1';
-                inputExpression.style.visibility = 'visible';
                 inputExpression.style.transform = 'translateY(0)';
             }
         }
@@ -649,16 +602,10 @@
                 const formattedValue = formatLargeNumber(value);
                 result.innerHTML = `= ${formatResultWithWhiteOperators(formattedValue)}`;
                 result.className = result.className.replace('text-orange-400', 'text-white');
-                result.style.textAlign = 'right';
-                result.style.paddingRight = '0';
-                result.style.marginRight = '0';
             } else {
                 const formattedValue = formatLargeNumber(value);
                 result.innerHTML = formatResultWithWhiteOperators(formattedValue);
                 result.className = result.className.replace('text-white', 'text-orange-400');
-                result.style.textAlign = 'right';
-                result.style.paddingRight = '0';
-                result.style.marginRight = '0';
             }
         }
 
@@ -667,13 +614,13 @@
             const len = value.toString().length;
             let fontSize = '';
             if (len <= 7) {
-                fontSize = '2.8rem'; // default large (reduced for 80% width)
+                fontSize = '3.5rem'; // default large (reduced from 5rem)
             } else if (len <= 12) {
-                fontSize = '2.2rem'; // medium (reduced for 80% width)
+                fontSize = '2.5rem'; // medium (reduced from 3rem)
             } else if (len <= 18) {
-                fontSize = '1.6rem'; // small (reduced for 80% width)
+                fontSize = '1.8rem'; // small (reduced from 2rem)
             } else {
-                fontSize = '1.1rem'; // extra small (reduced for 80% width)
+                fontSize = '1.2rem'; // extra small (reduced from 1rem)
             }
             result.style.fontSize = fontSize;
         }
@@ -1085,7 +1032,6 @@
         inputExpression.addEventListener('touchmove', function(e) {
             if (!isScrolling) return;
             
-            // Fix scrolling direction: swipe up to see beginning content, swipe down to see end content
             const deltaY = startY - e.touches[0].clientY;
             const newTranslateY = currentTranslateY + deltaY;
             
