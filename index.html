@@ -635,12 +635,21 @@
         }
 
         // Function to update input expression display
-        function updateInputExpressionDisplay(value) {
+        function updateInputExpressionDisplay(value, isResult = false) {
             const screenWidth = window.innerWidth;
             const formattedValue = formatLongNumber(value);
             const dynamicFontSize = getDynamicFontSize(value, screenWidth);
             
-            inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
+            if (isResult) {
+                // Show result in orange color
+                inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
+                inputExpression.className = inputExpression.className.replace('text-white/70', 'text-orange-400');
+            } else {
+                // Show input expression in white color
+                inputExpression.innerHTML = formatResultWithWhiteOperators(formattedValue);
+                inputExpression.className = inputExpression.className.replace('text-orange-400', 'text-white/70');
+            }
+            
             inputExpression.style.fontSize = dynamicFontSize;
             
             // Apply scrolling based on screen size and line break thresholds
@@ -756,7 +765,7 @@
             try {
                 if (currentInput && currentInput !== '') {
                     // Always show current input expression in the top display
-                    updateInputExpressionDisplay(currentInput);
+                    updateInputExpressionDisplay(currentInput, false);
                     
                     // Only show live calculation if there's an operator and we're not in the middle of typing a number
                     const hasOperator = /[+\-×/*√]/.test(currentInput);
@@ -782,13 +791,13 @@
                         shouldResetOnNextNumber = false;
                     }
                 } else {
-                    updateInputExpressionDisplay('');
+                    updateInputExpressionDisplay('', false);
                     updateResultDisplay('');
                     setResultFontSize('');
                     shouldResetOnNextNumber = false;
                 }
             } catch {
-                updateInputExpressionDisplay('');
+                updateInputExpressionDisplay('', false);
                 updateResultDisplay('');
                 setResultFontSize('');
                 shouldResetOnNextNumber = false;
@@ -888,7 +897,7 @@
                 switch (actualValue) {
                     case 'AC':
                         currentInput = '';
-                        inputExpression.textContent = '';
+                        updateInputExpressionDisplay('', false);
                         result.textContent = '';
                         shouldResetOnNextNumber = false;
                         lastResult = null;
@@ -925,12 +934,15 @@
                                     });
                                     saveCalculationsToStorage();
                                     const formattedResult = formatLargeNumber(finalResult);
-                                    updateInputExpressionDisplay(''); // Clear input expression
-                                    updateResultDisplay(formattedResult, false); // Final result without = sign
-                                    setResultFontSize(formattedResult);
+                                    // Show final result in top display (input expression area)
+                                    updateInputExpressionDisplay(formattedResult, true);
+                                    // Clear bottom display and show blinking cursor
+                                    updateResultDisplay('');
+                                    setResultFontSize('');
                                     shouldResetOnNextNumber = true;
                                     lastResult = finalResult;
                                     justCalculated = true;
+                                    setCursorBlinking(true);
                                 } else {
                                     result.textContent = 'Error';
                                     setResultFontSize('Error');
