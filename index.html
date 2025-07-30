@@ -348,16 +348,8 @@
                         }
                         formattedNumber += part[i];
                     }
-                    // Ensure each line has exactly 25 digits (except the last line)
-                    const lines = formattedNumber.split('<br>');
-                    const formattedLines = lines.map((line, index) => {
-                        if (index < lines.length - 1 && line.length < 25) {
-                            // Pad shorter lines with spaces to maintain alignment
-                            return line.padEnd(25);
-                        }
-                        return line;
-                    });
-                    formattedNumber = formattedLines.join('<br>');
+                    // Keep lines as they are - no padding needed for straight display
+                    // Each line will have exactly 25 digits (except the last line)
                     formattedParts.push(formattedNumber);
                 } else if (part) {
                     // This is an operator or special character - make it white
@@ -1041,9 +1033,9 @@
         inputExpression.addEventListener('touchmove', function(e) {
             if (!isScrolling) return;
             
-            // Swipe down shows up (beginning), swipe up shows down (end)
-            const deltaY = startY - e.touches[0].clientY;
-            const newTranslateY = currentTranslateY + deltaY;
+            // Natural scrolling: swipe down shows first line, swipe up shows last line
+            const deltaY = e.touches[0].clientY - startY;
+            const newTranslateY = currentTranslateY - deltaY;
             
             const container = inputExpression.parentElement;
             const scrollHeight = inputExpression.scrollHeight;
