@@ -1018,23 +1018,30 @@
         updateLiveCalculation();
         setCursorBlinking(true);
 
-        // Touch scrolling for input expression
+        // Touch scrolling for input expression - Enhanced for Android mobile
         let isScrolling = false;
         let startY = 0;
         let currentTranslateY = 0;
+        let lastTouchY = 0;
 
+        // Enhanced touch start for Android
         inputExpression.addEventListener('touchstart', function(e) {
+            e.preventDefault();
             isScrolling = true;
             startY = e.touches[0].clientY;
+            lastTouchY = startY;
             const currentTransform = inputExpression.style.transform;
             currentTranslateY = parseInt(currentTransform.replace('translateY(', '').replace('px)', '') || 0);
-        });
+            console.log('Touch start - Y:', startY, 'Current translate:', currentTranslateY);
+        }, { passive: false });
 
+        // Enhanced touch move for Android
         inputExpression.addEventListener('touchmove', function(e) {
             if (!isScrolling) return;
+            e.preventDefault();
             
-            // Fixed scrolling: swipe down shows first line, swipe up shows last line
-            const deltaY = startY - e.touches[0].clientY;
+            const currentY = e.touches[0].clientY;
+            const deltaY = lastTouchY - currentY; // Calculate delta from last position
             const newTranslateY = currentTranslateY + deltaY;
             
             const container = inputExpression.parentElement;
@@ -1045,11 +1052,20 @@
             // Limit scrolling within bounds
             const limitedTranslateY = Math.max(-maxScroll, Math.min(0, newTranslateY));
             inputExpression.style.transform = `translateY(${limitedTranslateY}px)`;
-        });
+            
+            // Update for next move
+            lastTouchY = currentY;
+            currentTranslateY = limitedTranslateY;
+            
+            console.log('Touch move - Delta:', deltaY, 'New translate:', limitedTranslateY);
+        }, { passive: false });
 
+        // Enhanced touch end for Android
         inputExpression.addEventListener('touchend', function(e) {
+            e.preventDefault();
             isScrolling = false;
-        });
+            console.log('Touch end');
+        }, { passive: false });
 
         // Prevent scrolling on touch devices
         document.addEventListener('touchmove', function(e) {
