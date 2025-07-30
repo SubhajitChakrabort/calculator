@@ -110,14 +110,20 @@
         /* Input expression and result text sizing */
         #inputExpression {
             font-size: clamp(1.2rem, 4vw, 2rem) !important;
-            width: 80% !important;
-            max-width: 80% !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            text-align: right !important;
+            padding-right: 0 !important;
+            margin-right: 0 !important;
         }
         
         #result {
             font-size: clamp(1.8rem, 6vw, 3.5rem) !important;
-            width: 80% !important;
-            max-width: 80% !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            text-align: right !important;
+            padding-right: 0 !important;
+            margin-right: 0 !important;
         }
     </style>
 </head>
@@ -342,6 +348,16 @@
                         }
                         formattedNumber += part[i];
                     }
+                    // Ensure each line has exactly 25 digits (except the last line)
+                    const lines = formattedNumber.split('<br>');
+                    const formattedLines = lines.map((line, index) => {
+                        if (index < lines.length - 1 && line.length < 25) {
+                            // Pad shorter lines with spaces to maintain alignment
+                            return line.padEnd(25);
+                        }
+                        return line;
+                    });
+                    formattedNumber = formattedLines.join('<br>');
                     formattedParts.push(formattedNumber);
                 } else if (part) {
                     // This is an operator or special character - make it white
@@ -1025,9 +1041,9 @@
         inputExpression.addEventListener('touchmove', function(e) {
             if (!isScrolling) return;
             
-            // Natural scrolling: swipe up scrolls up, swipe down scrolls down
-            const deltaY = e.touches[0].clientY - startY;
-            const newTranslateY = currentTranslateY - deltaY;
+            // Swipe down shows up (beginning), swipe up shows down (end)
+            const deltaY = startY - e.touches[0].clientY;
+            const newTranslateY = currentTranslateY + deltaY;
             
             const container = inputExpression.parentElement;
             const scrollHeight = inputExpression.scrollHeight;
