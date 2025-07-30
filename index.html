@@ -99,32 +99,25 @@
             transform: translateX(0);
         }
 
-        /* Responsive font sizes */
-        @media (max-width: 480px) {
-            .display-text {
-                font-size: clamp(2rem, 8vw, 3rem);
-            }
-            .button-text {
-                font-size: clamp(1.5rem, 6vw, 2rem);
-            }
+        /* Responsive font sizes - consistent across all devices */
+        .display-text {
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
         }
-
-        @media (min-width: 481px) and (max-width: 768px) {
-            .display-text {
-                font-size: clamp(2.5rem, 6vw, 3.5rem);
-            }
-            .button-text {
-                font-size: clamp(1.8rem, 4vw, 2.2rem);
-            }
+        .button-text {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
         }
-
-        @media (min-width: 769px) {
-            .display-text {
-                font-size: clamp(3rem, 4vw, 4rem);
-            }
-            .button-text {
-                font-size: clamp(2rem, 3vw, 2.5rem);
-            }
+        
+        /* Input expression and result text sizing */
+        #inputExpression {
+            font-size: clamp(1.2rem, 4vw, 2rem) !important;
+            width: 80% !important;
+            max-width: 80% !important;
+        }
+        
+        #result {
+            font-size: clamp(1.8rem, 6vw, 3.5rem) !important;
+            width: 80% !important;
+            max-width: 80% !important;
         }
     </style>
 </head>
@@ -207,15 +200,15 @@
                 <!-- Input Expression Display Section -->
                 <div class="relative mb-2 sm:mb-3 flex-shrink-0" style="max-height: 60px; overflow: hidden;">
                     <div id="inputExpression"
-                        class="w-full min-h-10 sm:min-h-14 md:min-h-18 bg-transparent text-white/70 text-right font-light leading-tight"
-                        style="transition: font-size 0.2s; font-size: 1.3rem; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0);">
+                        class="bg-transparent text-white/70 text-right font-light leading-tight"
+                        style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap; transform: translateY(0);">
                     </div>
                 </div>
 
                 <!-- Live Calculation Result Display Section -->
                 <div class="relative flex-1 flex items-end justify-end min-h-0">
                     <div id="result"
-                        class="w-full bg-transparent text-white text-right font-light leading-none"
+                        class="bg-transparent text-white text-right font-light leading-none"
                         style="transition: font-size 0.2s; word-wrap: break-word; white-space: pre-wrap;">
                     </div>
                 </div> 
@@ -609,18 +602,18 @@
             }
         }
 
-        // Function to dynamically set result font size based on length
+        // Function to dynamically set result font size based on length - using responsive sizing
         function setResultFontSize(value) {
             const len = value.toString().length;
             let fontSize = '';
             if (len <= 7) {
-                fontSize = '3.5rem'; // default large (reduced from 5rem)
+                fontSize = 'clamp(1.8rem, 6vw, 3.5rem)'; // default large
             } else if (len <= 12) {
-                fontSize = '2.5rem'; // medium (reduced from 3rem)
+                fontSize = 'clamp(1.5rem, 5vw, 2.8rem)'; // medium
             } else if (len <= 18) {
-                fontSize = '1.8rem'; // small (reduced from 2rem)
+                fontSize = 'clamp(1.2rem, 4vw, 2.2rem)'; // small
             } else {
-                fontSize = '1.2rem'; // extra small (reduced from 1rem)
+                fontSize = 'clamp(1rem, 3vw, 1.8rem)'; // extra small
             }
             result.style.fontSize = fontSize;
         }
@@ -1032,9 +1025,9 @@
         inputExpression.addEventListener('touchmove', function(e) {
             if (!isScrolling) return;
             
-            // Fix scrolling direction: swipe up to see beginning content, swipe down to see end content
-            const deltaY = startY - e.touches[0].clientY;
-            const newTranslateY = currentTranslateY + deltaY;
+            // Natural scrolling: swipe up scrolls up, swipe down scrolls down
+            const deltaY = e.touches[0].clientY - startY;
+            const newTranslateY = currentTranslateY - deltaY;
             
             const container = inputExpression.parentElement;
             const scrollHeight = inputExpression.scrollHeight;
